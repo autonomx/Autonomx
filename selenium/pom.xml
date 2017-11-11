@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>seleniumCore</groupId>
+		<artifactId>seleniumCore</artifactId>
+		<version>1.0-demo-pom</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>seleniumClient</artifactId>
+	
+	<repositories>
+		<repository>
+			<id>seleniumCore</id>
+			<name>vultr.guest-releases</name>
+			<url>http://45.63.37.236:8081/artifactory/public-access</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>seleniumCore</groupId>
+			<artifactId>seleniumCore</artifactId>
+			<version>1.0-demo</version>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>sanityTests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.20</version>
+						<configuration>
+							<includes>
+								<include>test.java.web.sanityTests/*.java</include>
+							</includes>
+							<parallel>all</parallel>
+							<perCoreThreadCount>true</perCoreThreadCount>
+							<threadCount>1</threadCount>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
