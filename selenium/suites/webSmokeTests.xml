@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Web Test">
+
+  <test name="web smoke tests">
+  
+    <classes>
+       <class name="modules.web.Tests.Verify_Login_Test"/>
+       <class name="modules.web.Tests.Verify_userCreate_test"/>
+    </classes>
+  </test>
+
+</suite>

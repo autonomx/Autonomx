@@ -1,0 +1,28 @@
+# global configuration
+UriPath = http://45.76.245.149:1337
+adminUserName = "autoAdmin1"
+adminUserPassword = "autoPass1"
+
+parallelTestcasePath = "../apiTestData/testcases/"
+sequentialTestcasePath = "../apiTestData/testcases/"
+apiKeywordPath = "resources/api/keywords/"
+
+# set file name to run single csv file
+testCaseFile = ""
+testCase = ""
+
+# Database Server
+DBDRIVER = org.postgresql.Driver
+DBUrl=jdbc:postgresql://localhost:5432
+DBName=testdb
+DBUsername=postgres
+DBPassword=123
+
+
+# mongoDb
+#DBDRIVER = mongodb.jdbc.MongoDriver
+#DBUrl=jdbc:mongo://ds029847.mongolab.com:29847
+# first time set rebuildschema=true
+#DBName=tpch?rebuildschema=false
+#DBUsername=dbuser
+#DBPassword=dbuser

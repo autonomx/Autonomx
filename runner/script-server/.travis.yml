@@ -1,0 +1,11 @@
+language: python
+python: 3.4
+install:
+  - pip install -r requirements.txt
+  - pip install ldap3
+before_script:
+  - cd src
+  - python3 -m unittest discover -s tests -p "*.py"
+  - cd ..
+script:
+  - python3 tools/build.py

@@ -1,0 +1,11 @@
+TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Method,Option,RequestHeaders,TemplateFile,RequestBody,OutputParams,RespCodeExp,ExpectedResponse,PartialExpectedResponse,NotExpectedResponse,TcComments
+TsPostgres,getUsers,Y,verify user data,SQLDB,,,,,,,SELECT * FROM COMPANY WHERE ID = 1,NAME:<$name>,,,"ID : equalTo(1),
+NAME: contains(Paul),
+AGE: equalTo(32),
+ADDRESS: isNotEmpty,                                        
+SALARY: equalTo(20000)",,
+TsPostgres,getUsersByName,Y,verify user data,SQLDB,,,,,,,SELECT * FROM COMPANY WHERE NAME = '<@name>',AGE:<$age>,,,"ID : equalTo(1),
+NAME: contains(Paul),
+AGE: equalTo(32),
+ADDRESS: isNotEmpty,                                        
+SALARY: equalTo(20000)",,
