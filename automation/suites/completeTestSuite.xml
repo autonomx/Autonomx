@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="All tests suite">
+
+ <test name="All smoke tests">
+  
+    <classes>
+       <class name="module.ios.Tests.PlainTableViewTest"/>
+       <class name="module.android.sanityTests.RegisterUserTest"/>
+       <class name="module.rest.VerifyUsersTest"/>
+       <class name="module.api.ApiTestRunner"/>
+       <class name="module.web.Tests.Verify_Login_Test"/>
+       <class name="module.web.Tests.Verify_userCreate_test"/>       
+    </classes>
+  </test>
+</suite>

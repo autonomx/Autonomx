@@ -2,7 +2,7 @@
 
 export PATH="/usr/local/bin:$PATH"
 
-# pull gaia automation code
+# pull automation code
 cd ../../; git clean  -d  -f""; git reset --hard; git checkout master; git pull --rebase; git fetch -p; 
 
 # pull the latest dev
@@ -23,4 +23,4 @@ cp -a ../ipad/output/Build/Products/Debug-iphonesimulator/Gaia.app/. ../gaia-aut
 
 # run selenium tests
 cd ../automation-client/selenium
-mvn clean compile compiler:testCompile surefire:test -PiosSmokeTests
+../runner/utils/mvn/bin/mvn clean compile compiler:testCompile surefire:test -PiosSmokeTests

@@ -1,4 +1,5 @@
 # global configuration
+#UriPath= https://de-qa.azurefd.net
 UriPath = http://45.76.245.149:1337
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
@@ -25,4 +26,4 @@ DBPassword=123
 # first time set rebuildschema=true
 #DBName=tpch?rebuildschema=false
 #DBUsername=dbuser
-#DBPassword=dbuser
+#DBPassword=dbusehttps://de-qa.azurefd.netr

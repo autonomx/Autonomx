@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <module>
+      <module fileurl="file://$PROJECT_DIR$/../../automation-core/automation/AutomationCore.iml" filepath="$PROJECT_DIR$/../../automation-core/automation/AutomationCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/automation.iml" filepath="$PROJECT_DIR$/.idea/automation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../automation-core/automation/target/maven-archiver/maven-archiver.iml" filepath="$PROJECT_DIR$/../../automation-core/automation/target/maven-archiver/maven-archiver.iml" />
+    </module>
+  </component>
+</project>

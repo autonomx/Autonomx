@@ -1,0 +1,37 @@
+<project>
+
+<target name="mvn-clean">
+    <property environment="env" />
+    <path id="classpath">
+        <fileset dir="../runner/utils/mvn/boot">
+            <include name="plexus-classworlds-*.jar" />
+        </fileset>
+    </path>
+    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+
+    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
+        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+        <arg value="clean" />
+    </java>
+</target>
+
+ <target name="mvn-install">
+    <property environment="env" />
+    <path id="classpath">
+        <fileset dir="../runner/utils/mvn/boot">
+            <include name="plexus-classworlds-*.jar" />
+        </fileset>
+    </path>
+    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+
+    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
+        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+        <arg value="compiler:compile" />
+    </java>
+</target>
+
+</project>

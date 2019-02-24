@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AntConfiguration">
+    <buildFile url="file://$PROJECT_DIR$/ant.xml">
+      <executeOn event="afterCompilation" target="mvn-install" />
+      <executeOn event="beforeCompilation" target="mvn-install" />
+    </buildFile>
+  </component>
+</project>

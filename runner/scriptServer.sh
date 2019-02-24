@@ -7,7 +7,7 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 function generateJsonScripts () {
 
 	# get the list of file names in mac folder
-	yourfilenames=`ls ../mac/*.sh`
+	yourfilenames=`ls ../../mac/*.sh`
 
 	# convert each file path to json format
 	for eachfile in $yourfilenames
@@ -25,7 +25,7 @@ function generateJsonScripts () {
 bash generateScripts.sh
 
 # run script server
-cd script-server
+cd utils/script-server
 
 #convert testng xml suites to maven test scripts
 generateJsonScripts

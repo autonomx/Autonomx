@@ -1,0 +1,106 @@
+# global configuration
+global_timeout_seconds=60
+parallel_test_count = 1
+retry_count = 1
+isSingleSignIn = false
+
+# use either json file or csv for localization
+localization_file = localization.json
+
+# report options
+launchReportAfterTest = false
+enableDetailedReport = true
+audio_commentary = false
+# Options: MARY
+audio_commentary_type = "MARY"
+enable_batch_logging = false
+reportExpireDays = 5
+
+# properties/conf file location. add additional locations by prefixing with "config_"
+config_api = "../apiTestData/"
+
+# Web
+webApp="http://45.76.245.149:1337/admin/"
+
+# Android
+# Espresso or UiAutomator2
+androidTechnology=Espresso
+androidApp = "selendroid.apk"
+android_app_dir = "resources/"
+androidMobile = "Pixel_2_XL_API_25"
+androidTablet = "Pixel_2_XL_API_25"
+androidUnicodeKeyboard = true
+androidResetKeyboard = true
+androidFullReset = false
+androidNoReset = false
+androidHome = ""
+javaHome = ""
+
+#iOS
+iosApp = "eurika.app"
+ios_app_dir = "resources/"
+iosMobile = "iPhone 7"
+iosTablet = "iPad Air 2"
+iosDeviceVersion = "12.1"
+iosFullReset = false
+iosOrientation = "landscape"
+iosWaitForQuiescence = false
+iosUseNewWDA = true
+iosclearSystemFiles = false
+iosShouldUseSingletonTestManager = false
+iosShouldUseTestManagerForVisibilityDetection = false
+
+#win
+winApp = "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"
+
+#Appium
+path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# set to DEFAULT or version. eg.2.41. version match: http://appium.io/docs/en/writing-running-appium/web/chromedriver/
+# appiumChromeAutoManage: false means user will download the driver manually. true: driver manager will download it based on version
+appiumChromeAutoManage = true
+appiumChromeDriverPath = "/chromedriver.exe"
+appiumChromeVersion = "DEFAULT"
+appiumLogging = false
+# info or debug
+appiumLogginLevel = info   
+useExternalAppiumServer = false
+appiumExternalPort = 4723
+
+# Web
+# Options: REMOTE_WEBDRIVER, LOCAL_WEBDRIVER
+webdriverType = LOCAL_WEBDRIVER
+# Options: CHROME,FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, PHANTOMJS
+browserType = CHROME
+# Options: LATEST or version number. eg. 56.4
+driverVersion = LATEST
+maximize_browser = false
+
+# valid when REMOTE_WEBDRIVER is selected
+#driverType = REMOTE_WEBDRIVER
+server_url = localhost
+server_port = 4444
+
+# Slack notification
+# Token: generate at: https://api.slack.com/custom-integrations/legacy-tokens
+# For channel id: right click and channel and copy link. the id is attached to the link
+enableSlackNotification = false
+slackToken = ""
+channelId = ""
+
+# Email notification
+enableEmailReport = false
+toEmail = ""
+
+# from email config
+ 
+# for outlook, everything should be the same    
+#smtpHost = "outlook.office365.com"     
+fromEmail = automation.core.service@gmail.com
+emailPassword = "autoCore001"
+smtpHost = "smtp.gmail.com"
+smtpPort = "587"
+smtpStarttlsEnable = true
+smtpAuth = true
+
+# test data for data driven test
+loginTestDataPath =  "resources/testData/login.csv"
