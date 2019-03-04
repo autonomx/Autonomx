@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>com.core</groupId>
 			<artifactId>AutomationCore</artifactId>
-			<version>1.0.30</version>
+			<version>1.0.31</version>
 		</dependency>
 
 		<dependency>

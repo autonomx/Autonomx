@@ -25,11 +25,6 @@ public class LoginPanel {
 		Config.putValue("password", user.password().get());
 
 		ApiObject login = TestObject.getApiDef("getToken");
-		/*
-		ApiObject login = TestObject.backend.api.getToken()
-		.withUserName(user.username().get())
-		.withPassword(user.password().get());
-		*/
 		restApiInterface.RestfullApiInterface(login);
 	}
 }

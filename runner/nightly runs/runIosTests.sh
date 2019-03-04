@@ -22,5 +22,5 @@ cp -a ../ipad/output/Build/Products/Debug-iphonesimulator/Gaia.app/. ../gaia-aut
 #sleep 5s
 
 # run selenium tests
-cd ../automation-client/selenium
+cd ../automation-client/automation
 ../runner/utils/mvn/bin/mvn clean compile compiler:testCompile surefire:test -PiosSmokeTests
