@@ -3,7 +3,7 @@ package module.serviceUiIntegration.panels;
 import org.json.JSONException;
 
 import common.objects.UserObject;
-import core.apiCore.interfaces.restApiInterface;
+import core.apiCore.interfaces.RestApiInterface;
 import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.support.configReader.Config;
@@ -31,13 +31,13 @@ public class UserPanel {
 		Config.putValue("personConfirmed", Boolean.toString(user.confirmed().get()));
 
 		ApiObject companyAPI = TestObject.getApiDef("createUser");
-		restApiInterface.RestfullApiInterface(companyAPI);
+		RestApiInterface.RestfullApiInterface(companyAPI);
 	}
 
 	public void deleteUser() {
 
 		ApiObject api = TestObject.getApiDef("deleteUser");
-		restApiInterface.RestfullApiInterface(api);
+		RestApiInterface.RestfullApiInterface(api);
 	}
 
 	/**

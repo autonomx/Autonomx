@@ -1,0 +1,17 @@
+#iOS
+ios.app = "eurika.app"
+ios.appDir = "resources/"
+ios.mobile = "iPhone 7"
+ios.tablet = "iPad Air 2"
+
+# to add additional capabilities, add capability after the "ios.capabilities." prefix
+ios.capabilties.platform = iOS
+ios.capabilties.platformVersion = 12.1
+ios.capabilties.automationName = XCuiTest
+ios.capabilties.fullReset = false
+ios.capabilties.noReset = true
+ios.capabilties.waitForQuiescence = false
+ios.capabilties.useNewWDA = true
+ios.capabilties.clearSystemFiles = false
+ios.capabilties.shouldUseSingletonTestManager = false
+ios.capabilties.shouldUseTestManagerForVisibilityDetection = false

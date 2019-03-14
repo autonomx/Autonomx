@@ -18,7 +18,6 @@ public class LoginPanel {
 		this.manager = manager;
 	}
 	
-	
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
 	public static class elements {

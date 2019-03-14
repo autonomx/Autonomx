@@ -1,4 +1,4 @@
-package module.ios.Tests;
+package module.ios.tests;
 
 
 import org.testng.annotations.BeforeMethod;

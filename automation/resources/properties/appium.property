@@ -1,0 +1,13 @@
+#Appium
+appium.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# set to DEFAULT or version. eg.2.41. version match: http://appium.io/docs/en/writing-running-appium/web/chromedriver/
+# appiumChromeAutoManage: false means user will download the driver manually. true: driver manager will download it based on version
+appium.chromeAutoManage = true
+appium.chromeDriverPath = "/chromedriver.exe"
+appium.chromeVersion = "DEFAULT"
+appium.logging = false
+# info or debug
+appium.logginLevel = info  
+# external server 
+appium.useExternalAppiumServer = false
+appium.externalPort = 4723

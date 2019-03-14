@@ -1,9 +1,5 @@
 package module;
 
-
-
-
-
 import core.uiCore.drivers.AbstractDriverTestNG;
 import moduleManager.ModuleManager;
 

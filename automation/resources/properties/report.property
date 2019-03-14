@@ -1,0 +1,16 @@
+
+# report options
+# report types: html (single html page) or klov (server using mongodb)
+report.reporterType = html
+report.launchReportAfterTest = false
+report.enableDetailedReport = true
+report.audioCommentary = false
+# Options: MARY
+report.audioCommentaryType = "MARY"
+report.enableBatchLogging = false
+# expire date only applicable to html report type
+report.reportExpireDays = 5
+
+# klov reporting info
+klov.server.url = "http://localhost"
+klov.mongodb.url = "localhost:27017"

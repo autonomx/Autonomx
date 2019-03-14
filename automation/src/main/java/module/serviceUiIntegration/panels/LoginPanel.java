@@ -1,7 +1,7 @@
 package module.serviceUiIntegration.panels;
 
 import common.objects.UserObject;
-import core.apiCore.interfaces.restApiInterface;
+import core.apiCore.interfaces.RestApiInterface;
 import core.support.annotation.Panel;
 import core.support.configReader.Config;
 import core.support.objects.ApiObject;
@@ -25,6 +25,6 @@ public class LoginPanel {
 		Config.putValue("password", user.password().get());
 
 		ApiObject login = TestObject.getApiDef("getToken");
-		restApiInterface.RestfullApiInterface(login);
+		RestApiInterface.RestfullApiInterface(login);
 	}
 }

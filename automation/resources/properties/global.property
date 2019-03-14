@@ -1,0 +1,11 @@
+# global configuration
+global.timeoutSeconds=60
+global.parallelTestCount = 1
+global.retryCount = 2
+global.isSingleSignIn = false
+
+# use either json file or csv for localization
+localize.file = localization.json
+
+# api keywords
+api.keywordPath = "resources/api/keywords/"

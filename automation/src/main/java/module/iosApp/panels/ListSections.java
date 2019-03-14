@@ -22,7 +22,7 @@ public class ListSections {
 	public static class elements{
 		
 		// dynamic element
-		public EnhancedBy question(String question) {
+		public static EnhancedBy question(String question) {
 			return Element.byAccessibility(question, question + " field");
 		}
 		
@@ -39,7 +39,6 @@ public class ListSections {
 	}
 
 	public void setForm(ListSectionsObject form) {
-		elements elements = new elements();
 		
 		Helper.form.selectCheckBox(elements.question(form.whereYouLive().get()), true);
 		Helper.form.selectCheckBox(elements.question(form.oceans().get()), true);

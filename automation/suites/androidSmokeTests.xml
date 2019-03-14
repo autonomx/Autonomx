@@ -6,7 +6,7 @@
  <test name="Android smoke tests">
   
     <classes>
-       <class name="module.android.sanityTests.RegisterUserTest"/>
+       <class name="module.android.tests.RegisterUserTest"/>
     </classes>
   </test>
 </suite>

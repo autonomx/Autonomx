@@ -1,0 +1,22 @@
+
+# Android
+android.app = "selendroid.apk"
+android.appDir = "resources/"
+android.mobile = "Pixel_2_XL_API_25"
+android.tablet = "Pixel_2_XL_API_25"
+
+# to add additional capabilities, add capability after the "android.capabilities." prefix
+# Espresso or UiAutomator2
+android.capabilties.automationName= Espresso
+android.capabilties.deviceName= Android
+android.capabilties.unicodeKeyboard = true
+android.capabilties.resetKeyboard = true
+android.capabilties.fullReset = false
+android.capabilties.noReset = false
+android.capabilties.recreateChromeDriverSessions = true
+android.capabilties.autoGrantPermissions = true
+android.capabilties.newCommandTimeout = 300
+android.capabilties.noSign = true
+
+android.home = "/Users/Shared/Jenkins/Library/Android/sdk"
+android.javaHome = ""

@@ -1,0 +1,14 @@
+# Email notification
+email.enableEmailReport = false
+email.toEmail = ""
+
+# from email config
+ 
+# for outlook, only change smtpHost 
+#smtpHost = "outlook.office365.com"  
+email.smtpHost = "smtp.gmail.com"   
+email.fromEmail = automation.core.service@gmail.com
+email.emailPassword = "autoCore001"
+email.smtpPort = "587"
+email.smtpStarttlsEnable = true
+email.smtpAuth = true

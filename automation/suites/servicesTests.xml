@@ -6,7 +6,7 @@
  <test name="services tests">
   
     <classes>
-       <class name="module.api.ApiTestRunner"/>
+       <class name="module.service.tests.ServiceTestRunner"/>
     </classes>
   </test>
 </suite>

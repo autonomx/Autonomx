@@ -251,12 +251,12 @@
       <module name="automation-client" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="module.android.sanityTests.*" />
+          <option name="PATTERN" value="module.android.tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="module.android.sanityTests" />
-      <option name="MAIN_CLASS_NAME" value="module.android.sanityTests.RegisterUserTest" />
+      <option name="PACKAGE_NAME" value="module.android.tests" />
+      <option name="MAIN_CLASS_NAME" value="module.android.tests.RegisterUserTest" />
       <option name="METHOD_NAME" value="registerUser" />
       <option name="TEST_OBJECT" value="METHOD" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -270,12 +270,12 @@
       <module name="automation-client" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="module.web.Tests.*" />
+          <option name="PATTERN" value="module.web.tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="module.web.Tests" />
-      <option name="MAIN_CLASS_NAME" value="module.web.Tests.Verify_Login_Test" />
+      <option name="PACKAGE_NAME" value="module.web.tests" />
+      <option name="MAIN_CLASS_NAME" value="module.web.tests.Verify_Login_Test" />
       <option name="METHOD_NAME" value="validate_user_Login2" />
       <option name="TEST_OBJECT" value="METHOD" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />

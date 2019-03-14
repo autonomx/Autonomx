@@ -71,8 +71,8 @@
 
 		<dependency>
 			<groupId>com.core</groupId>
-			<artifactId>AutomationCore</artifactId>
-			<version>1.0.31</version>
+			<artifactId>automationCore</artifactId>
+			<version>1.0.34</version>
 		</dependency>
 
 		<dependency>
