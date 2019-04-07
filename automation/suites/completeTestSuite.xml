@@ -6,12 +6,10 @@
  <test name="All smoke tests">
   
     <classes>
-       <class name="module.ios.tests.PlainTableViewTest"/>
-       <class name="module.android.tests.RegisterUserTest"/>
-       <class name="module.serviceIntegration.tests.VerifyUsersTest"/>
-       <class name="module.service.tests.ServiceTestRunner"/>
-       <class name="module.web.tests.Verify_Login_Test"/>
-       <class name="module.web.tests.Verify_userCreate_test"/>       
+       <class name="test.module.serviceIntegration.tests.VerifyUsersTest"/>
+       <class name="test.module.service.tests.ServiceTestRunner"/>
+       <class name="test.module.web.tests.VerifyLoginTest"/>
+       <class name="test.module.web.tests.VerifyUserCreateTest"/>       
     </classes>
   </test>
 </suite>

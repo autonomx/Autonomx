@@ -1,6 +1,6 @@
 # global configuration
 global.timeoutSeconds=60
-global.parallelTestCount = 1
+global.parallelTestCount = 2
 global.retryCount = 2
 global.isSingleSignIn = false
 

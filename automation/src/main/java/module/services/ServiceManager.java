@@ -1,11 +1,10 @@
 package module.services;
 
 
-
 import core.apiCore.ServiceRunner;
-import core.support.objects.ApiObject;
+import core.support.objects.ServiceObject;
 import core.uiCore.drivers.AbstractDriverTestNG;
-import module.services.interfaces.TestInferface;
+import module.services.interfaces.TestInterface;
 
 public class ServiceManager {
 
@@ -17,8 +16,8 @@ public class ServiceManager {
 			String ExpectedResponse, String TcComments,
 			String tcName, String tcIndex) throws Exception {
 
-		// add parameters to ApiObject
-		ApiObject apiObject = new ApiObject().setApiObject(TestSuite, TestCaseID, RunFlag, Description, InterfaceType,
+		// add parameters to ServiceObject
+		ServiceObject apiObject = new ServiceObject().setApiObject(TestSuite, TestCaseID, RunFlag, Description, InterfaceType,
 				UriPath, ContentType, Method, Option, RequestHeaders, TemplateFile, RequestBody, OutputParams,
 				RespCodeExp, ExpectedResponse, TcComments, tcName,
 				tcIndex);
@@ -28,7 +27,7 @@ public class ServiceManager {
 
 		switch (InterfaceType) {
 		case TEST_INTERFACE:
-			TestInferface.RestfullApiInterface(apiObject);
+			TestInterface.RestfullApiInterface(apiObject);
 			break;
 		default:
 			ServiceRunner.TestRunner(apiObject);

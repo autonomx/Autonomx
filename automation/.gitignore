@@ -4,5 +4,6 @@
 /target/
 /test-output/
 /.apt_generated/
-/.apt_generated2/
-/eclipse-target/
+/.idea/workspace.xml
+/bin/
+/.annotations/

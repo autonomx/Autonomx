@@ -6,8 +6,8 @@
   <test name="web smoke tests">
   
     <classes>
-       <class name="module.web.tests.VerifyLoginTest"/>
-       <class name="module.web.tests.VerifyUserCreateTest"/>
+       <class name="test.module.web.tests.VerifyLoginTest"/>
+       <class name="test.module.web.tests.VerifyUserCreateTest"/>
     </classes>
   </test>
 

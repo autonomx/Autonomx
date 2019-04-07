@@ -6,7 +6,7 @@
  <test name="rest tests">
   
     <classes>
-       <class name="module.serviceIntegration.tests.VerifyUsersTest"/>
+       <class name="test.module.serviceIntegration.tests.VerifyUsersTest"/>
     </classes>
   </test>
 </suite>

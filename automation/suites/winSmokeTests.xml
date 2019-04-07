@@ -6,7 +6,7 @@
  <test name="windows smoke tests">
   
     <classes>
-       <class name="module.win.tests.VerifyCalculatorTest"/>
+       <class name="test.module.win.tests.VerifyCalculatorTest"/>
     </classes>
   </test>
 </suite>

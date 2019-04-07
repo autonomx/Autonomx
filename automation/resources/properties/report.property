@@ -14,3 +14,4 @@ report.reportExpireDays = 5
 # klov reporting info
 klov.server.url = "http://localhost"
 klov.mongodb.url = "localhost:27017"
+console.annotation.debug = false

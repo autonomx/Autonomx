@@ -1,6 +1,6 @@
 # Web
-#key value. key should match the web app module name. eg. module name = google, therefore: google="http://google.com"
-webApp="http://45.76.245.149:1337/admin/"
+#key value. key should match the web app test.module name. eg. test.module name = google, therefore: google="http://google.com"
+webApp="http://104.207.156.47:1337/admin/"
 # Options: CHROME,FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, PHANTOMJS
 web.browserType = CHROME
 # Options: LATEST or version number. eg. 56.4

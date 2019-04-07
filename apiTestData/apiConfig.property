@@ -1,6 +1,6 @@
 # global configuration
 #UriPath= https://de-qa.azurefd.net
-api.uriPath = http://45.76.245.149:1337
+api.uriPath = http://104.207.156.47:1337
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
 

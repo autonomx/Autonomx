@@ -13,8 +13,8 @@ import moduleManager.module.windowsApp.PanelManager;
 @Panel
 public class calculatePanel {
 	
-	// ensure the proper panel manager is imported, containing project "module name".
-	//eg. moduleManager.module.<module name>.PanelManager
+	// ensure the proper panel manager is imported, containing project "test.module name2".
+	//eg. moduleManager.module.<test.module name2>.PanelManager
 	PanelManager manager;
 	public calculatePanel(PanelManager manager) {
 		this.manager = manager;
@@ -47,7 +47,7 @@ public class calculatePanel {
 	
     protected void verifyResults(String val)
     {
-        // trim extra text and whitespace off of the display value
+        // trim extra text And whitespace off of the display value
     	
        String result =  Helper.form.getTextValue(elements.RESULTS).replace("Display is", "").trim();
        Helper.assertEquals(val, result);

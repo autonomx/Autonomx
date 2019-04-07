@@ -1,5 +1,37 @@
 <project>
 
+ <property name="dir.generated" value="target/generated-sources/annotations"/>
+ <property name="dir.mvnstatus" value="target/maven-status"/>
+ <property name="file.marker" value="target/generated-sources/annotations/marker/marker.java"/>
+
+ <target name="checkforchanges">
+      <uptodate property="nochanges" targetfile="${file.marker}">
+         <srcfiles dir="src" includes="**/*.java"/>
+      	 <srcfiles dir="src" includes="**/*.csv"/>
+      </uptodate>
+   </target>
+
+ <target name="mvn-clean-generate-copy" depends="checkforchanges" unless="nochanges">
+    <property environment="env" />
+    <path id="classpath">
+        <fileset dir="../runner/utils/mvn/boot">
+            <include name="plexus-classworlds-*.jar" />
+        </fileset>
+    </path>
+    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+
+    <delete dir="${dir.generated}"/>
+    <delete dir="${dir.mvnstatus}"/>
+
+    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="false">
+        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+        <arg value="generate-sources" />
+    </java>
+</target>
+
+<!-- Comments go here 
 <target name="mvn-clean">
     <property environment="env" />
     <path id="classpath">
@@ -16,6 +48,30 @@
         <arg value="clean" />
     </java>
 </target>
+
+<target name="mvn-generate-sources-only"
+    description="generate source files">
+    <property environment="env" />
+    <path id="classpath">
+        <fileset dir="../runner/utils/mvn/boot">
+            <include name="plexus-classworlds-*.jar" />
+        </fileset>
+    </path>
+    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+
+    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
+        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+        <arg value="generate-sources" />
+    </java>
+</target>
+
+ <target name="clean-generated-dir"
+          description="Remove all generated files.">
+    <delete dir="${dir.generated}"/>
+    <delete dir="${dir.mvnstatus}"/>
+  </target>
 
 <target name="mvn-copyDependencies">
     <property environment="env" />
@@ -44,65 +100,12 @@
  </target>
 
 
- <target name="copy-generated-annotations">
+ <target name="copy-generated-annotations"
+    description="copy generated files to .apt_generated">
     <copy todir=".apt_generated" overwrite="true">
-      <fileset dir="target/generated-sources/annotations">
+      <fileset dir="${dir.generated}">
       </fileset>
     </copy>
  </target>
-
-
- <target name="generate-ant-annotation">
-    <javac srcdir="src"
-        destdir="ant-annotations"
-        failonerror="false"
-        fork="true"
-        classpath="target/classes">
-        <compilerarg value="-proc:only"/>
-    </javac>
- </target>
-
-
-  <target name="copy-annotation-freebuilder">
-    <copy tofile=".library-annotation/freebuilder.jar" overwrite="true">
-      <fileset dir="target/dependency">
-        <filename name="**/*freebuilder*"/>
-      </fileset>
-    </copy>
- </target>
-
- <target name="mvn-compile-main">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="compiler:compile" />
-    </java>
-</target>
-
- <target name="mvn-compile-test">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="compiler:testCompile" />
-    </java>
-</target>
-
+-->
 </project>

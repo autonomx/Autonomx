@@ -1,0 +1,7 @@
+target/
+automation/extentReport/
+automation/bin
+automation/mvn-target
+automation/target
+automation/.apt-generated
+automation/test-output

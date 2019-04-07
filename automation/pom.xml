@@ -13,7 +13,11 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	
+	
+	
 	<build>
+  	<!-- <directory>mvn-target</directory> -->	
 		<testResources>
 			<testResource>
 				<directory>${project.basedir}/resources</directory>
@@ -24,7 +28,26 @@
 		<plugins>
 		
 		<plugin>
+		   <artifactId>maven-compiler-plugin</artifactId>
+		   <version>3.8.0</version>
+		   <executions>
+		     <execution>
+		       <id>run-annotation</id>
+		       <phase>generate-sources</phase>
+		       <configuration>
+		         <compilerArgument>-proc:only</compilerArgument>
+		       </configuration>
+		       <goals>
+		         <goal>compile</goal>
+		       </goals>
+		     </execution>
+		   </executions>
+		</plugin>    
+	
+		
+		<plugin>
 		   <groupId>org.bsc.maven</groupId>
+		   <version>3.3.3</version>
 		    <artifactId>maven-processor-plugin</artifactId>
 		    <executions>
 		        <execution>
@@ -72,7 +95,7 @@
 		<dependency>
 			<groupId>com.core</groupId>
 			<artifactId>automationCore</artifactId>
-			<version>1.0.34</version>
+			<version>1.0.37</version>
 		</dependency>
 
 		<dependency>

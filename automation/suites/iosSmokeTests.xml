@@ -6,7 +6,7 @@
  <test name="iOS smoke tests">
   
     <classes>
-       <class name="module.ios.tests.PlainTableViewTest"/>
+       <class name="test.module.ios.tests.PlainTableViewTest"/>
     </classes>
   </test>
 </suite>
