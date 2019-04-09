@@ -14,8 +14,6 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	
-	
-	
 	<build>
   	<!-- <directory>mvn-target</directory> -->	
 		<testResources>
@@ -93,9 +91,9 @@
 
 
 		<dependency>
-			<groupId>com.core</groupId>
-			<artifactId>automationCore</artifactId>
-			<version>1.0.37</version>
+			<groupId>com.autonomx</groupId>
+			<artifactId>autonomxCore</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 
 		<dependency>
