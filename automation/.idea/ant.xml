@@ -2,8 +2,7 @@
 <project version="4">
   <component name="AntConfiguration">
     <buildFile url="file://$PROJECT_DIR$/ant.xml">
-      <executeOn event="afterCompilation" target="mvn-clean-generate-copy" />
-      <executeOn event="beforeCompilation" target="mvn-compile-main" />
+      <executeOn event="beforeCompilation" target="mvn-clean-generate" />
     </buildFile>
   </component>
 </project>

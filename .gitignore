@@ -5,3 +5,4 @@ automation/mvn-target
 automation/target
 automation/.apt-generated
 automation/test-output
+automation/.ide/workspace.xml

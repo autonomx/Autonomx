@@ -2,7 +2,14 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
+      <profile default="true" name="Default" enabled="true">
+        <processorPath useClasspath="false">
+          <entry name="target/generated-sources/annotations" />
+        </processorPath>
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="autonomxCore" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

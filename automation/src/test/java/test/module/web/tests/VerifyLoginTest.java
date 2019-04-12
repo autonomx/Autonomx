@@ -31,7 +31,6 @@ public class VerifyLoginTest extends TestBase {
 	 */
 	@Test
 	public void verifyAdminUserWithCsvData() {
-		
 		User user = Data.webApp.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.webApp.login.loginWithCsvData(user);

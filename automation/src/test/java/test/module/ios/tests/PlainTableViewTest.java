@@ -32,3 +32,5 @@ public class PlainTableViewTest extends TestBase {
 		Helper.verifyElementIsDisplayed(MainPanel.elements.PLAIN_TABLE_VIEW_STYLE);
 	}
 }
+
+

@@ -11,7 +11,7 @@
       </uptodate>
    </target>
 
- <target name="mvn-clean-generate-copy" depends="checkforchanges" unless="nochanges">
+ <target name="mvn-clean-generate" depends="checkforchanges" unless="nochanges">
     <property environment="env" />
     <path id="classpath">
         <fileset dir="../runner/utils/mvn/boot">

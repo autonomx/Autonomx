@@ -1,4 +1,3 @@
-Documentation: https://app.gitbook.com/@ehsan-matean/s/autonomx
 # Autonomx
 
 Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) and API testing. It provides a feature rich and viable testing solution for end to end testing. They’re designed to be fast, scalable, reliable and adaptable to any requirements for ever growing projects.  
@@ -81,7 +80,7 @@ or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspect
 * Use IDE of choice: Eclipse, IntelliJ, NetBeans...
 
 # Web Tests
- * Example project: ⁨Autonomx⁩ ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
+ * Example project: Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
 * Setup locators
 	webApp ▸ LoginPanel.java
 		
@@ -131,7 +130,7 @@ or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspect
 		}
 ```
 * Define objects
-	* ⁨Autonomx⁩ ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨common⁩ ▸ ⁨objects⁩
+	* ⁨Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨common⁩ ▸ ⁨objects⁩
 ```java
 	/**
 	 * object
