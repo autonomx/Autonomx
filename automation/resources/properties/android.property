@@ -18,5 +18,5 @@ android.capabilties.autoGrantPermissions = true
 android.capabilties.newCommandTimeout = 300
 android.capabilties.noSign = true
 
-android.home = "/Users/Shared/Jenkins/Library/Android/sdk"
+android.home = ""
 android.javaHome = ""
