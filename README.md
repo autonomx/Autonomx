@@ -1,4 +1,5 @@
-Documentation: https://app.gitbook.com/@ehsan-matean/s/autonomx
+Documentation: https://docs.autonomx.io
+
 # Autonomx
 
 Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) and API testing. It provides a feature rich and viable testing solution for end to end testing. They’re designed to be fast, scalable, reliable and adaptable to any requirements for ever growing projects.  
@@ -183,7 +184,7 @@ or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspect
 
 # Api Tests
  * Setup Config
- 	* Set root uri path at apiTestData/apiConfig.property. eg. UriPath = http://45.76.245.149:1337
+ 	* Set root uri path at apiTestData/apiConfig.property. eg. UriPath = http://demo.autonomx.io
 	* Additional properties such as database access can be set there
  * Add Test cases in CSV file at apiTestData/testCases
  * Run tests using the runner at apiTestData/runner/<os>/apiRunner

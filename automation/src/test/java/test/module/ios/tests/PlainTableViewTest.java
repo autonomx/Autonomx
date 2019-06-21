@@ -20,6 +20,7 @@ public class PlainTableViewTest extends TestBase {
 
 	@Test
 	public void verifyPlainTableViewForm() {
+		
 		PlainTableViewObject form = Data.iosApp.plaintableviewobject().withDefaultValues();
 
 		TestLog.When("I select plain table view object form");

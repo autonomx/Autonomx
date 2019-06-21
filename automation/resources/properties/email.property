@@ -1,5 +1,6 @@
 # Email notification
 email.enableEmailReport = false
+email.notifyOnFailureOnly = false
 email.toEmail = ""
 
 # from email config

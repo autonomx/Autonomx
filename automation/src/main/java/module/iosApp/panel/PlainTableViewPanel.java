@@ -23,7 +23,7 @@ public class PlainTableViewPanel {
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
 	public static class elements {
-		public static EnhancedBy NAME = Element.byAccessibility("Name", "name2 field");
+		public static EnhancedBy NAME = Element.byAccessibility("Name", "name field");
 		public static EnhancedBy USER_NAME = Element.byAccessibility("Username", "username field");
 		public static EnhancedBy EMAIL_ADDRESS = Element.byAccessibility("Email Address", "email address filed");
 		public static EnhancedBy PASSWORD = Element.byAccessibility("Password", "password field");

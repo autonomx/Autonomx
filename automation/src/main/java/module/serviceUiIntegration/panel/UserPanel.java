@@ -33,7 +33,7 @@ public class UserPanel {
 		Config.putValue("personEmail", user.email);
 		Config.putValue("personPassword", user.password);
 		Config.putValue("personConfirmed", Boolean.toString(user.confirmed));
-
+		
 		ServiceObject companyAPI = TestObject.getApiDef("createUser");
 		RestApiInterface.RestfullApiInterface(companyAPI);
 	}

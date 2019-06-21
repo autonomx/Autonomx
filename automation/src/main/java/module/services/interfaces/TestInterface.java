@@ -3,30 +3,29 @@ package module.services.interfaces;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.File;
+import java.util.List;
+
 import core.apiCore.helpers.DataHelper;
 import core.apiCore.helpers.JsonHelper;
+import core.apiCore.interfaces.Authentication;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
+import core.support.objects.KeyValue;
 import core.support.objects.ServiceObject;
 import io.restassured.RestAssured;
+import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class TestInterface {
-
-	/*
-	 * (String TestSuite, String TestCaseID, String RunFlag, String Description,
-	 * String InterfaceType, String UriPath, String ContentType, String Method,
-	 * String Option, String RequestHeaders, String TemplateFile, String
-	 * RequestBody, String OutputParams, String RespCodeExp, String
-	 * ExpectedResponse, String ExpectedResponse, String NotExpectedResponse,
-	 * String TcComments, String tcName, String tcIndex)
-	 */
+	
+	private static final String AUTHORIZATION_HEADER = "Authorization";
 
 	/**
-	 * interface for restfull api calls
+	 * interface for restful api calls
 	 * 
 	 * @param apiObject
 	 * @return
@@ -76,16 +75,16 @@ public class TestInterface {
 		// fail test if no response is returned
 		if (response == null)
 			Helper.assertTrue("no response returned", false);
-
-		// validate status code
-		if (!apiObject.getOutputParams().isEmpty()) {
-			TestLog.logPass("expected status code: " + apiObject.getOutputParams() + " response status code: "
-					+ response.getStatusCode());
-			response.then().statusCode(Integer.valueOf(apiObject.getOutputParams()));
-		}
-
+		
 		// saves response values to config object
 		JsonHelper.saveOutboundJsonParameters(response, apiObject.getOutputParams());
+
+		// validate status code
+		if (!apiObject.getRespCodeExp().isEmpty()) {
+			TestLog.logPass("expected status code: " + apiObject.getRespCodeExp() + " response status code: "
+					+ response.getStatusCode());
+			response.then().statusCode(Integer.valueOf(apiObject.getRespCodeExp()));
+		}
 
 		validateExpectedValues(response, apiObject);
 	}
@@ -105,49 +104,71 @@ public class TestInterface {
 				Helper.assertTrue("expected is not valid format: " + criterion, JsonHelper.isValidExpectation(criterion));
 				JsonHelper.validateByJsonBody(criterion, response);
 				JsonHelper.validateByKeywords(criterion, response);
+				JsonHelper.validateResponseBody(criterion, response);
 			}
 		}
 	}
 	
 	/**
 	 * sets the header, content type And body based on specifications
+	 * Headers are based on key value, separated by ";"
+	 * Invalid token: if authorization token exists, replace last values with "invalid", else set to "invalid"
 	 * 
 	 * @param apiObject
 	 * @return
 	 */
 	public static RequestSpecification evaluateRequestHeaders(ServiceObject apiObject) {
 		// set request
-		RequestSpecification request = null;
+		RequestSpecification request = given();
 
 		// if no RequestHeaders specified
 		if (apiObject.getRequestHeaders().isEmpty()) {
-			return given();
+			return request;
 		}
 
 		// replace parameters for request body
-		apiObject.withRequestHeaders( DataHelper.replaceParameters(apiObject.getRequestHeaders()));
+		apiObject.withRequestHeaders(DataHelper.replaceParameters(apiObject.getRequestHeaders()));
 
-		// if Authorization is set
-		if (apiObject.getRequestHeaders().contains("Authorization:")) {
-			String token = apiObject.getRequestHeaders().replace("Authorization:", "");
-			request = given().header("Authorization", token);
+		// get key value mapping of header parameters
+		List<KeyValue> keywords = DataHelper.getValidationMap(apiObject.getRequestHeaders());
+
+		// iterate through key value pairs for headers, separated by ";"
+		for (KeyValue keyword : keywords) {
+			
+			// if additional request headers
+			switch (keyword.key) {
+			case Authentication.AUTHENTICATION_SCHEME:
+				String value = (String) keyword.value;
+				value = value.replace("$", "").replace("<", "").replace(">", "").trim();
+				RestAssured.authentication = (AuthenticationScheme) Config.getObjectValue(value.replace("@", ""));
+				break;
+				
+			case "INVALID_TOKEN":
+				String authValue = Config.getValue(AUTHORIZATION_HEADER);
+
+				// replace authorization token with invalid if token already exists
+				if (!authValue.isEmpty() && authValue.length() > 4) {
+					authValue = authValue.substring(0, authValue.length() - 4) + "invalid";
+					request = given().header(AUTHORIZATION_HEADER, "invalid");
+				} else
+					request = given().header(AUTHORIZATION_HEADER, "invalid");
+				break;
+				
+			case "NO_TOKEN":
+				request = given().header(AUTHORIZATION_HEADER, "");
+				break;
+			default:
+				request = given().header(keyword.key, keyword.value);
+				
+				// keep track of Authorization token
+				if (keyword.key.equals(AUTHORIZATION_HEADER)) {
+					Config.putValue(AUTHORIZATION_HEADER, (String) keyword.value);
+				}
+				break;
+			}
 		}
-
-		// if additional request headers
-		switch (apiObject.getRequestHeaders()) {
-		case "INVALID_TOKEN":
-			request = given().header("Authorization", "invalid");
-			break;
-		case "NO_TOKEN":
-			request = given().header("Authorization", "");
-			break;
-		default:
-			break;
-		}
-
 		return request;
 	}
-	
 	public static RequestSpecification evaluateRequestBody(ServiceObject apiObject, RequestSpecification request) {
 		if(apiObject.getRequestBody().isEmpty()) return request;
 		
@@ -161,7 +182,17 @@ public class TestInterface {
 			String[] formData = apiObject.getRequestBody().split(",");
 			for(String data : formData) {
 				String[] keyValue = data.split(":");
-				request = request.formParam(keyValue[0], keyValue[1]);
+				if(keyValue.length == 3) {
+					switch(keyValue[1]) { // data type
+					case "FILE":
+						File file = DataHelper.getFile(keyValue[2]);
+						request.multiPart(file);
+						break;
+					default:
+						break;
+					}
+				}else
+					request = request.formParam(keyValue[0].trim(), keyValue[1].trim());
 			}
 			return request;
 		}

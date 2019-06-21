@@ -61,9 +61,9 @@ public class UserPanel{
 	}
 
 	public void setUserFields(CommonUser user) {
-		Helper.form.setField(elements.USER_NAME_FILED, user.username);
-		Helper.form.setField(elements.EMAIL_FIELD, user.email);
-		Helper.form.setField(elements.PASSWORD_FIELD, user.password);
+		Helper.form.clearAndSetField(elements.USER_NAME_FILED, user.username);
+		Helper.form.clearAndSetField(elements.EMAIL_FIELD, user.email);
+		Helper.form.clearAndSetField(elements.PASSWORD_FIELD, user.password);
 		
 		Helper.form.selectToggle(elements.CONFIRMED_ON, elements.CONFIRMED_OFF, user.confirmed);
 		Helper.form.selectToggle(elements.BLOCKED_ON, elements.BLOCKED_OFF, user.blocked);

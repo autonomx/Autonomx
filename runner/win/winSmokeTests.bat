@@ -1,2 +1,2 @@
 cd ../../automation
- ../runner/utils/mvn/bin/mvn clean compiler:compile compiler:testCompile surefire:test -Dsurefire.suiteXmlFiles=suites/winSmokeTests.xml
+ ../runner/utils/mvn/bin/mvn clean compile test -DsuiteXmlFile=suites/winSmokeTests.xml

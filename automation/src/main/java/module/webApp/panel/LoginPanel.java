@@ -4,7 +4,6 @@ import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.uiCore.webElement.EnhancedBy;
 import data.webApp.User;
-import module.common.data.CommonUser;
 import moduleManager.module.webApp.PanelManager;
 
 @Panel
@@ -39,9 +38,9 @@ public class LoginPanel {
 	 * 
 	 * @param user
 	 */
-	public void login(CommonUser user) {
-		Helper.form.setField(elements.USER_NAME_FIELD, user.username);
-		Helper.form.setField(elements.PASSWORD_FIELD, user.password);
+	public void login(User user) {
+		Helper.form.setField(elements.USER_NAME_FIELD, user.getUsername());
+		Helper.form.setField(elements.PASSWORD_FIELD, user.getPassword());
 		Helper.form.formSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO, elements.LOADING_INDICATOR);
 	}
 	
@@ -55,7 +54,7 @@ public class LoginPanel {
 		Helper.form.formSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE);
 	}
 	
-	public void relogin(CommonUser user) {
+	public void relogin(User user) {
 	    manager.main.logout();
 		login(user);
 	}

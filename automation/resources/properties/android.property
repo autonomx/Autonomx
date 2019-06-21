@@ -1,9 +1,11 @@
-
 # Android
 android.app = "selendroid.apk"
 android.appDir = "resources/"
-android.mobile = "Pixel_2_XL_API_25"
-android.tablet = "Pixel_2_XL_API_25"
+android.mobile = "Pixel_3_XL_API_28"
+android.tablet = "Pixel_3_XL_API_28"
+
+# udid for real device
+android.UDID = ""
 
 # to add additional capabilities, add capability after the "android.capabilities." prefix
 # Espresso or UiAutomator2

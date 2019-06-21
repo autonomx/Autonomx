@@ -7,6 +7,11 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 # get the list of file names in mac folder
 yourfilenames=`ls ../automation/suites/*.xml`
 
+# remove existing scripts
+rm ./win/*
+rm ./mac/*
+rm ./linux/*
+
 # creates run script for each suite
 
 # win
@@ -14,7 +19,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf 'cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compiler:compile compiler:testCompile surefire:test -Dsurefire.suiteXmlFiles=suites/%s.xml' $fileName > ./win/$fileName.bat
+   printf 'cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./win/$fileName.bat
    echo "generate win batch file: " $fileName
 done
 
@@ -23,7 +28,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compiler:compile compiler:testCompile surefire:test -Dsurefire.suiteXmlFiles=suites/%s.xml' $fileName > ./mac/$fileName.sh
+   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./mac/$fileName.sh
    chmod 777 ./mac/$fileName.sh
    echo "generate mac bash file: " $fileName
 done
@@ -33,7 +38,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compiler:compile compiler:testCompile surefire:test -Dsurefire.suiteXmlFiles=suites/%s.xml' $fileName > ./linux/$fileName.sh
+   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n ../runner/utils/mvn/bin/mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./linux/$fileName.sh
    chmod 777 ./mac/$fileName.sh
    echo "generate linux bash file: " $fileName
 done

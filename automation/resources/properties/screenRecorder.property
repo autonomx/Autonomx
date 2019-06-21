@@ -1,0 +1,15 @@
+# Web video format: avi
+# mobile video format: mp4
+# screen recorder. Use VLC viewer for video files
+
+recorder.enableRecording = false
+recorder.onFailedTestsOnly = true
+ # max 600 seconds
+recorder.maxTimeInSeconds = 180
+
+# Android recorder options
+recorder.android.videoSize = 1024x768
+
+# iOS recorder options
+ #LOW, MEDIUM, HIGH, PHOTO. Only works for real devices
+recorder.ios.quality = LOW

@@ -1,11 +1,29 @@
 # Web
 #key value. key should match the web app test.module name. eg. test.module name = google, therefore: google="http://google.com"
-webApp="http://104.207.156.47:1337/admin/"
-# Options: CHROME,FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, PHANTOMJS
+webApp="http://demo.autonomx.io/admin/"
+
+# Options: CHROME,FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, CHROME_HEADLESS, FIREFOX_HEADLESS
 web.browserType = CHROME
+
+# to add additional chrome options, add options after the prefix: "chrome.options."
+# eg. chrome.options.headless, which equals chrome option argument: --headless
+# for more arguments: https://peter.sh/experiments/chromium-command-line-switches/
+chrome.options.start-fullscreen = false
+firefox.options.start-fullscreen = false
+
+# to add additional chrome preferences, add options after the prefix: "chrome.pref."
+#chrome.pref.intl.accept_languages = language
+#firefox.pref.intl.accept_languages = language
+
+
+# highlights click and send key fields. duration is time in seconds to pause during highlight 
+web.element.highlight.enable = false
+web.element.highlight.waitDurationInSeconds = 0.1
+
 # Options: LATEST or version number. eg. 56.4
 web.driverVersion = LATEST
 web.maximizeBrowser = false
+
 # Options: REMOTE_WEBDRIVER, LOCAL_WEBDRIVER
 web.webdriverType = LOCAL_WEBDRIVER
 

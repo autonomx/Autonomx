@@ -1,6 +1,5 @@
 package test.module.serviceIntegration.tests;
 
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

@@ -20,8 +20,18 @@
     </path>
     <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
 
-    <delete dir="${dir.generated}"/>
-    <delete dir="${dir.mvnstatus}"/>
+ 	<!-- run generate source to verify no compilation error, then delete generate source folder and regenerate sources -->
+ 	
+    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
+        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+        <arg value="generate-sources" />
+    </java>
+ 	
+ 	 <!-- cleaning source generated folder -->
+ 	<delete dir="${dir.generated}"/>  <!-- delete generated folder -->
+ 	<delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
 
     <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="false">
         <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />

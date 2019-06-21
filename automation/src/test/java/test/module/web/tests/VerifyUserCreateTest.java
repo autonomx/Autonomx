@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import core.helpers.Helper;
 import core.support.logger.TestLog;
 import data.Data;
+import data.webApp.User;
 import module.common.data.CommonUser;
 import module.webApp.panel.SidePanel.Panels;
 import module.webApp.panel.UserPanel;
@@ -21,15 +22,16 @@ public class VerifyUserCreateTest extends TestBase {
 
 	@Test
 	public void createAdminUser() {
-		CommonUser user = Data.common.commonuser().withAdminLogin();
+		User loginUser = Data.webApp.user().admin();
 
 		TestLog.When("I login with admin user");
-		app.webApp.login.login(user);
+		app.webApp.login.login(loginUser);
 		
 		TestLog.And("I select user panel");
 		app.webApp.side.selectPanel(Panels.USERS);
 
 		TestLog.Then("I add an admin user");
+		CommonUser user = Data.common.commonuser().withAdminLogin();
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
@@ -39,15 +41,17 @@ public class VerifyUserCreateTest extends TestBase {
 	
 	@Test
 	public void editAdminUser() {
-		CommonUser user = Data.common.commonuser().withAdminLogin();
+		User loginUser = Data.webApp.user().admin();
 
 		TestLog.When("I login with admin user");
-		app.webApp.login.login(user);
+		app.webApp.login.login(loginUser);
 		
 		TestLog.And("I select user panel");
 		app.webApp.side.selectPanel(Panels.USERS);
 
 		TestLog.Then("I add an admin user");
+		// can use csv based user or java class based user object
+		CommonUser user = Data.common.commonuser().withAdminLogin();
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
