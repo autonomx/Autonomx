@@ -19,8 +19,9 @@ public class RegisterUserTest extends TestBase {
 
 	@Test
 	public void registerUser() {
+		
 		CommonUser user = Data.common.commonuser().withDefaultUser(); 
-
+		
 		TestLog.When("I select the registration panel");
 		app.androidApp.main.selectRegisterPanel();
 		
@@ -28,6 +29,7 @@ public class RegisterUserTest extends TestBase {
 		app.androidApp.registration.registerUser(user);
 
 		TestLog.Then("I verify the user has logged in");
+			
 		//Helper.verifyElementIsDisplayed(MainPanel.elements.INSTALLS_PANEL);
 	}
 }

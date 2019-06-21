@@ -58,6 +58,7 @@ public class CommonUser {
 		CommonUser user = new CommonUser();
 		user.username = USER_PREFIX + "editUser" + rand;
 		user.password = USER_PREFIX + "editPass" + rand;
+		user.email = "editUser" + rand + "@email.com";
 		user.confirmed = true;
 		user.blocked = false;
 		

@@ -2,6 +2,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="Service Test">
+<listeners>
+    <listener class-name="core.support.listeners.AnnotationTransformer" />
+</listeners>
 
  <test name="services tests">
   

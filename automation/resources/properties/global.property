@@ -1,7 +1,7 @@
 # global configuration
 global.timeoutSeconds=60
-global.parallelTestCount = 2
-global.retryCount = 2
+global.parallelTestCount = 1
+global.retryCount = 0
 global.isSingleSignIn = false
 
 # use either json file or csv for localization

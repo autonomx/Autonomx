@@ -6,7 +6,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import core.apiCore.TestDataProvider;
-import module.services.ServiceManager;
+import serviceManager.ServiceRunner;
 import test.module.TestBase;
 
 public class ServiceTestRunner extends TestBase {
@@ -17,7 +17,6 @@ public class ServiceTestRunner extends TestBase {
 
 	@AfterClass(alwaysRun = true)
 	public void afterClass() throws Exception {
-	
 	}
 
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
@@ -27,7 +26,7 @@ public class ServiceTestRunner extends TestBase {
 			String ExpectedResponse, String TcComments,
 			String tcName, String tcIndex) throws Exception {
 
-		ServiceManager.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
+		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
 				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
 				TcComments, tcName, tcIndex);
 	}

@@ -9,7 +9,6 @@ import core.support.logger.TestLog;
 import data.Data;
 import data.webApp.User;
 import data.webApp.UserInvalid;
-import module.common.data.CommonUser;
 import module.webApp.panel.LoginPanel;
 import module.webApp.panel.MainPanel;
 import test.module.TestBase;
@@ -26,15 +25,13 @@ public class VerifyLoginTest extends TestBase {
 		setupWebDriver(app.webApp.getWebDriver());
 	}
 	
-	/**
-	 * uses data directly from User4.csv at webApp.data
-	 */
 	@Test
 	public void verifyAdminUserWithCsvData() {
+		
 		User user = Data.webApp.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.webApp.login.loginWithCsvData(user);
-			
+				
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
 		
@@ -43,11 +40,10 @@ public class VerifyLoginTest extends TestBase {
 
 		TestLog.Then("I should see the login panel");
 		Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
-
 	}
 	
 	/**
-	 * uses data from User4.csv at webApp.data
+	 * uses data from UserInvalid.csv at webApp.data
 	 * reruns the test per row of csv file
 	 * @param username
 	 * @param password
@@ -68,7 +64,8 @@ public class VerifyLoginTest extends TestBase {
 	@Test
 	public void validateUserLoginWithUserObject() {
 			
-		CommonUser user = Data.common.commonuser().withAdminLogin();
+		Helper.softAssertTrue("failed on purpose", false);
+		User user = Data.webApp.user().admin();
 		TestLog.When("I login with admin user");
 		app.webApp.login.login(user);
 		

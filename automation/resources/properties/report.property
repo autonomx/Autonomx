@@ -5,6 +5,7 @@ report.reporterType = html
 report.launchReportAfterTest = false
 report.enableDetailedReport = true
 report.audioCommentary = false
+
 # Options: MARY
 report.audioCommentaryType = "MARY"
 report.enableBatchLogging = false
@@ -12,6 +13,6 @@ report.enableBatchLogging = false
 report.reportExpireDays = 5
 
 # klov reporting info
-klov.server.url = "http://localhost"
+klov.server.url = http://localhost
 klov.mongodb.url = "localhost:27017"
 console.annotation.debug = false

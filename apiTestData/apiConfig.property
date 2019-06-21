@@ -1,12 +1,11 @@
 # global configuration
 #UriPath= https://de-qa.azurefd.net
-api.uriPath = http://104.207.156.47:1337
+api.uriPath = http://demo.autonomx.io
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
 
-api.parallelTestcasePath = "../apiTestData/testcases/"
-api.sequentialTestcasePath = "../apiTestData/testcases/"
-api.templaePath=""
+api.parallelTestcasePath = "../apiTestData/testCases/"
+api.templatePath = "../apiTestData/templates/"
 
 # set file name to run single csv file
 api.testCaseFile = ""
