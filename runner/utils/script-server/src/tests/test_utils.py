@@ -8,14 +8,15 @@ import uuid
 import utils.file_utils as file_utils
 import utils.os_utils as os_utils
 from execution.process_base import ProcessWrapper
-from model.script_configs import ConfigModel, ParameterModel
+from model.script_config import ConfigModel, ParameterModel
 from react.properties import ObservableDict
 from utils import audit_utils
 
 temp_folder = 'tests_temp'
+_original_env = {}
 
 
-def create_file(filepath):
+def create_file(filepath, overwrite=False, text=None):
     if not os.path.exists(temp_folder):
         os.makedirs(temp_folder)
 
@@ -25,31 +26,74 @@ def create_file(filepath):
         os.makedirs(folder)
 
     file_path = os.path.join(folder, filename)
-    file_utils.write_file(file_path, 'test text')
+    if os.path.exists(file_path) and not overwrite:
+        raise Exception('File ' + file_path + ' already exists')
+
+    if text is None:
+        text = 'test text'
+
+    file_utils.write_file(file_path, text)
 
     return file_path
 
 
+def create_files(names, dir=None):
+    for name in names:
+        if dir is not None:
+            create_file(os.path.join(dir, name))
+        else:
+            create_file(name)
+
+
+def create_dir(dir_path):
+    if not os.path.exists(temp_folder):
+        os.makedirs(temp_folder)
+
+    full_path = os.path.join(temp_folder, dir_path)
+    if not os.path.exists(full_path):
+        os.makedirs(full_path)
+
+    return full_path
+
+
 def setup():
     if os.path.exists(temp_folder):
-        _rmtree()
+        _rmtree(temp_folder)
 
     os.makedirs(temp_folder)
 
 
 def cleanup():
     if os.path.exists(temp_folder):
-        _rmtree()
+        _rmtree(temp_folder)
 
     os_utils.reset_os()
 
+    for key, value in _original_env.items():
+        if value is None:
+            del os.environ[key]
+        else:
+            os.environ[key] = value
 
-def _rmtree():
+    _original_env.clear()
+
+
+def _rmtree(folder):
+    exception = None
+
     def on_rm_error(func, path, exc_info):
-        os.chmod(path, stat.S_IWRITE)
-        os.remove(path)
+        try:
+            os.chmod(path, stat.S_IWRITE | stat.S_IEXEC | stat.S_IREAD)
+            os.remove(path)
+        except Exception as e:
+            print('Failed to remove path ' + path + ': ' + str(e))
+            nonlocal exception
+            if exception is None:
+                exception = e
 
-    shutil.rmtree(temp_folder, onerror=on_rm_error)
+    shutil.rmtree(folder, onerror=on_rm_error)
+    if exception:
+        raise exception
 
 
 def set_linux():
@@ -89,7 +133,11 @@ def create_script_param_config(
         min=None,
         max=None,
         allowed_values=None,
-        values_script=None):
+        values_script=None,
+        file_dir=None,
+        file_recursive=None,
+        file_type=None,
+        file_extensions=None):
     conf = {'name': param_name}
 
     if type is not None:
@@ -131,6 +179,18 @@ def create_script_param_config(
     if allowed_values is not None:
         conf['values'] = list(allowed_values)
 
+    if file_dir is not None:
+        conf['file_dir'] = file_dir
+
+    if file_recursive is not None:
+        conf['file_recursive'] = file_recursive
+
+    if file_extensions is not None:
+        conf['file_extensions'] = file_extensions
+
+    if file_type is not None:
+        conf['file_type'] = file_type
+
     return conf
 
 
@@ -140,7 +200,9 @@ def create_config_model(name, *,
                         audit_name='127.0.0.1',
                         path=None,
                         parameters=None,
-                        parameter_values=None):
+                        parameter_values=None,
+                        script_command='ls',
+                        output_files=None):
     result_config = {}
 
     if config:
@@ -153,6 +215,11 @@ def create_config_model(name, *,
 
     if path is None:
         path = name
+
+    if output_files is not None:
+        result_config['output_files'] = output_files
+
+    result_config['script_path'] = script_command
 
     return ConfigModel(result_config, path, username, audit_name, parameter_values=parameter_values)
 
@@ -175,6 +242,8 @@ def create_parameter_model(name=None,
                            username='user1',
                            audit_name='127.0.0.1',
                            all_parameters=None,
+                           file_dir=None,
+                           file_recursive=None,
                            other_param_values: ObservableDict = None):
     config = create_script_param_config(
         name,
@@ -190,7 +259,9 @@ def create_parameter_model(name=None,
         multiple_arguments=multiple_arguments,
         min=min,
         max=max,
-        allowed_values=allowed_values)
+        allowed_values=allowed_values,
+        file_dir=file_dir,
+        file_recursive=file_recursive)
 
     if all_parameters is None:
         all_parameters = []
@@ -202,10 +273,15 @@ def create_parameter_model(name=None,
                           other_param_values=other_param_values)
 
 
+def create_simple_parameter_configs(names):
+    return {name: {'name': name} for name in names}
+
+
 def create_parameter_model_from_config(config,
                                        *,
                                        username='user1',
                                        audit_name='127.0.0.1',
+                                       working_dir=None,
                                        all_parameters=None):
     if all_parameters is None:
         all_parameters = []
@@ -213,7 +289,7 @@ def create_parameter_model_from_config(config,
     if config is None:
         config = {}
 
-    return ParameterModel(config, username, audit_name, all_parameters)
+    return ParameterModel(config, username, audit_name, all_parameters, working_dir=working_dir)
 
 
 def create_audit_names(ip=None, auth_username=None, proxy_username=None, hostname=None):
@@ -229,6 +305,58 @@ def create_audit_names(ip=None, auth_username=None, proxy_username=None, hostnam
     return result
 
 
+def set_env_value(key, value):
+    if key not in _original_env:
+        if key in os.environ:
+            _original_env[key] = value
+        else:
+            _original_env[key] = None
+
+    os.environ[key] = value
+
+
+def assert_large_dict_equal(expected, actual, testcase):
+    if len(expected) < 20 and len(actual) < 20:
+        testcase.assertEqual(expected, actual)
+        return
+
+    if expected == actual:
+        return
+
+    diff_expected = {}
+    diff_actual = {}
+    too_large_diff = False
+
+    all_keys = set()
+    all_keys.update(expected.keys())
+    all_keys.update(actual.keys())
+    for key in all_keys:
+        expected_value = expected.get(key)
+        actual_value = actual.get(key)
+
+        if expected_value == actual_value:
+            continue
+
+        diff_expected[key] = expected_value
+        diff_actual[key] = actual_value
+
+        if len(diff_expected) >= 50:
+            too_large_diff = True
+            break
+
+    message = 'Showing only different elements'
+    if too_large_diff:
+        message += ' (limited to 50)'
+
+    testcase.assertEqual(diff_expected, diff_actual, message)
+
+
+def wait_observable_close_notification(observable, timeout):
+    close_condition = threading.Event()
+    observable.subscribe_on_close(lambda: close_condition.set())
+    close_condition.wait(timeout)
+
+
 class _MockProcessWrapper(ProcessWrapper):
     def __init__(self, executor, command, working_directory):
         super().__init__(command, working_directory)
@@ -238,7 +366,7 @@ class _MockProcessWrapper(ProcessWrapper):
         self.process_id = int.from_bytes(uuid.uuid1().bytes, byteorder='big')
         self.finish_condition = threading.Condition()
 
-    def _get_process_id(self):
+    def get_process_id(self):
         return self.process_id
 
     # method for tests
@@ -246,6 +374,10 @@ class _MockProcessWrapper(ProcessWrapper):
         if self.is_finished():
             raise Exception('Cannot finish a script twice')
         self.__finish(exit_code)
+
+    # method for tests
+    def write_output(self, output):
+        self._write_script_output(output)
 
     def stop(self):
         self.__finish(9)
@@ -295,3 +427,16 @@ class AnyUserAuthorizer:
 
     def is_admin(self, user_id):
         return True
+
+
+class _IdGeneratorMock:
+    def __init__(self) -> None:
+        super().__init__()
+        self.generated_ids = []
+        self._next_id = 123
+
+    def next_id(self):
+        id = str(self._next_id)
+        self._next_id += 1
+        self.generated_ids.append(id)
+        return id

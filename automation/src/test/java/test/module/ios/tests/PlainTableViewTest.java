@@ -9,7 +9,7 @@ import data.Data;
 import module.iosApp.data.PlainTableViewObject;
 import module.iosApp.panel.MainPanel;
 import module.iosApp.panel.MainPanel.options;
-import test.module.TestBase;
+import test.module.ios.TestBase;
 
 public class PlainTableViewTest extends TestBase {
 

@@ -16,9 +16,7 @@ rsync -r ./autonomx/ ./autonomx-ios/
 cd ./autonomx-ios/
 
 # remove temp folders
-rm -rf ./automation/target/classes
-rm -rf ./automation/target/maven-status
-rm -rf ./automation/target/test-classes
+rm -rf ./automation/target
 rm -rf ./automation/test-output
 
 # remove git folders
@@ -27,6 +25,9 @@ rm -rf ./.git
 # remove apiTestData
 echo remove apiTestData 
  rm -rf apiTestData
+
+ # remove bitbucket pipelines
+rm -rf ./bitbucket-pipelines.yml
 
 # remove modules 
 echo remove modules 
@@ -53,7 +54,20 @@ rm -rf automation/suites/serviceIntegration.xml
 rm -rf automation/suites/winSmokeTests.xml
 # remove resources
 echo remove resources
-rm -rf automation/resources/eurika.app
+rm -rf automation/resources/selendroid.apk
+
+# remove maven central
+rm -rf ./automation/pom.xml
+mv ./automation/maven-central/pom.xml ./automation/pom.xml
+rm -rf ./automation/maven-central
+
+# change version to latest autnonomx-core
+cd ./automation/
+mvn versions:use-latest-versions -Dincludes=io.autonomx:autonomx-core
+rm -rf ./pom.xml.versionsBackup
+# generate generated code
+mvn clean compile
+cd ../
 
 # remove runner 
 echo remove runner 
@@ -61,10 +75,11 @@ bash runner/generateScripts.sh
 
 # add to zip
 cd ../
-zip autonomx-ios-$VERSION.zip ./autonomx-ios
+zip -r autonomx-ios-$VERSION.zip ./autonomx-ios
 
 # remove non zip project
 rm -rf ./autonomx-ios
+
 
 
 

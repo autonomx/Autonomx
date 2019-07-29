@@ -1,12 +1,12 @@
 {
   "name": "Very parameterized",
-  "script_path": "samples/scripts/parameterized.sh",
+  "script_path": "scripts/parameterized.sh",
   "description": "This script does nothing except accepting a lot of parameters and printing them",
-  "requires_terminal": false,
   "allowed_users": [
     "*"
   ],
   "include": "${Simple Text}.json",
+  "working_directory": "./samples",
   "parameters": [
     {
       "name": "Simple Int",
@@ -22,7 +22,8 @@
     {
       "name": "Simple Text",
       "param": "--simple_text",
-      "description": "Parameter Four"
+      "description": "Parameter Four",
+      "required": true
     },
     {
       "name": "Simple List",
@@ -93,11 +94,6 @@
       "no_value": true,
       "description": "Boolean Two",
       "default": true
-    },
-    {
-      "name": "Default Text from variable",
-      "description": "Parameter Eight",
-      "default": "$$USER"
     },
     {
       "name": "Constant Text",
@@ -183,6 +179,50 @@
       "constant": true,
       "param": "--audit_name",
       "default": "${auth.audit_name}"
+    },
+    {
+      "name": "Any IP",
+      "param": "--any_ip",
+      "type": "ip"
+    },
+    {
+      "name": "IP v4",
+      "param": "--ip4",
+      "type": "ip4",
+      "default": "127.0.0.1"
+    },
+    {
+      "name": "IP v6",
+      "param": "--ip6",
+      "type": "ip6"
+    },
+    {
+      "name": "Server file",
+      "param": "--server_file",
+      "type": "server_file",
+      "file_dir": "/var/log",
+      "file_extensions": [
+        "log"
+      ],
+      "secure": true
+    },
+    {
+      "name": "Recursive file",
+      "param": "--recurs_file",
+      "type": "server_file",
+      "file_dir": "..",
+      "file_recursive": true,
+      "file_extensions": [
+        "json",
+        ".log",
+        "TXT"
+      ],
+      "secure": true,
+      "default": [
+        "samples",
+        "configs",
+        "parameterized.json"
+      ]
     }
   ]
 }

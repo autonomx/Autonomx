@@ -2,4 +2,4 @@
 # location from root directory ( where pom.xml file is located at )
 
 config.api = "../apiTestData/"
-config.ui = ./resources/properties
+config.ui = "./resources/properties/"

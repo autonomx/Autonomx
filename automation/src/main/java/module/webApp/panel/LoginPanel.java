@@ -29,38 +29,34 @@ public class LoginPanel {
 		public static EnhancedBy MAIN_SITE = Element.byCss(".main-site", "main site button");
 		public static EnhancedBy ERROR_MESSAGE = Element.byCss("[class*='permissionserrorsContainer']", "input errors");
 		public static EnhancedBy LOADING_INDICATOR = Element.byCss("[class*='Loading']", "loading indicator");
+		
 	}
 	
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
-	/**
-	 * enter login info And click login button
-	 * 
-	 * @param user
-	 */
 	public void login(User user) {
-		Helper.form.setField(elements.USER_NAME_FIELD, user.getUsername());
-		Helper.form.setField(elements.PASSWORD_FIELD, user.getPassword());
-		Helper.form.formSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO, elements.LOADING_INDICATOR);
+		Helper.loginbuilder
+		.withUsername(elements.USER_NAME_FIELD, user.getUsername())
+		.withPassword(elements.PASSWORD_FIELD, user.getPassword())
+		.withFormSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO)
+		.build();
 	}
 	
 	public void loginWithCsvData(User user) {
-		setLoginFields(user);
-		Helper.form.formSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO, elements.LOADING_INDICATOR);
+		login(user);
 	}
 	
 	public void loginError(User user) {
-		setLoginFields(user);
-		Helper.form.formSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE);
+	
+		Helper.loginbuilder
+		.withUsername(elements.USER_NAME_FIELD, user.getUsername())
+		.withPassword(elements.PASSWORD_FIELD, user.getPassword())
+		.withFormSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE)
+		.build();
 	}
 	
 	public void relogin(User user) {
 	    manager.main.logout();
 		login(user);
-	}
-
-	public void setLoginFields(User user) {
-		Helper.form.setField(elements.USER_NAME_FIELD, user.getUsername());
-		Helper.form.setField(elements.PASSWORD_FIELD, user.getPassword());
 	}
 }

@@ -11,7 +11,7 @@ import data.webApp.User;
 import module.common.data.CommonUser;
 import module.webApp.panel.SidePanel.Panels;
 import module.webApp.panel.UserPanel;
-import test.module.TestBase;
+import test.module.web.TestBase;
 
 public class VerifyUserCreateTest extends TestBase {
 

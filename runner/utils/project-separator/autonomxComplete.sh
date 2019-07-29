@@ -18,16 +18,30 @@ rsync -r ./autonomx/ ./autonomx-complete/
 cd ./autonomx-complete/
 
 # remove temp folders
-rm -rf ./automation/target/classes
-rm -rf ./automation/target/maven-status
-rm -rf ./automation/target/test-classes
+rm -rf ./automation/target
 rm -rf ./automation/test-output
 
 # remove git folders
 rm -rf ./.git
 
+# remove bitbucket pipelines
+rm -rf ./bitbucket-pipelines.yml
+
 # remove project separator
 rm -rf ./runner/utils/project-separator
+
+# remove maven central
+rm -rf ./automation/pom.xml
+mv ./automation/maven-central/pom.xml ./automation/pom.xml
+rm -rf ./automation/maven-central
+
+# change version to latest autnonomx-core
+cd ./automation/
+mvn versions:use-latest-versions -Dincludes=io.autonomx:autonomx-core
+rm -rf ./pom.xml.versionsBackup
+# generate generated code
+mvn clean compile
+cd ../
 
 # remove runner 
 echo set runner 
@@ -35,10 +49,11 @@ bash runner/generateScripts.sh
 
 # add to zip
 cd ../
-zip autonomx-complete-$VERSION.zip ./autonomx-complete
+zip -r autonomx-complete-$VERSION.zip ./autonomx-complete
 
 # remove non zip project
 rm -rf ./autonomx-complete
+
 
 
 

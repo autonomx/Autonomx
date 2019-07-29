@@ -1,6 +1,10 @@
 # global configuration
-global.timeoutSeconds=60
+global.timeoutSeconds = 60
 global.parallelTestCount = 1
+
+# parallel run strategy. Options: METHODS, CLASSES
+global.parallelTestType = METHODS
+
 global.retryCount = 0
 global.isSingleSignIn = false
 

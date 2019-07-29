@@ -4,13 +4,14 @@ from collections import namedtuple
 from typing import Optional, Dict, Callable, Any
 
 from execution.executor import ScriptExecutor
-from model import script_configs
+from model import script_config
 from utils import audit_utils
 
 LOGGER = logging.getLogger('script_server.execution_service')
 
 _ExecutionInfo = namedtuple('_ExecutionInfo',
                             ['execution_id', 'owner', 'audit_name', 'config', 'audit_command', 'all_audit_names'])
+
 
 class ExecutionService:
     def __init__(self,
@@ -97,7 +98,7 @@ class ExecutionService:
 
         return result
 
-    def get_config(self, execution_id) -> Optional[script_configs.ConfigModel]:
+    def get_config(self, execution_id) -> Optional[script_config.ConfigModel]:
         return self._get_for_execution_info(execution_id,
                                             lambda i: i.config)
 
@@ -112,9 +113,13 @@ class ExecutionService:
     def _can_access_execution(execution_info: _ExecutionInfo, user_id):
         return (execution_info is not None) and (execution_info.owner == user_id)
 
-    def get_parameter_values(self, execution_id):
+    def get_user_parameter_values(self, execution_id):
         return self._get_for_executor(execution_id,
-                                      lambda e: e.parameter_values)
+                                      lambda e: e.get_user_parameter_values())
+
+    def get_script_parameter_values(self, execution_id):
+        return self._get_for_executor(execution_id,
+                                      lambda e: e.get_script_parameter_values())
 
     def get_owner(self, execution_id):
         return self._get_for_execution_info(execution_id,
@@ -146,6 +151,10 @@ class ExecutionService:
 
         return self._get_for_executor(execution_id, getter)
 
+    def get_process_id(self, execution_id):
+        return self._get_for_executor(execution_id,
+                                      lambda e: e.get_process_id())
+
     def _get_for_executor(self, execution_id, getter: Callable[[ScriptExecutor], Any]):
         executor = self._executors.get(execution_id)
         if executor is None:
@@ -171,8 +180,21 @@ class ExecutionService:
         executor.cleanup()
         self._active_executor_ids.remove(execution_id)
 
-    def add_finish_listener(self, callback):
-        self._finish_listeners.append(callback)
+    def add_finish_listener(self, callback, execution_id=None):
+        if execution_id is None:
+            self._finish_listeners.append(callback)
+
+        else:
+            executor = self._executors.get(execution_id)
+            if not executor:
+                LOGGER.error('Failed to find executor for id ' + execution_id)
+                return
+
+            class FinishListener:
+                def finished(self):
+                    callback()
+
+            executor.add_finish_listener(FinishListener())
 
     def _add_post_finish_handling(self, execution_id, executor):
         self_service = self

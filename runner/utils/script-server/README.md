@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bugy/script-server.svg?branch=master)](https://travis-ci.org/bugy/script-server)
+
 # script-server
 Script-server is a Web GUI and a web server for scripts.  
 
@@ -6,8 +8,8 @@ For system administrators it's a possibility to share their scripts with users, 
 
 No script modifications are needed - you add a configuration for each script to the script-server and it takes care of proper UI, validation, execution, etc.  
 
-Example of the user interface during script execution:
-![Example of user interface](https://cloud.githubusercontent.com/assets/1275813/26519407/f0318706-42c0-11e7-8328-34ded505839c.png)
+
+[DEMO server](https://script-server.org)
 
 ## Features
 - Interactive output/input web console
@@ -16,11 +18,11 @@ Example of the user interface during script execution:
 - Different script parameter types
 - Alerts
 - Logging and auditing
-- Formatted output support (colors, styles, caret positioning)
+- Formatted output support (colors, styles, cursor positioning, clearing)
 - Download of script output files
 - Admin page (admin.html) with script execution logs
 
-The features can be configured [per-script](https://github.com/bugy/script-server/wiki/Script-config) or for [the server](https://github.com/bugy/script-server/wiki/Server-config)
+The features can be configured [per-script](https://github.com/bugy/script-server/wiki/Script-config) or for [the server](https://github.com/bugy/script-server/wiki/Server-configuration)
 
 ## Requirements
 ### Server-side
@@ -41,16 +43,23 @@ Any more or less up to date browser with enabled JS
 Internet connection is not needed. All the files are loaded from the server.
 
 ## Installation
-### Non-developer mode
-1. Download script-server.zip file from [Latest release](https://github.com/bugy/script-server/releases/latest)
+### For production
+1. Download script-server.zip file from [Latest release](https://github.com/bugy/script-server/releases/latest) or [Dev release](https://github.com/bugy/script-server/releases/tag/dev)
 2. Create script-server folder anywhere on your PC and extract zip content to this folder
 
-(For detailed steps on linux with virtualenv, please see [Installation guide](https://github.com/bugy/script-server/wiki/Installing-on-virtualenv-(linux))
+(For detailed steps on linux with virtualenv, please see [Installation guide](https://github.com/bugy/script-server/wiki/Installing-on-virtualenv-(linux)))
 
-### Developer mode
+##### As a docker container
+Please find pre-built images here: https://hub.docker.com/r/bugy/script-server/tags  
+For the usage please check [this ticket](https://github.com/bugy/script-server/issues/171#issuecomment-461620836)
+
+### For development
 1. Clone/download the repository
-2. Run 'tools/init.py --dev' script (this will download javascript libraries)
+2. Run 'tools/init.py --dev --no-npm' script
 
+`init.py` script should be run after pulling any new changes
+
+If you are making changes to web files, use `npm run build:dev` or `npm run start:dev`
 
 ## Setup and run
 1. Create configurations for your scripts in *conf/runners/* folder (see [script config page](https://github.com/bugy/script-server/wiki/Script-config) for details)
@@ -63,7 +72,7 @@ By default, server will run on http://localhost:5000
 ### Server config
 All the features listed above and some other minor features can be configured in *conf/conf.json* file. 
 It is allowed not to create this file. In this case default values will be used.
-See [server config page](https://github.com/bugy/script-server/wiki/Server-config) for details
+See [server config page](https://github.com/bugy/script-server/wiki/Server-configuration) for details
 
 ### Admin panel
 Admin panel is accessible on admin.html page (e.g. http://localhost:5000/admin.html)
@@ -87,3 +96,15 @@ _Important!_ Command injection protection is fully supported for linux, but _onl
 
 ### XSS and CSRF
 At the moment script server _is_ vulnerable to these attacks.
+
+## Contribution
+If you like the project and think you could help with making it better, there are many ways you can do it:
+- Create new issue for new feature proposal or a bug
+- Implement existing issues (there are quite some of them: frontend/backend, simple/complex, choose whatever you like)
+- Help with improving the documentation
+- Set up a demo server
+- Spread a word about the project to your collegues, friends, blogs or any other channels
+- Any other things you could imagine
+
+Any contribution would be of great help and I will highly appreciate it! 
+If you have any questions, please create a new issue, or concact me via buggygm@gmail.com

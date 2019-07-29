@@ -10,6 +10,7 @@ import core.apiCore.helpers.DataHelper;
 import core.apiCore.helpers.JsonHelper;
 import core.apiCore.interfaces.Authentication;
 import core.helpers.Helper;
+import core.support.annotation.Service;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.KeyValue;
@@ -20,6 +21,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+@Service
 public class TestInterface {
 	
 	private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -30,7 +32,7 @@ public class TestInterface {
 	 * @param apiObject
 	 * @return
 	 */
-	public static Response RestfullApiInterface(ServiceObject apiObject) {
+	public static Response testInterface(ServiceObject apiObject) {
 		
 		if(apiObject == null) Helper.assertFalse("apiobject is null");
 		

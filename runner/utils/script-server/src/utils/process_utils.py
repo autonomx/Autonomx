@@ -10,14 +10,20 @@ from utils import string_utils
 LOGGER = logging.getLogger('script_server.process_utils')
 
 
-def invoke(command, work_dir='.'):
+def invoke(command, work_dir='.', *, environment_variables=None):
     if isinstance(command, str):
         command = split_command(command, working_directory=work_dir)
+
+    if environment_variables is not None:
+        env = dict(os.environ, **environment_variables)
+    else:
+        env = None
 
     p = subprocess.Popen(command,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         cwd=work_dir)
+                         cwd=work_dir,
+                         env=env)
 
     (output_bytes, error_bytes) = p.communicate()
 
@@ -48,6 +54,9 @@ def split_command(script_command, working_directory=None):
         args = [script_command]
 
     script_path = file_utils.normalize_path(args[0], working_directory)
+    if (not os.path.isabs(script_path)) or (not os.path.exists(script_path)):
+        script_path = args[0]
+
     script_args = args[1:]
     for i, body_arg in enumerate(script_args):
         expanded = os.path.expanduser(body_arg)

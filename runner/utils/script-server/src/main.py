@@ -3,21 +3,25 @@ import json
 import logging
 import logging.config
 import os
+import sys
 
 import migrations.migrate
-from alerts.alerts_service import AlertsService
 from auth.authorization import create_group_provider, Authorizer
+from communications.alerts_service import AlertsService
 from config.config_service import ConfigService
 from execution.execution_service import ExecutionService
 from execution.id_generator import IdGenerator
-from execution.logging import ExecutionLoggingService, LogNameCreator, ExecutionLoggingInitiator
+from execution.logging import ExecutionLoggingService, LogNameCreator, ExecutionLoggingController
+from features.executions_callback_feature import ExecutionsCallbackFeature
 from features.fail_alerter_feature import FailAlerterFeature
 from features.file_download_feature import FileDownloadFeature
 from features.file_upload_feature import FileUploadFeature
 from files.user_file_storage import UserFileStorage
 from model import server_conf
 from utils import tool_utils, file_utils
+from utils.tool_utils import InvalidWebBuildException
 from web import server
+from web.client import tornado_client_config
 
 parser = argparse.ArgumentParser(description='Launch script-server.')
 parser.add_argument('-d', '--config-dir', default='conf')
@@ -49,7 +53,13 @@ def get_secret(temp_folder):
 
 
 def main():
-    tool_utils.validate_web_imports_exist(os.getcwd())
+    project_path = os.getcwd()
+
+    try:
+        tool_utils.validate_web_build_exists(project_path)
+    except InvalidWebBuildException as e:
+        print(str(e))
+        sys.exit(-1)
 
     logging_conf_file = os.path.join(CONFIG_FOLDER, 'logging.json')
     with open(logging_conf_file, 'rt') as f:
@@ -57,6 +67,9 @@ def main():
         file_utils.prepare_folder(LOG_FOLDER)
 
         logging.config.dictConfig(log_config)
+
+    server_version = tool_utils.get_server_version(project_path)
+    logging.info('Starting Script Server' + (', v' + server_version if server_version else ' (custom version)'))
 
     file_utils.prepare_folder(CONFIG_FOLDER)
     file_utils.prepare_folder(TEMP_FOLDER)
@@ -67,6 +80,8 @@ def main():
 
     secret = get_secret(TEMP_FOLDER)
 
+    tornado_client_config.initialize()
+
     group_provider = create_group_provider(
         server_config.user_groups, server_config.authenticator, server_config.admin_users)
 
@@ -74,7 +89,7 @@ def main():
 
     config_service = ConfigService(authorizer, CONFIG_FOLDER)
 
-    alerts_service = AlertsService(server_config.get_alerts_config())
+    alerts_service = AlertsService(server_config.alerts_config)
     alerts_service = alerts_service
 
     execution_logs_path = os.path.join(LOG_FOLDER, 'processes')
@@ -88,8 +103,8 @@ def main():
 
     execution_service = ExecutionService(id_generator)
 
-    execution_logging_initiator = ExecutionLoggingInitiator(execution_service, execution_logging_service)
-    execution_logging_initiator.start()
+    execution_logging_controller = ExecutionLoggingController(execution_service, execution_logging_service)
+    execution_logging_controller.start()
 
     user_file_storage = UserFileStorage(secret)
     file_download_feature = FileDownloadFeature(user_file_storage, TEMP_FOLDER)
@@ -98,6 +113,9 @@ def main():
 
     alerter_feature = FailAlerterFeature(execution_service, alerts_service)
     alerter_feature.start()
+
+    executions_callback_feature = ExecutionsCallbackFeature(execution_service, server_config.callbacks_config)
+    executions_callback_feature.start()
 
     server.init(
         server_config,
@@ -109,7 +127,8 @@ def main():
         alerts_service,
         file_upload_feature,
         file_download_feature,
-        secret)
+        secret,
+        server_version)
 
 
 if __name__ == '__main__':

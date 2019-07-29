@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import core.apiCore.TestDataProvider;
 import serviceManager.ServiceRunner;
-import test.module.TestBase;
+import test.module.service.TestBase;
 
 public class ServiceTestRunner extends TestBase {
 

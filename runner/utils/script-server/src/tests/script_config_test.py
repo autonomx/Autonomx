@@ -1,12 +1,12 @@
 import os
 import unittest
 
-from model.script_configs import ConfigModel, InvalidValueException, _TemplateProperty
+from config.constants import PARAM_TYPE_SERVER_FILE, PARAM_TYPE_MULTISELECT
+from model.script_config import ConfigModel, InvalidValueException, _TemplateProperty, ParameterNotFoundException
 from react.properties import ObservableDict, ObservableList
 from tests import test_utils
-from tests.test_utils import create_script_param_config, create_parameter_model, create_parameter_model_from_config
+from tests.test_utils import create_script_param_config, create_parameter_model, create_files
 from utils import file_utils
-from utils.string_utils import is_blank
 
 DEF_AUDIT_NAME = '127.0.0.1'
 DEF_USERNAME = 'user1'
@@ -129,6 +129,55 @@ class ConfigModelValuesTest(unittest.TestCase):
         values = {'p1': 'XabcX', 'p2': 'abc'}
         self.assertRaisesRegex(Exception, 'Could not resolve order', config_model.set_all_param_values, values)
 
+    def test_set_all_values_with_normalization(self):
+        allowed_values = ['abc', 'def', 'xyz']
+        parameters = [
+            create_script_param_config('p1', type=PARAM_TYPE_MULTISELECT, allowed_values=allowed_values),
+            create_script_param_config('p2', type=PARAM_TYPE_MULTISELECT, allowed_values=allowed_values),
+            create_script_param_config('p3', type=PARAM_TYPE_MULTISELECT, allowed_values=allowed_values)]
+
+        config_model = _create_config_model('config', parameters=parameters)
+        config_model.set_all_param_values({'p1': '', 'p2': ['def'], 'p3': 'abc'})
+
+        self.assertEqual({'p1': [], 'p2': ['def'], 'p3': ['abc']}, config_model.parameter_values)
+
+
+class ConfigModelListFilesTest(unittest.TestCase):
+    def test_list_files_for_valid_param(self):
+        param = create_script_param_config('recurs_file',
+                                           type=PARAM_TYPE_SERVER_FILE,
+                                           file_recursive=True,
+                                           file_dir=test_utils.temp_folder)
+        config_model = _create_config_model('my_conf', parameters=[param])
+
+        create_files(['file1', 'file2'])
+        file_names = [f['name'] for f in (config_model.list_files_for_param('recurs_file', []))]
+        self.assertCountEqual(['file1', 'file2'], file_names)
+
+    def test_list_files_when_working_dir(self):
+        param = create_script_param_config('recurs_file',
+                                           type=PARAM_TYPE_SERVER_FILE,
+                                           file_recursive=True,
+                                           file_dir='.')
+        config_model = _create_config_model('my_conf', parameters=[param], working_dir=test_utils.temp_folder)
+
+        create_files(['file1', 'file2'])
+        file_names = [f['name'] for f in (config_model.list_files_for_param('recurs_file', []))]
+        self.assertCountEqual(['file1', 'file2'], file_names)
+
+    def test_list_files_when_unknown_param(self):
+        config_model = _create_config_model('my_conf', parameters=[], working_dir=test_utils.temp_folder)
+
+        self.assertRaises(ParameterNotFoundException, config_model.list_files_for_param, 'recurs_file', [])
+
+    def setUp(self):
+        super().setUp()
+        test_utils.setup()
+
+    def tearDown(self):
+        super().tearDown()
+        test_utils.cleanup()
+
 
 class ConfigModelObserverTest(unittest.TestCase):
     def test_property_notification_on_field_change(self):
@@ -180,87 +229,6 @@ class ConfigModelObserverTest(unittest.TestCase):
                 self.changes.append(('remove', value))
 
         return _CollectionObserver()
-
-
-class ParameterModelInitTest(unittest.TestCase):
-    def test_create_empty_parameter(self):
-        parameter_model = create_parameter_model('param1')
-        self.assertEqual('param1', parameter_model.name)
-
-    def test_create_full_parameter(self):
-        name = 'full_param'
-        param = '-f'
-        description = 'Full parameter description'
-        required = True
-        min = 5
-        max = 13
-        separator = '|'
-        default = '8'
-        type = 'list'
-        values = ['val1', 'val2', 'val3']
-
-        parameter_model = _create_parameter_model({
-            'name': name,
-            'param': param,
-            'no_value': 'true',
-            'description': description,
-            'required': required,
-            'min': min,
-            'max': max,
-            'separator': separator,
-            'multiple_arguments': 'True',
-            'default': default,
-            'type': type,
-            'constant': 'false',
-            'values': values
-        })
-
-        self.assertEqual(name, parameter_model.name)
-        self.assertEqual(name, parameter_model.name)
-        self.assertEqual(param, parameter_model.param)
-        self.assertEqual(True, parameter_model.no_value)
-        self.assertEqual(description, parameter_model.description)
-        self.assertEqual(required, parameter_model.required)
-        self.assertEqual(min, parameter_model.min)
-        self.assertEqual(max, parameter_model.max)
-        self.assertEqual(separator, parameter_model.separator)
-        self.assertEqual(True, parameter_model.multiple_arguments)
-        self.assertEqual(default, parameter_model.default)
-        self.assertEqual(type, parameter_model.type)
-        self.assertEqual(False, parameter_model.constant)
-        self.assertCountEqual(values, parameter_model.values)
-
-    def test_default_settings(self):
-        parameter_model = create_parameter_model('param_with_defaults')
-        self.assertEqual('param_with_defaults', parameter_model.name)
-        self.assertEqual(False, parameter_model.no_value)
-        self.assertEqual(False, parameter_model.required)
-        self.assertEqual(False, parameter_model.secure)
-        self.assertEqual(',', parameter_model.separator)
-        self.assertEqual('text', parameter_model.type)
-        self.assertEqual(False, parameter_model.constant)
-
-    def test_resolve_default(self):
-        parameter_model = _create_parameter_model({'name': 'def_param', 'default': 'X${auth.username}X'})
-        self.assertEqual('X' + DEF_USERNAME + 'X', parameter_model.default)
-
-    def test_prohibit_constant_without_default(self):
-        self.assertRaisesRegex(Exception, 'Constant should have default value specified',
-                               _create_parameter_model, {'name': 'def_param', 'constant': 'true'})
-
-    def test_values_from_script(self):
-        parameter_model = _create_parameter_model({
-            'name': 'def_param',
-            'type': 'list',
-            'values': {'script': 'echo "123\n" "456"'}})
-        self.assertEqual(['123', ' 456'], parameter_model.values)
-
-    def test_allowed_values_for_non_list(self):
-        parameter_model = _create_parameter_model({
-            'name': 'def_param',
-            'type': 'int',
-            'values': {'script': 'echo "123\n" "456"'}})
-        self.assertEqual(None, parameter_model.values)
 
 
 class ParameterModelDependantValuesTest(unittest.TestCase):
@@ -384,28 +352,18 @@ class ConfigModelIncludeTest(unittest.TestCase):
         self.assertEqual(True, param1.required)
 
     def test_dynamic_include_add_parameter(self):
-        included_path = test_utils.write_script_config({'parameters': [
+        (config_model, included_path) = self.prepare_config_model_with_included([
             create_script_param_config('included_param')
-        ]}, 'included')
-        config_model = _create_config_model('main_conf', config={
-            'include': '${p1}',
-            'parameters': [create_script_param_config('p1')]})
-        config_model.set_param_value('p1', included_path)
+        ], 'p1')
 
         self.assertEqual(2, len(config_model.parameters))
         included_param = config_model.parameters[1]
         self.assertEqual('included_param', included_param.name)
 
     def test_dynamic_include_remove_parameter(self):
-        included_path = test_utils.write_script_config({'parameters': [
+        (config_model, included_path) = self.prepare_config_model_with_included([
             create_script_param_config('included_param')
-        ]}, 'included')
-        config_model = _create_config_model(
-            'main_conf',
-            config={
-                'include': '${p1}',
-                'parameters': [create_script_param_config('p1')]},
-            parameter_values={'p1': included_path})
+        ], 'p1')
 
         config_model.set_param_value('p1', '')
 
@@ -414,17 +372,11 @@ class ConfigModelIncludeTest(unittest.TestCase):
         self.assertEqual('p1', included_param.name)
 
     def test_dynamic_include_remove_multiple_parameters(self):
-        included_path = test_utils.write_script_config({'parameters': [
+        (config_model, included_path) = self.prepare_config_model_with_included([
             create_script_param_config('included_param1'),
             create_script_param_config('included_param2'),
             create_script_param_config('included_param3')
-        ]}, 'included')
-        config_model = _create_config_model(
-            'main_conf',
-            config={
-                'include': '${p1}',
-                'parameters': [create_script_param_config('p1')]},
-            parameter_values={'p1': included_path})
+        ], 'p1')
 
         config_model.set_param_value('p1', '')
 
@@ -459,18 +411,14 @@ class ConfigModelIncludeTest(unittest.TestCase):
         self.assertEqual(2, len(config_model.parameters))
 
     def test_dynamic_include_replace(self):
-        included_path1 = test_utils.write_script_config({'parameters': [
+        (config_model, included_path1) = self.prepare_config_model_with_included([
             create_script_param_config('included_param_X')
-        ]}, 'included1')
+        ], 'p1')
 
         included_path2 = test_utils.write_script_config({'parameters': [
             create_script_param_config('included_param_Y')
         ]}, 'included2')
 
-        config_model = _create_config_model('main_conf', config={
-            'include': '${p1}',
-            'parameters': [create_script_param_config('p1')]})
-        config_model.set_param_value('p1', included_path1)
         config_model.set_param_value('p1', included_path2)
 
         self.assertEqual(2, len(config_model.parameters))
@@ -478,14 +426,10 @@ class ConfigModelIncludeTest(unittest.TestCase):
         self.assertEqual('included_param_Y', config_model.parameters[1].name)
 
     def test_dynamic_include_replace_with_missing_file(self):
-        included_path1 = test_utils.write_script_config({'parameters': [
+        (config_model, included_path) = self.prepare_config_model_with_included([
             create_script_param_config('included_param_X')
-        ]}, 'included1')
+        ], 'p1')
 
-        config_model = _create_config_model('main_conf', config={
-            'include': '${p1}',
-            'parameters': [create_script_param_config('p1')]})
-        config_model.set_param_value('p1', included_path1)
         config_model.set_param_value('p1', 'a/b/c/some.txt')
 
         self.assertEqual(1, len(config_model.parameters))
@@ -506,6 +450,48 @@ class ConfigModelIncludeTest(unittest.TestCase):
         config_model.set_all_param_values(values)
 
         self.assertEqual(values, config_model.parameter_values)
+
+    def test_dynamic_include_add_parameter_with_default(self):
+        (config_model, included_path) = self.prepare_config_model_with_included([
+            create_script_param_config('included_param', default='abc 123')
+        ], 'p1')
+
+        self.assertEqual('abc 123', config_model.parameter_values.get('included_param'))
+
+    def test_dynamic_include_add_parameter_with_default_when_value_exist(self):
+        (config_model, included_path) = self.prepare_config_model_with_included([
+            create_script_param_config('included_param', default='abc 123')
+        ], 'p1')
+        config_model.set_param_value('p1', included_path)
+        config_model.set_param_value('included_param', 'def 456')
+
+        config_model.set_param_value('p1', 'random value')
+        self.assertEqual('def 456', config_model.parameter_values.get('included_param'))
+
+        config_model.set_param_value('p1', included_path)
+        self.assertEqual('def 456', config_model.parameter_values.get('included_param'))
+
+    def test_dynamic_include_add_2_parameters_with_default_when_one_dependant(self):
+        (config_model, included_path) = self.prepare_config_model_with_included([
+            create_script_param_config('included_param1', default='ABC'),
+            create_script_param_config('included_param2', default='xABCx', type='list',
+                                       values_script='echo x${included_param1}x'),
+        ], 'p1')
+
+        self.assertEqual('ABC', config_model.parameter_values.get('included_param1'))
+        self.assertEqual('xABCx', config_model.parameter_values.get('included_param2'))
+
+        dependant_parameter = config_model.find_parameter('included_param2')
+        self.assertEqual(['xABCx'], dependant_parameter.values)
+
+    def prepare_config_model_with_included(self, included_params, static_param_name):
+        included_path = test_utils.write_script_config({'parameters': included_params}, 'included')
+        config_model = _create_config_model('main_conf', config={
+            'include': '${' + static_param_name + '}',
+            'parameters': [create_script_param_config(static_param_name)]})
+        config_model.set_param_value(static_param_name, included_path)
+
+        return (config_model, included_path)
 
     def setUp(self):
         test_utils.setup()
@@ -622,272 +608,6 @@ class TestParametersValidation(unittest.TestCase):
 
         except InvalidValueException:
             return False
-
-
-class TestSingleParameterValidation(unittest.TestCase):
-
-    def test_string_parameter_when_none(self):
-        parameter = create_parameter_model('param')
-
-        error = parameter.validate_value(None)
-        self.assertIsNone(error)
-
-    def test_string_parameter_when_value(self):
-        parameter = create_parameter_model('param')
-
-        error = parameter.validate_value('val')
-        self.assertIsNone(error)
-
-    def test_required_parameter_when_none(self):
-        parameter = create_parameter_model('param', required=True)
-
-        error = parameter.validate_value({})
-        self.assert_error(error)
-
-    def test_required_parameter_when_empty(self):
-        parameter = create_parameter_model('param', required=True)
-
-        error = parameter.validate_value('')
-        self.assert_error(error)
-
-    def test_required_parameter_when_value(self):
-        parameter = create_parameter_model('param', required=True)
-
-        error = parameter.validate_value('val')
-        self.assertIsNone(error)
-
-    def test_required_parameter_when_constant(self):
-        parameter = create_parameter_model('param', required=True, constant=True, default='123')
-
-        error = parameter.validate_value(None)
-        self.assertIsNone(error)
-
-    def test_flag_parameter_when_true_bool(self):
-        parameter = create_parameter_model('param', no_value=True)
-
-        error = parameter.validate_value(True)
-        self.assertIsNone(error)
-
-    def test_flag_parameter_when_false_bool(self):
-        parameter = create_parameter_model('param', no_value=True)
-
-        error = parameter.validate_value(False)
-        self.assertIsNone(error)
-
-    def test_flag_parameter_when_true_string(self):
-        parameter = create_parameter_model('param', no_value=True)
-
-        error = parameter.validate_value('true')
-        self.assertIsNone(error)
-
-    def test_flag_parameter_when_false_string(self):
-        parameter = create_parameter_model('param', no_value=True)
-
-        error = parameter.validate_value('false')
-        self.assertIsNone(error)
-
-    def test_flag_parameter_when_some_string(self):
-        parameter = create_parameter_model('param', no_value=True)
-
-        error = parameter.validate_value('no')
-        self.assert_error(error)
-
-    def test_required_flag_parameter_when_true_boolean(self):
-        parameter = create_parameter_model('param', no_value=True, required=True)
-
-        error = parameter.validate_value(True)
-        self.assertIsNone(error)
-
-    def test_required_flag_parameter_when_false_boolean(self):
-        parameter = create_parameter_model('param', no_value=True, required=True)
-
-        error = parameter.validate_value(False)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_negative_int(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value(-100)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_large_positive_int(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value(1234567890987654321)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_zero_int_string(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value('0')
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_large_negative_int_string(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value('-1234567890987654321')
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_not_int_string(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value('v123')
-        self.assert_error(error)
-
-    def test_int_parameter_when_float(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value(1.2)
-        self.assert_error(error)
-
-    def test_int_parameter_when_float_string(self):
-        parameter = create_parameter_model('param', type='int')
-
-        error = parameter.validate_value('1.0')
-        self.assert_error(error)
-
-    def test_int_parameter_when_lower_than_max(self):
-        parameter = create_parameter_model('param', type='int', max=100)
-
-        error = parameter.validate_value(9)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_equal_to_max(self):
-        parameter = create_parameter_model('param', type='int', max=5)
-
-        error = parameter.validate_value(5)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_larger_than_max(self):
-        parameter = create_parameter_model('param', type='int', max=0)
-
-        error = parameter.validate_value(100)
-        self.assert_error(error)
-
-    def test_int_parameter_when_lower_than_min(self):
-        parameter = create_parameter_model('param', type='int', min=100)
-
-        error = parameter.validate_value(0)
-        self.assert_error(error)
-
-    def test_int_parameter_when_equal_to_min(self):
-        parameter = create_parameter_model('param', type='int', min=-100)
-
-        error = parameter.validate_value(-100)
-        self.assertIsNone(error)
-
-    def test_int_parameter_when_larger_than_min(self):
-        parameter = create_parameter_model('param', type='int', min=100)
-
-        error = parameter.validate_value(0)
-        self.assert_error(error)
-
-    def test_required_int_parameter_when_zero(self):
-        parameter = create_parameter_model('param', type='int', required=True)
-
-        error = parameter.validate_value(0)
-        self.assertIsNone(error)
-
-    def test_file_upload_parameter_when_valid(self):
-        parameter = create_parameter_model('param', type='file_upload')
-
-        uploaded_file = test_utils.create_file('test.xml')
-        error = parameter.validate_value(uploaded_file)
-        self.assertIsNone(error)
-
-    def test_file_upload_parameter_when_not_exists(self):
-        parameter = create_parameter_model('param', type='file_upload')
-
-        uploaded_file = test_utils.create_file('test.xml')
-        error = parameter.validate_value(uploaded_file + '_')
-        self.assert_error(error)
-
-    def test_list_parameter_when_matches(self):
-        parameter = create_parameter_model(
-            'param', type='list', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value('val2')
-        self.assertIsNone(error)
-
-    def test_list_parameter_when_not_matches(self):
-        parameter = create_parameter_model(
-            'param', type='list', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value('val4')
-        self.assert_error(error)
-
-    def test_multiselect_when_empty_string(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value('')
-        self.assertIsNone(error)
-
-    def test_multiselect_when_empty_list(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value([])
-        self.assertIsNone(error)
-
-    def test_multiselect_when_single_matching_element(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value(['val2'])
-        self.assertIsNone(error)
-
-    def test_multiselect_when_multiple_matching_elements(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value(['val2', 'val1'])
-        self.assertIsNone(error)
-
-    def test_multiselect_when_multiple_elements_one_not_matching(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value(['val2', 'val1', 'X'])
-        self.assert_error(error)
-
-    def test_multiselect_when_not_list_value(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value('val1')
-        self.assert_error(error)
-
-    def test_multiselect_when_single_not_matching_element(self):
-        parameter = create_parameter_model(
-            'param', type='multiselect', allowed_values=['val1', 'val2', 'val3'])
-
-        error = parameter.validate_value(['X'])
-        self.assert_error(error)
-
-    def test_list_with_script_when_matches(self):
-        parameter = create_parameter_model('param', type=list, values_script="echo '123\n' 'abc'")
-
-        error = parameter.validate_value('abc')
-        self.assertIsNone(error)
-
-    def test_list_with_dependency_when_matches(self):
-        parameters = []
-        values = ObservableDict()
-        dep_param = create_parameter_model('dep_param')
-        parameter = create_parameter_model('param',
-                                           type='list',
-                                           values_script="echo '${dep_param}_\n' '_${dep_param}_'",
-                                           all_parameters=parameters,
-                                           other_param_values=values)
-        parameters.extend([dep_param, parameter])
-
-        values['dep_param'] = 'abc'
-        error = parameter.validate_value(' _abc_')
-        self.assertIsNone(error)
-
-    def assert_error(self, error):
-        self.assertFalse(is_blank(error), 'Expected validation error, but validation passed')
 
 
 class TestTemplateProperty(unittest.TestCase):
@@ -1013,20 +733,14 @@ class TestTemplateProperty(unittest.TestCase):
         self.values[name] = value
 
 
-def _create_parameter_model(config, *, username=DEF_USERNAME, audit_name=DEF_AUDIT_NAME, all_parameters=None):
-    return create_parameter_model_from_config(config,
-                                              username=username,
-                                              audit_name=audit_name,
-                                              all_parameters=all_parameters)
-
-
 def _create_config_model(name, *,
                          config=None,
                          username=DEF_USERNAME,
                          audit_name=DEF_AUDIT_NAME,
                          path=None,
                          parameters=None,
-                         parameter_values=None):
+                         parameter_values=None,
+                         working_dir=None):
     result_config = {}
 
     if config:
@@ -1039,5 +753,8 @@ def _create_config_model(name, *,
 
     if path is None:
         path = name
+
+    if working_dir is not None:
+        result_config['working_directory'] = working_dir
 
     return ConfigModel(result_config, path, username, audit_name, parameter_values=parameter_values)

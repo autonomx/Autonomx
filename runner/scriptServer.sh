@@ -3,6 +3,8 @@ export LC_ALL=en_US.UTF-8
 
 cd "$(dirname ${BASH_SOURCE[0]})"
 
+# remove existing scrips
+rm -rf ./utils/script-server/conf/runners/*
 
 function generateJsonScripts () {
 
@@ -19,7 +21,6 @@ function generateJsonScripts () {
 	   echo "generateJsonScripts: " $fileName
 	done
 }
-
 
 # generate json files from test scripts for script server
 bash generateScripts.sh

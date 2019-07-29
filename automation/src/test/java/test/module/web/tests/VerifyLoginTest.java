@@ -11,7 +11,7 @@ import data.webApp.User;
 import data.webApp.UserInvalid;
 import module.webApp.panel.LoginPanel;
 import module.webApp.panel.MainPanel;
-import test.module.TestBase;
+import test.module.web.TestBase;
 
 /**
  * this test class demonstrates 3 data types: data object, csv data and data provider
@@ -56,26 +56,5 @@ public class VerifyLoginTest extends TestBase {
 		User user = Data.webApp.user().withUsername(username).withPassword(password);
 		TestLog.When("I login with invalid user");
 		app.webApp.login.loginError(user);
-	}
-	
-	/**
-	 * login test with data from UserObject class in common.data package
-	 */
-	@Test
-	public void validateUserLoginWithUserObject() {
-			
-		Helper.softAssertTrue("failed on purpose", false);
-		User user = Data.webApp.user().admin();
-		TestLog.When("I login with admin user");
-		app.webApp.login.login(user);
-		
-		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
-
-		TestLog.When("I logout");
-		app.webApp.main.logout();
-
-		TestLog.Then("I should see the login panel");
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
 	}
 }

@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from config.script.list_values import DependantScriptValuesProvider
+from config.script.list_values import DependantScriptValuesProvider, FilesProvider
 from tests import test_utils
 from tests.test_utils import create_parameter_model
 from utils import file_utils
@@ -86,3 +86,27 @@ class DependantScriptValuesProviderTest(unittest.TestCase):
             result.append(parameter)
 
         return lambda: result
+
+
+class FilesProviderTest(unittest.TestCase):
+    def test_no_files(self):
+        provider = FilesProvider(test_utils.temp_folder)
+        self.assertEqual([], provider.get_values({}))
+
+    def test_multiple_files(self):
+        test_utils.create_files(['My.txt', 'file.dat', 'test.sh', 'file2.txt'])
+        test_utils.create_dir('documents')
+        test_utils.create_files(['another.txt'], 'documents')
+
+        provider = FilesProvider(test_utils.temp_folder, file_extensions=['txt'])
+        self.assertEqual(['file2.txt', 'My.txt'], provider.get_values({}))
+
+    def test_invalid_file_dir(self):
+        provider = FilesProvider('some_missing_folder')
+        self.assertEqual([], provider.get_values({}))
+
+    def setUp(self):
+        test_utils.setup()
+
+    def tearDown(self):
+        test_utils.cleanup()

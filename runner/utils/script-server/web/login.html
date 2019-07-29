@@ -5,16 +5,18 @@
     <title>Script server</title>
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="css/libs/materialize.min.css">
-    <script src="js/libs/jquery.min.js"></script>
-    <script src="js/libs/materialize.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/login.js"></script>
+    
+    <link href="login-deps.css" rel="stylesheet">
+    
 
     <link rel="stylesheet" href="css/index.css">
+
+    
+    <script src="login.js"></script>
+    
 </head>
 
-<body id="login-body" onload="onLoad()" class="valign-wrapper">
+<body id="login-body" class="valign-wrapper">
 <div id="login-panel" class="card">
     <div class="card-content" id="login-content-container">
     </div>
@@ -33,16 +35,16 @@
             <label for="password">Password</label>
         </div>
 
-        <div class="login-error-label"></div>
+        <div class="login-info-label"></div>
 
-        <input type="submit" id="credentials-login-button" class="btn" value="Log in">
+        <input type="submit" id="credentials-login-button" class="btn login-button" value="Log in">
     </form>
 </script>
 
 <script type="text/template" id="login-google_oauth-template">
     <div>
-        <input type="submit" id="login-google_oauth-button" value="Sign in with Google">
-        <div class="login-error-label"></div>
+        <input type="submit" id="login-google_oauth-button" class="login-button" value="Sign in with Google">
+        <div class="login-info-label"></div>
     </div>
 </script>
 

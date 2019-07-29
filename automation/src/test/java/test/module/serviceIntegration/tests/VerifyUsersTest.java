@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import core.support.logger.TestLog;
 import data.Data;
 import module.common.data.CommonUser;
-import test.module.TestBase;
+import test.module.serviceIntegration.TestBase;
 
 public class VerifyUsersTest extends TestBase {
 

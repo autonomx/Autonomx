@@ -1,4 +1,3 @@
-import json
 from datetime import timezone
 
 from utils import date_utils
@@ -10,7 +9,7 @@ class ExecutionInfo(object):
         self.script = None
 
 
-def config_to_external(config):
+def config_to_external(config, id):
     parameters = []
     for parameter in config.parameters:
         external_param = parameter_to_external(parameter)
@@ -21,9 +20,10 @@ def config_to_external(config):
         parameters.append(external_param)
 
     return {
-        "name": config.name,
-        "description": config.description,
-        "parameters": parameters
+        'id': id,
+        'name': config.name,
+        'description': config.description,
+        'parameters': parameters
     }
 
 
@@ -32,16 +32,18 @@ def parameter_to_external(parameter):
         return None
 
     return {
-        "name": parameter.name,
-        "description": parameter.description,
-        "withoutValue": parameter.no_value,
-        "required": parameter.required,
-        "default": parameter.default,
-        "type": parameter.type,
-        "min": parameter.min,
-        "max": parameter.max,
-        "values": parameter.values,
-        "secure": parameter.secure
+        'name': parameter.name,
+        'description': parameter.description,
+        'withoutValue': parameter.no_value,
+        'required': parameter.required,
+        'default': parameter.default,
+        'type': parameter.type,
+        'min': parameter.min,
+        'max': parameter.max,
+        'values': parameter.values,
+        'secure': parameter.secure,
+        'fileRecursive': parameter.file_recursive,
+        'fileType': parameter.file_type
     }
 
 
@@ -104,10 +106,9 @@ def to_execution_info(request_parameters):
     return info
 
 
-def to_external_parameter_values(values):
-    result_dict = {}
-
-    for key, value in values.items():
-        result_dict[key] = value
-
-    return json.dumps(result_dict)
+def server_conf_to_external(server_config, server_version):
+    return {
+        'title': server_config.title,
+        'enableScriptTitles': server_config.enable_script_titles,
+        'version': server_version
+    }

@@ -48,7 +48,7 @@ public class UserPanel {
 	 * deletes all companies with prefix
 	 *runApiContaining("name2", "zzz_","getUsers",
 	 * "id","userId","deleteUser") get all users with name2 containing
-	 * zzz_, Then gets id of these user, stores them in userId variable And
+	 * zzz_, Then gets id of these users, stores them in userId variable And
 	 * calls deleteUser
 	 * @param prefix
 	 * @throws JSONException

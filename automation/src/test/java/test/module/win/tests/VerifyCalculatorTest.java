@@ -7,11 +7,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import core.support.logger.TestLog;
-import test.module.TestBase;
+import test.module.ModuleBase;
 
 
 
-public class VerifyCalculatorTest extends TestBase {
+public class VerifyCalculatorTest extends ModuleBase {
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {

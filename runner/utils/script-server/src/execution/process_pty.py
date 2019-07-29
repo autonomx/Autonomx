@@ -60,6 +60,10 @@ class PtyProcessWrapper(process_base.ProcessWrapper):
         self.process.wait()
 
     def pipe_process_output(self):
+        utf8_stream = self.encoding.lower() == 'utf-8'
+
+        buffer = b''
+
         try:
             while True:
                 finished = False
@@ -67,11 +71,15 @@ class PtyProcessWrapper(process_base.ProcessWrapper):
 
                 max_read_bytes = 1024
 
+                data = buffer
+                buffer = b''
+
                 if self.is_finished():
-                    data = b""
                     while True:
                         try:
                             chunk = os.read(self.pty_master, max_read_bytes)
+                            if not chunk:
+                                break
                             data += chunk
 
                         except BlockingIOError:
@@ -80,14 +88,12 @@ class PtyProcessWrapper(process_base.ProcessWrapper):
                     finished = True
 
                 else:
-                    data = ""
                     try:
-                        data = os.read(self.pty_master, max_read_bytes)
+                        data += os.read(self.pty_master, max_read_bytes)
                         if data.endswith(b"\r"):
                             data += os.read(self.pty_master, 1)
 
-                        if data and (self.encoding.lower() == "utf-8"):
-
+                        if utf8_stream and data:
                             while data[len(data) - 1] >= 127:
                                 next_byte = os.read(self.pty_master, 1)
                                 if not next_byte:
@@ -101,9 +107,17 @@ class PtyProcessWrapper(process_base.ProcessWrapper):
                     if not data:
                         wait_new_output = True
 
+                if utf8_stream and data:
+                    while data and data[-1] >= 127:
+                        buffer = bytes([data[-1]]) + buffer
+                        data = data[:-1]
+
                 if data:
-                    output_text = data.decode(self.encoding)
-                    self._write_script_output(output_text)
+                    try:
+                        output_text = data.decode(self.encoding)
+                        self._write_script_output(output_text)
+                    except UnicodeDecodeError as e:
+                        print(e)
 
                 if finished:
                     break
@@ -112,7 +126,7 @@ class PtyProcessWrapper(process_base.ProcessWrapper):
                     time.sleep(0.01)
 
         except:
-            self._write_script_output("Unexpected error occurred. Contact the administrator.")
+            self._write_script_output('\nUnexpected error occurred. Contact the administrator.')
 
             try:
                 self.kill()

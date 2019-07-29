@@ -1,8 +1,9 @@
 import abc
 import logging
+import os
 import re
 
-from model.model_helper import is_empty, fill_parameter_values
+from model.model_helper import is_empty, fill_parameter_values, InvalidFileException, list_files
 from utils import process_utils
 
 LOGGER = logging.getLogger('list_values')
@@ -16,6 +17,9 @@ class ValuesProvider(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_values(self, parameter_values):
         pass
+
+    def map_value(self, user_value):
+        return user_value
 
 
 class EmptyValuesProvider(ValuesProvider):
@@ -97,3 +101,18 @@ class DependantScriptValuesProvider(ValuesProvider):
 
         script_output = script_output.rstrip('\n')
         return script_output.split('\n')
+
+
+class FilesProvider(ValuesProvider):
+
+    def __init__(self, file_dir, file_type=None, file_extensions=None) -> None:
+        self._file_dir = file_dir
+
+        try:
+            self._values = list_files(file_dir, file_type, file_extensions)
+        except InvalidFileException as e:
+            LOGGER.warning('Failed to list files for ' + file_dir + ': ' + str(e))
+            self._values = []
+
+    def get_values(self, parameter_values):
+        return self._values
