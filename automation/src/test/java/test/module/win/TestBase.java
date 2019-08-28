@@ -1,4 +1,4 @@
-package test.module.service;
+package test.module.win;
 
 import java.lang.reflect.Method;
 

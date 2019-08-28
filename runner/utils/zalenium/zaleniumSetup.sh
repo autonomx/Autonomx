@@ -10,7 +10,7 @@ export LC_ALL=en_US.UTF-8
   docker run --rm -ti --name zalenium -p 4444:4444 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /tmp/videos:/home/seluser/videos \
-    --privileged dosel/zalenium start
+    --privileged dosel/zalenium start --desiredContainers 2 --maxTestSessions 40
 
 
     # to stop

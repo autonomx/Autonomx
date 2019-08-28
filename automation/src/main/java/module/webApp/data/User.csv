@@ -1,4 +1,4 @@
-@id,username,password
-admin,autoAdmin1,autoPass1
-admin2,autoAdmin2,autoPass2
-admin3,autoAdmin3,autoPass3
+@id,username,password,name
+admin,autoAdmin1,autoPass1,dave2
+admin2,autoAdmin2,autoPass2,joe
+admin3,autoAdmin3,autoPass3,tom

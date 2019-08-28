@@ -3,15 +3,68 @@
  <property name="dir.generated" value="target/generated-sources/annotations"/>
  <property name="dir.mvnstatus" value="target/maven-status"/>
  <property name="file.marker" value="target/generated-sources/annotations/marker/marker.java"/>
+ <property name="file.markerDir" value="target/generated-sources/annotations/marker"/>
 
- <target name="checkforchanges">
+
+	<!-- when add, delete, rename file detected, marker.java is deleted. upon deletion, mvn-compile task will run 
+	- if change detected at main or keywords
+			- compile
+			- delete generated folder
+	- if change detected in csv files in main
+		- run mvn generate source
+	-->
+	
+	<target name="dirChangeDetector" description="detect changes in main and keyword directory, delete file.maker on detection">
+	 	  <java classname="fileDetector.dirChangeDetector">
+	 	    <classpath>
+	 	      <pathelement location="library/dirChangeDetector.jar"/>
+	 	    </classpath>
+	 	  </java>
+	 	</target>
+	
+	<target name="checkDirChanges" depends="dirChangeDetector" description="check for changes in src dir">
+	      <uptodate property="noDirchanges" targetfile="${file.marker}">
+	      	 <srcfiles dir="${file.markerDir}" includes="**/*.java"/>
+
+	      </uptodate>
+	   </target>
+	
+	<target name="mvn-compile" depends="checkDirChanges" unless="noDirchanges" description="compile to check for errors and delete generated folder if no errors">
+		    <property environment="env" />
+		    <path id="classpath">
+		        <fileset dir="../runner/utils/mvn/boot">
+		            <include name="plexus-classworlds-*.jar" />
+		        </fileset>
+		    </path>
+		    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+
+		 	<!-- run generate source to verify no compilation error, then delete generate source folder and regenerate sources -->
+		 	
+		    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
+		        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
+		        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
+		         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
+		        <arg value="compile" />
+		    </java>
+		 	
+		 	 <!-- cleaning source generated folder -->
+		 	
+		 	 <delete dir="${dir.generated}"/>   <!-- delete generated folder -->
+	 		 <delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
+
+		</target>
+	
+ <target name="checkforCsvAndConfigchanges" depends="mvn-compile" description="check for changes in csv, property and conf files">
       <uptodate property="nochanges" targetfile="${file.marker}">
-         <srcfiles dir="src" includes="**/*.java"/>
-      	 <srcfiles dir="src" includes="**/*.csv"/>
+      	 <srcfiles dir="src" includes="**/data/*.csv"/>
+      	 <srcfiles dir="resources" includes="**/*.property"/>
+      	 <srcfiles dir="resources" includes="**/*.conf"/>
       </uptodate>
    </target>
+	
 
- <target name="mvn-clean-generate" depends="checkforchanges" unless="nochanges">
+<!-- will run when checkforCsvchanges or dirChangeDetector detect changes in main,keyword dir or changes in csv files in main dir -->
+ <target name="mvn-clean-generate" depends="checkforCsvAndConfigchanges" unless="nochanges">
     <property environment="env" />
     <path id="classpath">
         <fileset dir="../runner/utils/mvn/boot">
@@ -20,17 +73,6 @@
     </path>
     <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
 
- 	<!-- run generate source to verify no compilation error, then delete generate source folder and regenerate sources -->
- 	
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="generate-sources" />
-    </java>
- 	
- 	 <!-- cleaning source generated folder -->
- 	<delete dir="${dir.generated}"/>  <!-- delete generated folder -->
  	<delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
 
     <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="false">
@@ -40,82 +82,5 @@
         <arg value="generate-sources" />
     </java>
 </target>
-
-<!-- Comments go here 
-<target name="mvn-clean">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="clean" />
-    </java>
-</target>
-
-<target name="mvn-generate-sources-only"
-    description="generate source files">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="generate-sources" />
-    </java>
-</target>
-
- <target name="clean-generated-dir"
-          description="Remove all generated files.">
-    <delete dir="${dir.generated}"/>
-    <delete dir="${dir.mvnstatus}"/>
-  </target>
-
-<target name="mvn-copyDependencies">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="dependency:copy-dependencies" />
-    </java>
-</target>
-
-
- <target name="copy-annotation-automationCore">
-    <copy tofile=".library-annotation/automationCore.jar" overwrite="true">
-      <fileset dir="target/dependency">
-        <filename name="**/*automationCore*"/>
-      </fileset>
-    </copy>
- </target>
-
-
- <target name="copy-generated-annotations"
-    description="copy generated files to .apt_generated">
-    <copy todir=".apt_generated" overwrite="true">
-      <fileset dir="${dir.generated}">
-      </fileset>
-    </copy>
- </target>
--->
+	
 </project>

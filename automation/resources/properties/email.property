@@ -8,8 +8,8 @@ email.toEmail = ""
 # for outlook, only change smtpHost 
 #smtpHost = "outlook.office365.com"  
 email.smtpHost = "smtp.gmail.com"   
-email.fromEmail = automation.core.service@gmail.com
-email.emailPassword = "autoCore001"
+email.fromEmail = ""
+email.emailPassword = ""
 email.smtpPort = "587"
 email.smtpStarttlsEnable = true
 email.smtpAuth = true

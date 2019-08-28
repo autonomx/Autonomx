@@ -19,6 +19,3 @@ android.capabilties.recreateChromeDriverSessions = true
 android.capabilties.autoGrantPermissions = true
 android.capabilties.newCommandTimeout = 300
 android.capabilties.noSign = true
-
-android.home = ""
-android.javaHome = ""

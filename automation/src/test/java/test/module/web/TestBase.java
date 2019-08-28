@@ -3,6 +3,7 @@ package test.module.web;
 import java.lang.reflect.Method;
 
 import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -22,7 +23,7 @@ public class TestBase extends ModuleBase {
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void afterMethod(ITestContext context) {
+	public void afterMethod(ITestContext context, ITestResult iTestResult) {
 	}
 
 	@BeforeClass(alwaysRun = true)

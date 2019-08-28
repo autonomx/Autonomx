@@ -1,4 +1,4 @@
-package test.module.service;
+package test.module.framework;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +19,7 @@ import test.module.ModuleBase;
 public class TestBase extends ModuleBase {
 
 	@BeforeMethod(alwaysRun = true)
-	public void beforeMethod(Method method) {
+	public void beforeMethod(Method method) throws Exception {
 	}
 
 	@AfterMethod(alwaysRun = true)

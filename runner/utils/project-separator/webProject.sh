@@ -37,6 +37,7 @@ rm -rf automation/src/main/java/module/iosApp
 rm -rf automation/src/main/java/module/services
 rm -rf automation/src/main/java/module/serviceUiIntegration
 rm -rf automation/src/main/java/module/windowsApp
+rm -rf automation/src/main/java/module/framework
 # remove tests
 echo remove tests
 rm -rf automation/src/test/java/test/module/android
@@ -44,6 +45,7 @@ rm -rf automation/src/test/java/test/module/ios
 rm -rf automation/src/test/java/test/module/service
 rm -rf automation/src/test/java/test/module/serviceIntegration
 rm -rf automation/src/test/java/test/module/win
+rm -rf automation/src/test/java/test/module/framework
 # remove suites
 echo remove suites
 rm -rf automation/suites/androidSmokeTests.xml
@@ -52,6 +54,7 @@ rm -rf automation/suites/iosSmokeTests.xml
 rm -rf automation/suites/servicesTests.xml
 rm -rf automation/suites/serviceIntegration.xml
 rm -rf automation/suites/winSmokeTests.xml
+rm -rf automation/suites/frameworkTests.xml
 # remove resources
 echo remove resources
 rm -rf automation/resources/eurika.app

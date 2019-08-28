@@ -1,0 +1,6 @@
+# Android
+android.home = ""
+android.javaHome = ""
+
+# Path
+environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"

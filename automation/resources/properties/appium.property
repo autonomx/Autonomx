@@ -1,13 +1,19 @@
 #Appium
-appium.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-# set to DEFAULT or version. eg.2.41. version match: http://appium.io/docs/en/writing-running-appium/web/chromedriver/
-# appiumChromeAutoManage: false means user will download the driver manually. true: driver manager will download it based on version
-appium.chromeAutoManage = true
-appium.chromeDriverPath = "/chromedriver.exe"
-appium.chromeVersion = "DEFAULT"
-appium.logging = false
+
+# download chrome driver if hybrid app is enabled 
+# if Version is LATEST, download latest driver version
+#  or set driver version: eg.2.41. version match: http://appium.io/docs/en/writing-running-appium/web/chromedriver/
+appium.isHybridApp = false
+appium.chromeVersion = LATEST
+
+# use with hybridDriver. eg. app.webApp.getHybridDriver(). For hybrid apps with webView
+# options: WEB, ANDROID, IOS
+appium.hybrid.driver = "WEB"
+
 # info or debug
+appium.logging = false
 appium.logginLevel = info  
+
 # external server 
 appium.useExternalAppiumServer = false
 appium.externalPort = 4723

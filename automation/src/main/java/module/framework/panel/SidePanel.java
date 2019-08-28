@@ -1,4 +1,4 @@
-package module.webApp.panel;
+package module.framework.panel;
 
 /**
  * Rebuild or clean project after adding new panel or removing to generate associated files
@@ -7,7 +7,7 @@ import core.helpers.Element;
 import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.uiCore.webElement.EnhancedBy;
-import moduleManager.module.webApp.PanelManager;
+import moduleManager.module.framework.PanelManager;
 
 @Panel
 public class SidePanel{

@@ -12,7 +12,7 @@
 
 	<groupId>io.autonomx</groupId>
 	<artifactId>autonomx-core</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>3.6.1</version>
+			<version>LATEST</version>
 		</dependency>
 
 		<dependency>
@@ -151,13 +151,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>2.0.0-alpha0</version>
+			<version>1.8.0-beta4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
-			<version>2.0.0-alpha0</version>
+			<version>1.8.0-beta4</version>
 		</dependency>
 
 		<dependency>
@@ -170,7 +170,7 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.5.0-b01</version>
+			<version>1.4.7</version>
 		</dependency>
 
 		<dependency>
@@ -191,15 +191,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.sf.opencsv</groupId>
+			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>2.4</version>
+			<version>4.6</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
@@ -231,14 +231,14 @@
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-storage</artifactId>
-			<version>8.3.0</version>
+			<version>8.4.0</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
 		<dependency>
 		    <groupId>org.apache.pdfbox</groupId>
 		    <artifactId>pdfbox</artifactId>
-		    <version>2.0.15</version>
+		    <version>2.0.16</version>
 		</dependency>
 
 		<dependency>
@@ -251,20 +251,20 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
-			<version>2.4.12</version>
+			<version>2.4.3</version>
 			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 		    <groupId>com.beust</groupId>
 		    <artifactId>jcommander</artifactId>
-		    <version>1.48</version>
+		    <version>1.78</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20180813</version>
+			<version>20190722</version>
 		</dependency>
 
 		<dependency>
@@ -309,11 +309,11 @@
 
 		<dependency>
 			<groupId>de.dfki.mary</groupId>
-			<artifactId>voice-dfki-prudence-hsmm</artifactId>
+			<artifactId>voice-cmu-slt-hsmm</artifactId>
 			<version>5.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.ibm.watson.developer_cloud/text-to-speech -->
+		<!-- voice-dfki-prudence-hsmm https://mvnrepository.com/artifact/com.ibm.watson.developer_cloud/text-to-speech -->
 		<dependency>
 			<groupId>com.ibm.watson.developer_cloud</groupId>
 			<artifactId>java-sdk</artifactId>
@@ -351,7 +351,7 @@
 		<dependency>
 			<groupId>net.sourceforge.tess4j</groupId>
 			<artifactId>tess4j</artifactId>
-			<version>4.3.1</version>
+			<version>4.4.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -367,14 +367,14 @@
 		<dependency>
 		    <groupId>com.microsoft.azure</groupId>
 		    <artifactId>azure-servicebus</artifactId>
-		    <version>2.0.0</version>
+		    <version>3.0.0</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>org.xmlunit</groupId>
 			<artifactId>xmlunit-matchers</artifactId>
-			<version>2.6.2</version>
+			<version>2.6.3</version>
 		</dependency>
 
 		<dependency>
@@ -394,7 +394,7 @@
 		<dependency>
 		    <groupId>com.google.auto.service</groupId>
 		    <artifactId>auto-service</artifactId>
-		    <version>1.0-rc5</version>
+		    <version>1.0-rc6</version>
 		</dependency>
 		
 	<!-- screen recorder -->

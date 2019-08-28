@@ -6,9 +6,17 @@ ios.tablet = "iPad Air 2"
 
 ios.UDID = ""
 
+# Keyboard dismiss
+# dismiss keyboard if sendKey or formSubmit element is blocked by keyboard
+ios.keyboard.dismissIfBlocking = false
+# strategies: keyPress, tapOutside
+ios.keyboard.dismiss.Strategy = keyPress
+# for keyPress strategy: will press the following keys to dismiss keyboard. Will iterate through the list. change order based on priority
+ios.keyboard.dismissByKeyPress = Done, DONE, Hide keyboard, Hide, Next
+
 # to add additional capabilities, add capability after the "ios.capabilities." prefix
 ios.capabilties.platform = iOS
-ios.capabilties.platformVersion = 12.2
+ios.capabilties.platformVersion = 12.4
 ios.capabilties.automationName = XCuiTest
 ios.capabilties.fullReset = false
 ios.capabilties.noReset = true

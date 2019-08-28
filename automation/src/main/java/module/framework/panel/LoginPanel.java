@@ -1,10 +1,11 @@
-package module.webApp.panel;
+package module.framework.panel;
+
 import core.helpers.Element;
 import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.uiCore.webElement.EnhancedBy;
-import data.webApp.User;
-import moduleManager.module.webApp.PanelManager;
+import data.framework.User;
+import moduleManager.module.framework.PanelManager;
 
 @Panel
 public class LoginPanel {

@@ -46,7 +46,10 @@ public class RegistrationPanel {
 		Helper.form.setField(elements.NAME_FIELD, user.name);
 		Helper.form.selectDropDown("Java", elements.PROGRAMMING_LANGUAGE_FIELD, elements.PROGRAMMING_LANGUAGE_OPTIONS);
 		
-		Helper.scrollDown();
+		// scroll down if accept ads is not displayed
+		if(!Helper.isPresent(elements.ACCEPT_ADS))
+			Helper.scrollDown();
+		
 		Helper.form.selectCheckBox(elements.ACCEPT_ADS, user.acceptAds);
 		Helper.form.formSubmit(elements.REGISTER_VERIFY, elements.REGISTER_USER);
 		Helper.form.formSubmit(elements.REGISTER_USER, MainPanel.elements.REGISTER_PANEL);

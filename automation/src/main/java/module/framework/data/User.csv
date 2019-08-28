@@ -1,0 +1,4 @@
+"@id","username","password","name","email","confirmed","blocked"
+"admin","autoAdmin1","autoPass1","dave","adminUser<@_RAND4>@email.com","true","false"
+"editAdmin","zzzedituser<@_RAND4>","autoPass2","joe","editUser<@_RAND4>@email.com","true","false"
+"defaultUser","zzzautouser<@_RAND4>","autoPass3","tom","editUser<@_RAND4>@email.com","true","false"
