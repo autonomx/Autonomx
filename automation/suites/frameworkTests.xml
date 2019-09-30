@@ -3,13 +3,17 @@
 
 <suite name="Framework Test">
 
-  <test name="framework tests">
-  
-    <classes>
-       <class name="test.module.framework.tests.ConfigTest"/>
-       <class name="test.module.framework.tests.DataFileTest"/>
-       <class name="test.module.framework.tests.ElementFinderTest"/>
-    </classes>
-  </test>
+	<test name="framework tests">
+
+		<classes>
+			<class name="test.module.framework.tests.ConfigTest" />
+			<class name="test.module.framework.tests.DataFileTest" />
+			<class name="test.module.framework.tests.DefaultTestObjectTest" />
+			<class name="test.module.framework.tests.ElementActionTest" />
+			<class name="test.module.framework.tests.ElementFinderTest" />
+			<class name="test.module.framework.tests.RetryTest" />
+			<class name="test.module.framework.tests.SingleSignInTest" />
+		</classes>
+	</test>
 
 </suite>

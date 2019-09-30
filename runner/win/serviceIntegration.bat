@@ -1,2 +1,3 @@
-cd ../../automation
- ../runner/utils/mvn/bin/mvn clean compile test -DsuiteXmlFile=suites/serviceIntegration.xml
+cd %~dp0
+ cd ../../automation/library
+ java -jar mavenRunner.jar clean compile test -DsuiteXmlFile=suites/serviceIntegration.xml

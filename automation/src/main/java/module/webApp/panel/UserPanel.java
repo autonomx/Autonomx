@@ -35,7 +35,9 @@ public class UserPanel{
 		public static EnhancedBy SAVE_BUTTON = Element.byCss("[type='submit']", "save button");
 		
 		// Users panel
-		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");		
+		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
+		public static EnhancedBy USER_COLUMN_HEADERS = Element.byCss("th", "user columns");		
+
 	}
 
 	// Actions

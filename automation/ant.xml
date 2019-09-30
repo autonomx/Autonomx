@@ -1,4 +1,4 @@
-<project>
+ <project name="autonomx" basedir="." default="mvn-clean-generate"  xmlns:artifact="antlib:org.apache.maven.artifact.ant"> 
 
  <property name="dir.generated" value="target/generated-sources/annotations"/>
  <property name="dir.mvnstatus" value="target/maven-status"/>
@@ -6,6 +6,12 @@
  <property name="file.markerDir" value="target/generated-sources/annotations/marker"/>
 
 
+	<target name="install-maven" description="Install maven">
+	    <mkdir dir="${user.home}/.ant/lib"/>
+	    <get dest="${user.home}/.ant/lib/ivy.jar" src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.3.0/ivy-2.3.0.jar"/>
+	    <fail message="Ivy has been installed. Run the build again"/>
+	</target>
+	
 	<!-- when add, delete, rename file detected, marker.java is deleted. upon deletion, mvn-compile task will run 
 	- if change detected at main or keywords
 			- compile
@@ -30,23 +36,10 @@
 	   </target>
 	
 	<target name="mvn-compile" depends="checkDirChanges" unless="noDirchanges" description="compile to check for errors and delete generated folder if no errors">
-		    <property environment="env" />
-		    <path id="classpath">
-		        <fileset dir="../runner/utils/mvn/boot">
-		            <include name="plexus-classworlds-*.jar" />
-		        </fileset>
-		    </path>
-		    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
-		 	<!-- run generate source to verify no compilation error, then delete generate source folder and regenerate sources -->
-		 	
-		    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true">
-		        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-		        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-		         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-		        <arg value="compile" />
-		    </java>
-		 	
+		 <java jar="library/mavenRunner.jar" fork='true'>
+		 			<arg value="compile"/>
+		 </java>
+		
 		 	 <!-- cleaning source generated folder -->
 		 	
 		 	 <delete dir="${dir.generated}"/>   <!-- delete generated folder -->
@@ -65,22 +58,11 @@
 
 <!-- will run when checkforCsvchanges or dirChangeDetector detect changes in main,keyword dir or changes in csv files in main dir -->
  <target name="mvn-clean-generate" depends="checkforCsvAndConfigchanges" unless="nochanges">
-    <property environment="env" />
-    <path id="classpath">
-        <fileset dir="../runner/utils/mvn/boot">
-            <include name="plexus-classworlds-*.jar" />
-        </fileset>
-    </path>
-    <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-
+   
  	<delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
-
-    <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="false">
-        <jvmarg value="-Dclassworlds.conf=../runner/utils/mvn/bin/m2.conf" />
-        <jvmarg value="-Dmaven.home=../runner/utils/mvn/" />
-         <jvmarg value="-Dmaven.multiModuleProjectDirectory=../runner/utils/mvn/" />
-        <arg value="generate-sources" />
-    </java>
+	 <java jar="library/mavenRunner.jar" fork='true'>
+	 			<arg value="generate-sources"/>
+	 </java>
 </target>
 	
 </project>

@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
+import configManager.ConfigVariable;
 import test.module.ModuleBase;
 
 /**
@@ -36,6 +37,7 @@ public class TestBase extends ModuleBase {
 	
 	@BeforeSuite(alwaysRun = true)
 	public void beforeSuite() {
+		ConfigVariable.webBrowserType().setValue("CHROME_HEADLESS");
 	}
 
 	@AfterSuite(alwaysRun = true)

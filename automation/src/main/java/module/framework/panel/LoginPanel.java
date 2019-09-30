@@ -5,6 +5,7 @@ import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.uiCore.webElement.EnhancedBy;
 import data.framework.User;
+import data.framework.UserInvalid;
 import moduleManager.module.framework.PanelManager;
 
 @Panel
@@ -29,6 +30,10 @@ public class LoginPanel {
 		public static EnhancedBy LOGOUT_BUTTON = Element.byCss("[href*='logout']", "logout button");
 		public static EnhancedBy MAIN_SITE = Element.byCss(".main-site", "main site button");
 		public static EnhancedBy ERROR_MESSAGE = Element.byCss("[class*='permissionserrorsContainer']", "input errors");
+		public static EnhancedBy INVALID_INPUT_MESSAGE = Element.byCss(".invalid-feedback", "invalid feedback");
+		public static EnhancedBy FORGOT_PASSWORD = Element.byCss("[href *='forgot-password']", "forgot password");
+
+		
 		public static EnhancedBy LOADING_INDICATOR = Element.byCss("[class*='Loading']", "loading indicator");	
 	}
 	
@@ -46,7 +51,7 @@ public class LoginPanel {
 		login(user);
 	}
 	
-	public void loginError(User user) {
+	public void loginError(UserInvalid user) {
 	
 		Helper.loginbuilder
 		.withUsername(elements.USER_NAME_FIELD, user.getUsername())

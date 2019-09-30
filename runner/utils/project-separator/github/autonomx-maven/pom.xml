@@ -80,6 +80,12 @@
 			<systemPath>${project.basedir}/library/unityjdbc.jar</systemPath>
 		</dependency>
 
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>LATEST</version>
+		</dependency>
+
 	</dependencies>	
 
 	<profiles>

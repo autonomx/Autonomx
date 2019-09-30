@@ -4,3 +4,8 @@ android.javaHome = ""
 
 # Path
 environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# maven home (path to maven root path). set value if not found automatically
+maven.home = ""
+# url to download maven if not found on the system
+maven.url = "http://apache.mirror.globo.tech/maven/maven-3/3.6.2/binaries/apache-maven-3.6.2-bin.zip"

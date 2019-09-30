@@ -34,6 +34,11 @@ public class UserPanel{
 		public static EnhancedBy BLOCKED_OFF = Element.byCss("#__OFF__blocked", "off blocked");
 		public static EnhancedBy SAVE_BUTTON = Element.byCss("[type='submit']", "save button");
 		
+		// Users panel
+		public static EnhancedBy USER_COLUMN_HEADERS = Element.byCss("th", "user columns");	
+		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
+		public static EnhancedBy USER_ROW_CELLS = Element.byCss("td", "user row cells");	
+
 	}
 
 	// Actions

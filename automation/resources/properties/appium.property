@@ -16,4 +16,5 @@ appium.logginLevel = info
 
 # external server 
 appium.useExternalAppiumServer = false
+appium.externalServer = localhost
 appium.externalPort = 4723

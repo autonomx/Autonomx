@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <excludeFromCompile>
-      <directory url="file://$APPLICATION_HOME_DIR$/bin" includeSubdirectories="false" />
-    </excludeFromCompile>
     <annotationProcessing>
-      <profile default="true" name="Default">
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$PROJECT_DIR$/target/generated-sources/annotations" />
-        </processorPath>
-      </profile>
-      <profile name="Maven default annotation processors profile" enabled="true">
+      <profile name="Maven default annotation processors profile">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="client" />
+        <module name="autonomx" />
       </profile>
     </annotationProcessing>
   </component>

@@ -6,7 +6,7 @@ framework="http://demo.autonomx.io/admin/"
 # Options: CHROME, FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, CHROME_HEADLESS, FIREFOX_HEADLESS, SAFARI
 web.browserType = CHROME
 
-## to add additional web capabilities, add capability after the prefix: "web.capabilities."
+# to add additional web capabilities, add capability after the prefix: "web.capabilities."
 web.capabilities.takesScreenshot = true
 
 # to add additional chrome options, add options after the prefix: "chrome.options."

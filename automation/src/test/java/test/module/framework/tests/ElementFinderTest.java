@@ -14,7 +14,6 @@ import module.webApp.panel.SidePanel.Panels;
 import test.module.framework.TestBase;
 
 /**
- * this test class demonstrates 3 data types: data object, csv data and data provider
  * @author ehsan matean
  *
  */

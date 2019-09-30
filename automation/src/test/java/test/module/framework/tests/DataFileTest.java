@@ -13,7 +13,6 @@ import data.framework.User;
 import test.module.framework.TestBase;
 
 /**
- * this test class demonstrates 3 data types: data object, csv data and data provider
  * @author ehsan matean
  *
  */
