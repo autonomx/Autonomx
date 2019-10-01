@@ -190,5 +190,9 @@ or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspect
  * Run tests using the runner at apiTestData/runner/<os>/apiRunner
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
+	
+# Reports
+
+![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LdCijjMRz-r0ZZjwm8f%2F-LdCil5VspIaJnHPXUmm%2Fimage.png?alt=media&token=8b975eea-f238-4bd7-bf13-76a576517a14)
 
 
