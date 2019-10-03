@@ -58,23 +58,24 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LdCijjMRz-r0ZZjwm8f%2F-LdCil5VspIaJnHPXUmm%2Fimage.png?alt=media&token=8b975eea-f238-4bd7-bf13-76a576517a14)
 
 # Web Tests
+* https://docs.autonomx.io/getting-started/web-tests
 * Example project: Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
 * Setup locators
 	webApp ▸ LoginPanel.java
 		
 ```java
 
-		public static class elements {
-			public static EnhancedBy USER_NAME_FIELD = Element.byCss("[placeholder='John Doe']", "username field");
-			public static EnhancedBy PASSWORD_FIELD = Element.byCss("#password", "password field");
-			public static EnhancedBy LOGIN_SUBMIT = Element.byCss("[type='submit']", "submit button");
-			public static EnhancedBy LOGOUT_BUTTON = Element.byCss("[href*='logout']", "logout button");
-			public static EnhancedBy MAIN_SITE = Element.byCss(".main-site", "main site button");
-			public static EnhancedBy ERROR_MESSAGE = Element.byCss("[class*='InputErrors']", "input errors");
+	 public static class elements {
+            public static EnhancedBy USER_NAME_FIELD = Element.byCss("[placeholder='John Doe']", "username field");
+            public static EnhancedBy PASSWORD_FIELD = Element.byCss("#password", "password field");
+            public static EnhancedBy LOGIN_SUBMIT = Element.byCss("[type='submit']", "submit button");
+            public static EnhancedBy LOGOUT_BUTTON = Element.byCss("[href*='logout']", "logout button");
+            public static EnhancedBy MAIN_SITE = Element.byCss(".main-site", "main site button");
+            public static EnhancedBy ERROR_MESSAGE = Element.byCss("[class*='InputErrors']", "input errors");
 
-			public static EnhancedBy LOADING_INDICATOR = Element.byCss("[class*='Loading']", "loading indicator");
+            public static EnhancedBy LOADING_INDICATOR = Element.byCss("[class*='Loading']", "loading indicator");
 
-		}
+        }
 
 	
 ```
@@ -82,87 +83,74 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 	webApp ▸ LoginPanel.java
 ```java 
 		/**
-		 * enter login info and click login button
-		 * 
-		 * @param user
-		 */
-		public void login(UserObject user) {
-			setLoginFields(user);
-			Helper.form.formSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO, elements.LOADING_INDICATOR);
+      * enter login info and click login button
+      * 
+      * @param user
+      */
+     public void login(User user) {
+         setLoginFields(user);
+         Helper.form.formSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO, elements.LOADING_INDICATOR);
 
-		}
+     }
 
-		public void loginError(UserObject user) {
-			setLoginFields(user);
-			Helper.form.formSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE);
-		}
+     public void loginError(User user) {
+         setLoginFields(user);
+         Helper.form.formSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE);
+     }
 
-		public void relogin(UserObject user) {
-			manager.main.logout();
-			login(user);
-		}
+     public void relogin(User user) {
+         manager.main.logout();
+         login(user);
+     }
 
-		public void setLoginFields(UserObject user) {
-			Helper.form.setField(elements.USER_NAME_FIELD, user.username().get());
-			Helper.form.setField(elements.PASSWORD_FIELD, user.password().get());
-		}
+     public void setLoginFields(User user) {
+         Helper.form.setField(elements.USER_NAME_FIELD, user.username().get());
+         Helper.form.setField(elements.PASSWORD_FIELD, user.password().get());
+     }
 ```
 * Define objects
-	* ⁨Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨common⁩ ▸ ⁨objects⁩
-```java
-	/**
-	 * object
-	 */
-	public abstract Optional<String> name();
-
-	public abstract Optional<String> username();
-
-	public abstract Optional<String> password();
-
-	public abstract Optional<String> email();
+	* autonomx⁩ ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨module ▸ webApp ▸ user.csv
+	* We are going to use the csv file to setup our data. For more info Csv
+	 ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lbz0m5YFq7lUruvn4Bq%2F-Lbz18vf1jgQKNjEp4Ey%2Fimage.png?alt=media&token=6d7c7cb6-f5b8-4eab-b35d-81fae69b2fe4)	
 	
-		/**
-	 * Predefined objects
-	 * 
-	 * @return
-	 */
-	public UserObject withAdminLogin() {
-		return new UserObject.Builder().username(ADMIN_USER).password(ADMIN_PASSWORD).buildPartial();
-	}
-	
-```
+
 * setup test
 
 ```java 
 
-	@BeforeMethod
-	public void beforeMethod() throws Exception {
-		setupWebDriver(app.strapi.getDriver());
-	}
-	
-	@Test
-	public void validate_user_Login() {
-		UserObject user = UserObject.user().withAdminLogin();
-		TestLog.When("I login with admin user");
-		app.strapi.login.login(user);
+     @BeforeMethod
+     public void beforeMethod() throws Exception {
+        setupWebDriver(app.webApp.getWebDriver());
+    }
 
-		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+    @Test
+    public void validate_user_Login() {
+        UserObject user = UserObject.user().withAdminLogin();
+        TestLog.When("I login with admin user");
+        app.strapi.login.login(user);
 
-		TestLog.When("I logout");
-		app.strapi.main.logout();
+        TestLog.Then("I verify admin logo is displayed");
+        Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
 
-		TestLog.Then("I should see the login panel");
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
-	}
+        TestLog.When("I logout");
+        app.strapi.main.logout();
+
+        TestLog.Then("I should see the login panel");
+        Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
+    }
 	
 ```
 
-# Api Tests
- * Setup Config
- 	* Set root uri path at apiTestData/apiConfig.property. eg. UriPath = http://demo.autonomx.io
-	* Additional properties such as database access can be set there
+# Service Level Tests
+ * https://docs.autonomx.io/service-level-testing
+ 	* Service level testing encompasses any backend, service, api, and database level testing
+ 	* These tests are compromised of: request, response, and verification
+ 	* Since these follow the same template, we have opted for using csv file to write the tests
+ 	* 1 line 1 complete test 
+ 	* This allows us to add lots of tests to each csv file, covering large number of permutations
+ 
  * Add Test cases in CSV file at apiTestData/testCases
  * Run tests using the runner at apiTestData/runner/<os>/apiRunner
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
+  ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)	
