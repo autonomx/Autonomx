@@ -18,71 +18,45 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 
 # Prerequisites:
 
+### Web:
 * Java jdk-1.8 or higher
-* Apache Maven 3 or higher
-  Maven references:
-* http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
-* http://www.tutorialspoint.com/maven/maven_environment_setup.htm
+* maven 3.3.x or higher (maven will automatically download by running setup.bat/sh script)
+* https://docs.autonomx.io/prerequisites
 
-#Appium parallel test execution
-Here you'll find out how to execute tests in parallel using Appium and TestNG.
+### Android:
+* appium "npm install -g appium"
+* Android SDK (for Android execution | with _ANDROID_HOME_ and _PATH_ configured)
+* https://docs.autonomx.io/prerequisites/android
+* https://app.gitbook.com/@autonomx/s/autonomx/getting-started/android-tests
 
-### What you need
-1. Java JDK (with _JAVA_HOME_ and _PATH_ configured)
-2. IDE (and import this project using Maven)
-3. Android SDK (for Android execution | with _ANDROID_HOME_ and _PATH_ configured)
-4. Android AVD created (or Genymotion)
-5. XCode and an iPhone Simulator (for iOS execution)
-6. Appium installed through npm
+### iOS:
+* appium
+* XCode and an iPhone Simulator (for iOS execution)
+* https://docs.autonomx.io/prerequisites/ios
+* https://app.gitbook.com/@autonomx/s/autonomx/getting-started/ios-tests
 
-### Android
+### IDE Setup
+* For Intellij IDE, navigate to Intellij Setup Page: https://docs.autonomx.io/getting-started/ide/intellij
+* For Eclipse IDE, navigate to Eclipse Setup Page: https://docs.autonomx.io/getting-started/ide/eclipse
 
-#### Configurations
-To execute the examples over the Android platform you'll need:
-* Android SDK
-* Updated _Build Tools_, _Platform Tools_ and, at least, one _System Image (Android Version)_
-* Configure Android Path on your environment variables
-   * ANDROID_HOME: root android sdk directory
-   * PATH: ANDROID_HOME + the following paths = _platform-tools_, _tools_, _tools/bin_ 
-* And Android Virtual Device
-   * AVD or Genymotion
-   
+# Getting Started:
 
-#### Inspect elements on Android
-You can use the [uiautomatorviewer](https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html) to inspect elements on Android devices.
- or you can use [Appium Desktop](https://github.com/appium/appium-desktop)
-
-### iOS
-
-#### Configurations
-To execute the examples over the iOS platform you'l need:
-* MacOS machine :-)
-* Xcode installed
-* iPhone simulator (I recommend, for these tests iOS version > 10)
-* Follow all the steps on [https://github.com/appium/appium-xcuitest-driver](https://github.com/appium/appium-xcuitest-driver)
-
-
-#### Inspect elements on iOS
-You also can use [Appium Desktop](https://github.com/appium/appium-desktop)
-or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspector/)
-
-
-# Execution:
-
-* Clone the repository.
-* Navigate to runner/<mac,win,linux)>/<test suite of your choice>. eg. runner/mac/restTests.sh
+* Download the latest release of Autonomx based on your project needs
+* Run the setup: 
+* setup.bat (windows), setup.sh (osx, linux)
+* This will download maven if not installed, and all the required dependencies
+* Navigate to runner//. eg. runner/mac/restTests.sh
 * The run scripts are generated from testng testSuites by runner/generateScripts.sh. Each script is associated with a suite of tests
+* https://docs.autonomx.io/quick-start
 
 # Reporting
 
-* Extent report is used for reporting
+* Extent Reports is used for BDD style reporting of the test results
 
-# Getting Started
-
-* Use IDE of choice: Eclipse, IntelliJ, NetBeans...
+![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LdCijjMRz-r0ZZjwm8f%2F-LdCil5VspIaJnHPXUmm%2Fimage.png?alt=media&token=8b975eea-f238-4bd7-bf13-76a576517a14)
 
 # Web Tests
- * Example project: Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
+* Example project: Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
 * Setup locators
 	webApp ▸ LoginPanel.java
 		
@@ -190,11 +164,3 @@ or you can use the [Macaca App Inspector](https://macacajs.github.io/app-inspect
  * Run tests using the runner at apiTestData/runner/<os>/apiRunner
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
-	
-# Reports
-
-* Extent Reports is used for BDD style reporting of the test results
-
-![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LdCijjMRz-r0ZZjwm8f%2F-LdCil5VspIaJnHPXUmm%2Fimage.png?alt=media&token=8b975eea-f238-4bd7-bf13-76a576517a14)
-
-
