@@ -29,13 +29,13 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 * appium "npm install -g appium"
 * Android SDK (for Android execution | with _ANDROID_HOME_ and _PATH_ configured)
 * https://docs.autonomx.io/prerequisites/android
-* https://app.gitbook.com/@autonomx/s/autonomx/getting-started/android-tests
+* https://docs.autonomx.io/getting-started/android-tests
 
 ### iOS:
 * appium
 * XCode and an iPhone Simulator (for iOS execution)
 * https://docs.autonomx.io/prerequisites/ios
-* https://app.gitbook.com/@autonomx/s/autonomx/getting-started/ios-tests
+* https://docs.autonomx.io/getting-started/ios-tests
 
 ### IDE Setup
 * For Intellij IDE, navigate to Intellij Setup Page: https://docs.autonomx.io/getting-started/ide/intellij
