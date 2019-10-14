@@ -156,3 +156,9 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
   ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)	
+	
+# Script Runner
+* https://app.gitbook.com/@autonomx/s/autonomx/script-runner-1/installation
+* Script Server will run the test suites on a web browser
+* Script Server will run the tests defined in Test Suite 
+ ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LZreOiuGev2RX9keLwq%2F-LZrstTAfjFPl8M060SX%2Fimage.png?alt=media&token=211189ce-6708-4b5f-8fd6-b35ef7fb4a36)
