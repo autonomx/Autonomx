@@ -25,7 +25,13 @@ web.element.highlight.enable = false
 web.element.highlight.waitDurationInSeconds = 0.1
 
 # Options: LATEST or version number. eg. 56.4
-web.driverVersion = LATEST
+web.driver.manager.version = LATEST
+web.driver.manager.proxy.forceCache = false
+web.driver.manager.timeoutSeconds = 5
+web.driver.manager.proxy.server = ""
+web.driver.manager.proxy.user = ""
+web.driver.manager.proxy.password =""
+
 web.maximizeBrowser = false
 
 # Options: REMOTE_WEBDRIVER, LOCAL_WEBDRIVER

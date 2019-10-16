@@ -30,6 +30,9 @@ public class MainPanel {
 		public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
 		public static EnhancedBy EDIT_BUTTON = Element.byCss(".fa-pencil", "signout option");
 
+		public static EnhancedBy SUBMIT_BUTTON = Element.byCss("[type='submit']", "submit button");
+
+		
 		// Users panel
 		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
 	}

@@ -28,10 +28,10 @@ public class VerifyLoginTest extends TestBase {
 	@Test
 	public void verifyAdminUserWithCsvData() {
 		
-		User user = Data.webApp.user().admin();
+	    User user = Data.webApp.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.webApp.login.loginWithCsvData(user);
-						
+				
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
 		

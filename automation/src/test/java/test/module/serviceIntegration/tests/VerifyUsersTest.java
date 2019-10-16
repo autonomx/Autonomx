@@ -16,7 +16,7 @@ public class VerifyUsersTest extends TestBase {
 
 		TestLog.When("I login with admin user");
 		CommonUser user = Data.common.commonuser().withAdminLogin();
-		app.serviceUiIntegration.login.login(user);
+		app.serviceUiIntegration.login.loginWithServiceObject(user);
 
 		TestLog.And("I delete all users with prefix zzz_");
 		app.serviceUiIntegration.user.deleteAllUsers("zzz_");
@@ -27,10 +27,6 @@ public class VerifyUsersTest extends TestBase {
 	@AfterClass(alwaysRun = true)
 	public void afterClass() throws Exception {
 
-		TestLog.When("I login with admin user");
-		CommonUser user = Data.common.commonuser().withAdminLogin();
-		app.serviceUiIntegration.login.login(user);
-
 		TestLog.And("I delete all users with prefix zzz_");
 		app.serviceUiIntegration.user.deleteAllUsers("zzz_");
 
@@ -40,9 +36,7 @@ public class VerifyUsersTest extends TestBase {
 	@Test
 	public void verifyCreateUser() {
 
-		TestLog.When("I login with admin user");
 		CommonUser user = Data.common.commonuser().withAdminLogin();
-		app.serviceUiIntegration.login.login(user);
 
 	    user = Data.common.commonuser().withDefaultUser();
 		TestLog.And("I create user '" + user.username + "'");
@@ -50,5 +44,15 @@ public class VerifyUsersTest extends TestBase {
 
 		TestLog.Then("I delete the user '" + user.username + "'");
 		app.serviceUiIntegration.user.deleteUser();
+	}
+	
+	@Test
+	public void verifyCreateUserWithServiceObject() {
+
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 	}
 }

@@ -2,10 +2,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.autonomx</groupId>
-	<artifactId>autonomxCore</artifactId>
-	<version>1.0.4.5</version>
 	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+	</parent>
+
+	<groupId>io.autonomx</groupId>
+	<artifactId>autonomx-core</artifactId>
+	<version>1.0.5</version>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -33,36 +41,61 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.0</version>
+				 <configuration>
+			         <additionalparam>-Xdoclint:none</additionalparam>
+			         <additionalOptions>-Xdoclint:none</additionalOptions>
+			         <additionalJOption>-Xdoclint:none</additionalJOption>
+			      </configuration>
 				<executions>
 					<execution>
-						<id>export-pom</id>
-						<phase>package</phase>
+						<id>attach-javadocs</id>
 						<goals>
-							<goal>run</goal>
+							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<target name="Exporting POM">
-								<copy file="${basedir}/pom.xml"
-									tofile="${project.build.outputDirectory}/../${project.build.finalName}.pom" />
-								<copy file="${basedir}/pom.xml"
-									tofile="${project.build.outputDirectory}/../${project.build.finalName}-tests.pom" />
-							</target>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 
 	<distributionManagement>
-
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<repository>
-			<id>central</id>
-			<name>vultr.guest-releases</name>
-			<url>http://artifact.autonomx.io/artifactory/libs-release-local</url>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
 	
@@ -90,7 +123,6 @@
 		</repository>
 
 	</repositories>
-	
 
 	<dependencies>
 
@@ -338,17 +370,10 @@
 		    <version>3.0.0</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.xmlunit</groupId>
 			<artifactId>xmlunit-matchers</artifactId>
 			<version>2.6.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<version>2.4.0</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->

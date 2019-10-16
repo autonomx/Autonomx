@@ -5,6 +5,7 @@ package module.serviceUiIntegration.panel;
  */
 import org.json.JSONException;
 
+import configManager.ConfigVariable;
 import core.apiCore.interfaces.RestApiInterface;
 import core.helpers.Helper;
 import core.support.annotation.Panel;
@@ -12,8 +13,10 @@ import core.support.configReader.Config;
 import core.support.objects.ServiceObject;
 import core.support.objects.TestObject;
 import data.Data;
+import io.restassured.response.Response;
 import module.common.data.CommonUser;
 import moduleManager.module.serviceUiIntegration.PanelManager;
+import serviceManager.Service;
 
 @Panel
 public class UserPanel {
@@ -27,6 +30,11 @@ public class UserPanel {
 
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
+	/**
+	 * call create user rest api interface with using csv keyword
+	 * csv file located at autonomx -> resources -> api -> keywords -> Keyword_RestApi.csv
+	 * @param user
+	 */
 	public void createUser(CommonUser user) {
 
 		Config.putValue("personUsername", user.username);
@@ -34,8 +42,32 @@ public class UserPanel {
 		Config.putValue("personPassword", user.password);
 		Config.putValue("personConfirmed", Boolean.toString(user.confirmed));
 		
-		ServiceObject companyAPI = TestObject.getApiDef("createUser");
-		RestApiInterface.RestfullApiInterface(companyAPI);
+		ServiceObject userAPI = TestObject.getApiDef("createUser");
+		RestApiInterface.RestfullApiInterface(userAPI);
+	}
+	
+	/**
+	 * call create user rest api interface without using csv keyword
+	 * @param user
+	 * @return 
+	 */
+	public Response createUserUsingServiceObject(CommonUser user) {
+		ConfigVariable.setValue("personUsername", user.username);
+		ConfigVariable.setValue("personEmail", user.email);
+		ConfigVariable.setValue("personPassword", user.password);
+		ConfigVariable.setValue("personConfirmed", Boolean.toString(user.confirmed));
+		
+		ServiceObject userAPI = Service.create()
+		.withUriPath("/content-manager/explorer/user/?source=users-permissions")
+		.withContentType("application/x-www-form-urlencoded")
+		.withMethod("POST")
+		.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
+		.withRequestBody("username:<@personUsername>;" + 
+				"email:<@personEmail>;" + 
+				"password:<@personPassword>;" + 
+				"confirmed:<@personConfirmed>");
+		
+		return RestApiInterface.RestfullApiInterface(userAPI);
 	}
 
 	public void deleteUser() {
@@ -57,13 +89,27 @@ public class UserPanel {
 		Helper.runApiContaining("username", prefix, "getUsers", "id", "userId", "deleteUser");
 	}
 
-	public CommonUser loginAndCreateUser() {
+	/**
+	 * csv file located at autonomx -> resources -> api -> keywords -> Keyword_RestApi.csv
+	 * @return
+	 */
+	public CommonUser loginAndCreateUserWithCsvKey() {
 		CommonUser user = Data.common.commonuser().withAdminLogin();
 		manager.login.login(user);
 
 		// create user through api
 		user = Data.common.commonuser().withDefaultUser(); 
 		manager.user.createUser(user);
+		return user;
+	}
+	
+	public CommonUser loginAndCreateUserWithoutCsvKey() {
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+		manager.login.login(user);
+
+		// create user through api
+		user = Data.common.commonuser().withDefaultUser(); 
+		manager.user.createUserUsingServiceObject(user);
 		return user;
 	}
 }

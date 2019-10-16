@@ -29,6 +29,7 @@ echo remove apiTestData
 
  # remove bitbucket pipelines
 rm -rf ./bitbucket-pipelines.yml
+rm -rf ./azure-pipelines.yml
 
 # remove modules 
 echo remove modules 
@@ -54,7 +55,8 @@ rm -rf automation/suites/iosSmokeTests.xml
 rm -rf automation/suites/servicesTests.xml
 rm -rf automation/suites/serviceIntegration.xml
 rm -rf automation/suites/winSmokeTests.xml
-rm -rf automation/suites/frameworkTests.xml
+rm -rf automation/suites/frameworkFunctionalTests.xml
+rm -rf automation/suites/frameworkUiTests.xml
 # remove resources
 echo remove resources
 rm -rf automation/resources/eurika.app

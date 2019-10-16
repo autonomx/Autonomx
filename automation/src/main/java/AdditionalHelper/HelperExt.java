@@ -2,22 +2,39 @@ package AdditionalHelper;
 
 import java.security.SecureRandom;
 
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
 import core.helpers.Helper;
+import core.uiCore.drivers.AbstractDriver;
 import core.uiCore.webElement.EnhancedBy;
 import core.uiCore.webElement.EnhancedWebElement;
 
 public class HelperExt extends Helper {
-
+	
 	/**
-	 * gets specified attribute of the element based on index
-	 * 
-	 * @param byValue
+	 * click using enhancedWebElement
+	 * @param by
 	 * @param index
-	 * @param attribute
 	 */
-	public static String getAttribute(EnhancedBy byValue, int index, String attribute) {
-		EnhancedWebElement element = findElements(byValue);
-		return element.getAttribute(attribute, index);
+	public static void clickSample(EnhancedBy by, int index) {
+		EnhancedWebElement element = findElements(by);
+		element.click(index);
+	}
+	
+	/**
+	 * hover element using action
+	 * WebElement value: targetElement.get(0)
+	 * @param by
+	 */
+	public static void hoverBySample(EnhancedBy by) {
+		Actions actions = new Actions(AbstractDriver.getWebDriver());
+		EnhancedWebElement targetElement = findElements(by);
+		
+		WebElement webElement = targetElement.get(0);
+		actions.moveToElement(webElement).build().perform();
+		
+		Helper.waitForSeconds(0.5);
 	}
 
 	/**

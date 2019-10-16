@@ -1,0 +1,63 @@
+<msg:Message xmlns:hdr="urn:soi.sample.com:header:V1_3" xmlns:msg="urn:soi.sample.com:message:V1_3" xmlns:soi="urn:soi.sample.com:payload:V1_3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<msg:Header>
+	<hdr:MsgID>8006292e-4266-49ff-a3b7-9c9ab7039aed</hdr:MsgID>
+	<hdr:MsgType>event</hdr:MsgType>
+	<hdr:MsgPriority>normal</hdr:MsgPriority>
+	<hdr:MsgTimestamp>2018-10-31T17:41:28</hdr:MsgTimestamp>
+	<hdr:MsgVersion>1.3.1</hdr:MsgVersion>
+	<hdr:ServiceName>Defect</hdr:ServiceName>
+	<hdr:OriginationApp svcID="" svcName="Ellipse" svcType="" svcVersion="9.0"></hdr:OriginationApp>
+	<hdr:DestinationApp svcName="EDT" svcType="" svcVersion=""></hdr:DestinationApp>
+	<hdr:OriginatingEvent>
+	<hdr:EventOriginator></hdr:EventOriginator>
+	<hdr:EventCorrelation>Defect</hdr:EventCorrelation>
+	<hdr:EventTime></hdr:EventTime>
+	</hdr:OriginatingEvent>
+</msg:Header>
+<msg:Payload>
+	<soi:Defect>
+		<soi:DefectRecord>
+			<soi:DefectID>D-3</soi:DefectID>
+			<soi:EquipmentID>R5578</soi:EquipmentID>
+			<soi:EquipmentID>R5578</soi:EquipmentID>
+			<soi:EquipmentID>R5578</soi:EquipmentID>
+			<soi:Component>EGI_METER</soi:Component>
+			<soi:ComponentModifier>EGI_METER_MODIFIER</soi:ComponentModifier>
+			<soi:SegmentFrom>5</soi:SegmentFrom>
+			<soi:SegmentTo>2</soi:SegmentTo>
+			<soi:DefectType>DEF_006</soi:DefectType>
+			<soi:Value>Response 50 char</soi:Value>
+			<soi:ValueDescription>D1_ValueDescription</soi:ValueDescription>
+			<soi:Priority>3</soi:Priority>
+			<soi:Severity>LO</soi:Severity> 
+			<soi:Status>Open</soi:Status>
+			<soi:ActionWorkOrderTaskID>R100</soi:ActionWorkOrderTaskID>
+			<soi:ActionTaken>Action Taken for D3</soi:ActionTaken>
+			<soi:ActionTakenDescription>Action Taken description for D3</soi:ActionTakenDescription>
+			
+			<soi:DefectAttributes>
+				<soi:DefectAttribute type="Core"><soi:Name>UserStatus</soi:Name><soi:Value>AUD</soi:Value></soi:DefectAttribute>
+				<soi:DefectAttribute type="Core"><soi:Name>FaultFound</soi:Name><soi:Value>Job Estimate flow defect 3</soi:Value></soi:DefectAttribute>
+				<soi:DefectAttribute type="Core"><soi:Name>CorrectiveAction</soi:Name><soi:Value>Fix 50 char</soi:Value></soi:DefectAttribute>
+				<soi:DefectAttribute type="Core"><soi:Name>CorrectiveActionCode</soi:Name><soi:Value></soi:Value></soi:DefectAttribute>
+			</soi:DefectAttributes>
+			
+			<soi:Position longitude="-98.505845" latitude="29.553513">
+				<soi:PositionFeatureID>POS-D-2</soi:PositionFeatureID>
+				<soi:SpacialReference>SR-D-2</soi:SpacialReference>
+			</soi:Position>
+									
+			<soi:DefectAttachments>
+				<soi:DefectAttachment>
+					<soi:URL>https://sample1.jpg</soi:URL>
+					<soi:Description>Defect Description1</soi:Description>
+				</soi:DefectAttachment>
+				<soi:DefectAttachment>
+					<soi:URL>https://sample2.jpg</soi:URL>
+					<soi:Description>Defect Description2</soi:Description>
+				</soi:DefectAttachment>
+			</soi:DefectAttachments>
+		</soi:DefectRecord>
+	</soi:Defect>
+</msg:Payload>
+</msg:Message>

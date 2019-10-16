@@ -35,6 +35,9 @@ public class VerifyUserCreateTest extends TestBase {
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
+		TestLog.And("I filter by username");
+		app.webApp.user.filterUsers(user);
+		
 		TestLog.And("I verify the user is displayed in the user list");
 		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, user.username);
 	}
@@ -55,11 +58,21 @@ public class VerifyUserCreateTest extends TestBase {
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
+		TestLog.And("I filter by username");
+		app.webApp.user.filterUsers(user);
+		
 		TestLog.And("I verify the user is displayed in the user list");
 		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, user.username);
 		
 		TestLog.Then("I edit the user");
 		CommonUser editUser = Data.common.commonuser().withEdittUser();
 		app.webApp.user.editUser(user, editUser);
+		
+		TestLog.And("I filter by edited username");
+		app.webApp.user.removeFilter();
+		app.webApp.user.filterUsers(editUser);
+		
+		TestLog.And("I verify the user is displayed in the user list");
+		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, editUser.username);
 	}
 }

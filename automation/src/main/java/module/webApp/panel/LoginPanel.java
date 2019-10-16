@@ -34,6 +34,7 @@ public class LoginPanel {
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void login(User user) {
+		
 		Helper.loginbuilder
 		.withUsername(elements.USER_NAME_FIELD, user.getUsername())
 		.withPassword(elements.PASSWORD_FIELD, user.getPassword())

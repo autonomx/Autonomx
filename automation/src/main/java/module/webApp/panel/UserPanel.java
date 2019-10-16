@@ -38,6 +38,12 @@ public class UserPanel{
 		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
 		public static EnhancedBy USER_COLUMN_HEADERS = Element.byCss("th", "user columns");		
 
+		// filter 
+		public static EnhancedBy FILTER_BUTTON = Element.byCss("[type='button'] [alt='filter_logo']", "filter button");		
+		public static EnhancedBy FILTER_TEXT_FIELD = Element.byCss("[class*='FiltersPickWrapper'] [type='text']", "filter text field");		
+		public static EnhancedBy FILTER_SUBMIT_BUTTON = Element.byCss("[type='submit']", "filter submit button");		
+		public static EnhancedBy FILTER_REMOVE_BUTTON = Element.byCss("[class*='remove__admin']", "filter remove button");		
+
 	}
 
 	// Actions
@@ -51,7 +57,6 @@ public class UserPanel{
 		Helper.clickAndExpect(elements.NEW_USER_BUTTON, elements.SAVE_BUTTON);
 		setUserFields(user);
 		Helper.form.formSubmit(elements.SAVE_BUTTON, MainPanel.elements.ADMIN_LOGO);
-		Helper.waitForListItemToLoad_Contains(elements.USER_ROWS, user.username);
 	}
 	
 	public void editUser(CommonUser user, CommonUser editUser) {
@@ -59,7 +64,6 @@ public class UserPanel{
 		Helper.selectListItemContainsByName(elements.USER_ROWS, user.username);
 		setUserFields(editUser);
 		Helper.form.formSubmit(elements.SAVE_BUTTON, MainPanel.elements.ADMIN_LOGO);
-		Helper.waitForListItemToLoad_Contains(elements.USER_ROWS, editUser.username);
 	}
 
 	public void setUserFields(CommonUser user) {
@@ -69,5 +73,15 @@ public class UserPanel{
 		
 		Helper.form.selectToggle(elements.CONFIRMED_ON, elements.CONFIRMED_OFF, user.confirmed);
 		Helper.form.selectToggle(elements.BLOCKED_ON, elements.BLOCKED_OFF, user.blocked);
+	}
+	
+	public void filterUsers(CommonUser user) {
+		Helper.clickAndExpect(elements.FILTER_BUTTON, elements.FILTER_SUBMIT_BUTTON);
+		Helper.setField(elements.FILTER_TEXT_FIELD, user.username);
+		Helper.formSubmit(elements.FILTER_SUBMIT_BUTTON, elements.USER_ROWS);
+	}
+	
+	public void removeFilter() {
+		Helper.clickAndExpect(elements.FILTER_REMOVE_BUTTON, elements.USER_ROWS);
 	}
 }

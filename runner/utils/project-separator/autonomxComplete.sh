@@ -26,6 +26,7 @@ rm -rf ./.git
 
 # remove bitbucket pipelines
 rm -rf ./bitbucket-pipelines.yml
+rm -rf ./azure-pipelines.yml
 
 # remove project separator
 rm -rf ./runner/utils/project-separator

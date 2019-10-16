@@ -6,6 +6,15 @@ adminUserPassword = "autoPass1"
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.templatePath = "../apiTestData/templates/"
+api.proxy.host = ""
+api.proxy.port = ""
+
+# timeout in seconds
+api.timeout.connect.seconds = 5
+
+# will retry the request, expecting to pass validation for duration of specified duration in seconds
+api.timeout.validation.isEnabled = false
+api.timeout.validation.seconds = 2
 
 # set file name to run single csv file
 api.testCaseFile = ""

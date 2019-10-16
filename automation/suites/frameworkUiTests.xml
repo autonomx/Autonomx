@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Framework Test">
+
+	<test name="framework tests">
+
+		<classes>
+			<class name="test.module.framework.tests.ui.ElementActionTest" />			
+			<class name="test.module.framework.tests.ui.ElementFinderTest" />
+			<class name="test.module.framework.tests.ui.JavascriptTest" />
+			<class name="test.module.framework.tests.ui.ListHelperTest" />
+			<class name="test.module.framework.tests.ui.SingleSignInTest" />
+		</classes>
+	</test>
+
+</suite>

@@ -29,6 +29,7 @@ echo remove apiTestData
 
  # remove bitbucket pipelines
 rm -rf ./bitbucket-pipelines.yml
+rm -rf ./azure-pipelines.yml
 
 # remove modules 
 echo remove modules 
@@ -38,7 +39,8 @@ rm -rf automation/src/main/java/module/services
 rm -rf automation/src/main/java/module/serviceUiIntegration
 rm -rf automation/src/main/java/module/webApp
 rm -rf automation/src/main/java/module/common
-rm -rf automation/src/main/java/module/framework
+rm -rf automation/suites/frameworkFunctionalTests.xml
+rm -rf automation/suites/frameworkUiTests.xml
 # remove tests
 echo remove tests
 rm -rf automation/src/test/java/test/module/android

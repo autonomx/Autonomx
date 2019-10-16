@@ -2,7 +2,7 @@
 # report options
 # report types: html (single html page) or klov (server using mongodb)
 report.reporterType = html
-report.launchReportAfterTest = true
+report.launchReportAfterTest = false
 report.enableDetailedReport = true
 
 # Options: MARY

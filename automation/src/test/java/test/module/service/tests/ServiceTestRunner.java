@@ -24,10 +24,10 @@ public class ServiceTestRunner extends TestBase {
 			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
 			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
 			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex) throws Exception {
+			String tcName, String tcIndex, String testType) throws Exception {
 
 		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
 				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex);
+				TcComments, tcName, tcIndex, testType);
 	}
 }

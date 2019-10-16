@@ -63,11 +63,11 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 * https://docs.autonomx.io/getting-started/web-tests
 * Example project: Autonomx ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨modules⁩ ▸ ⁨webApp⁩
 * Setup locators
-	webApp ▸ LoginPanel.java
-		
+    webApp ▸ LoginPanel.java
+        
 ```java
 
-	 public static class elements {
+     public static class elements {
             public static EnhancedBy USER_NAME_FIELD = Element.byCss("[placeholder='John Doe']", "username field");
             public static EnhancedBy PASSWORD_FIELD = Element.byCss("#password", "password field");
             public static EnhancedBy LOGIN_SUBMIT = Element.byCss("[type='submit']", "submit button");
@@ -79,12 +79,12 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 
         }
 
-	
+    
 ```
 * Define actions
-	webApp ▸ LoginPanel.java
+    webApp ▸ LoginPanel.java
 ```java 
-		/**
+        /**
       * enter login info and click login button
       * 
       * @param user
@@ -111,10 +111,10 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
      }
 ```
 * Define objects
-	* autonomx⁩ ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨module ▸ webApp ▸ user.csv
-	* We are going to use the csv file to setup our data. For more info Csv
-	 ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lbz0m5YFq7lUruvn4Bq%2F-Lbz18vf1jgQKNjEp4Ey%2Fimage.png?alt=media&token=6d7c7cb6-f5b8-4eab-b35d-81fae69b2fe4)	
-	
+    * autonomx⁩ ▸ ⁨automation⁩ ▸ ⁨src⁩ ▸ ⁨main⁩ ▸ ⁨java⁩ ▸ ⁨module ▸ webApp ▸ user.csv
+    * We are going to use the csv file to setup our data. For more info Csv
+     ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lbz0m5YFq7lUruvn4Bq%2F-Lbz18vf1jgQKNjEp4Ey%2Fimage.png?alt=media&token=6d7c7cb6-f5b8-4eab-b35d-81fae69b2fe4)    
+    
 
 * setup test
 
@@ -140,62 +140,62 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
         TestLog.Then("I should see the login panel");
         Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
     }
-	
+    
 ```
 
 # Service Level Tests
  * https://docs.autonomx.io/service-level-testing
- 	* Service level testing encompasses any backend, service, api, and database level testing
- 	* These tests are compromised of: request, response, and verification
- 	* Since these follow the same template, we have opted for using csv file to write the tests
- 	* 1 line 1 complete test 
- 	* This allows us to add lots of tests to each csv file, covering large number of permutations
+    * Service level testing encompasses any backend, service, api, and database level testing
+    * These tests are compromised of: request, response, and verification
+    * Since these follow the same template, we have opted for using csv file to write the tests
+    * 1 line 1 complete test 
+    * This allows us to add lots of tests to each csv file, covering large number of permutations
  
  * Add Test cases in CSV file at apiTestData/testCases
  * Run tests using the runner at apiTestData/runner/<os>/apiRunner
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
-  ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)	
+  ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)   
 
 # Service UI Integration
 * https://docs.autonomx.io/service-level-testing/service-ui-integration
 * We can run our service test with the UI based tests
 * There are 2 methods of achieving this goal
-	* Creating a service object and calling the service interface directly
-	``` java 
-	public Response loginWithServiceObject(CommonUser user) {
-		
-		ServiceObject loginApi = Service.create()
-				.withUriPath("/auth/local")
-				.withContentType("application/json")
-				.withMethod("POST")
-				.withRequestBody("{" + 
-						"\"identifier\": \""+ user.username +"\",\r\n" + 
-						"\"password\": \"" +user.password + "\"" + 
-						"}")
-				.withOutputParams(
-						"user.role.id:<$roles>;"
-						+ "jwt:<$accessTokenAdmin>;"
-						+ "user.id:<$userId>");
-				
-		return RestApiInterface.RestfullApiInterface(loginApi);
-	}
-	```
-	* Creating a service keyword in a csv file and calling the test case name
-	
-	![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lr2tMRfr9spslKkUR1c%2F-Lr2u7t4K_FWlspqTn78%2Fimage.png?alt=media&token=f9352116-b196-41ec-b638-a65e44f8b97f)
-	
-	
-	``` java
-	
-	public void login(CommonUser user) {
-		Service.getToken
-				.withUsername(user.username)
-				.withPassword(user.password)
-				.build();
-	}
-	```
-	
+    * Creating a service object and calling the service interface directly
+    ``` java 
+    public Response loginWithServiceObject(CommonUser user) {
+        
+        ServiceObject loginApi = Service.create()
+                .withUriPath("/auth/local")
+                .withContentType("application/json")
+                .withMethod("POST")
+                .withRequestBody("{" + 
+                        "\"identifier\": \""+ user.username +"\",\r\n" + 
+                        "\"password\": \"" +user.password + "\"" + 
+                        "}")
+                .withOutputParams(
+                        "user.role.id:<$roles>;"
+                        + "jwt:<$accessTokenAdmin>;"
+                        + "user.id:<$userId>");
+                
+        return RestApiInterface.RestfullApiInterface(loginApi);
+    }
+    ```
+    * Creating a service keyword in a csv file and calling the test case name
+    
+    ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lr2tMRfr9spslKkUR1c%2F-Lr2u7t4K_FWlspqTn78%2Fimage.png?alt=media&token=f9352116-b196-41ec-b638-a65e44f8b97f)
+    
+    
+    ``` java
+    
+    public void login(CommonUser user) {
+        Service.getToken
+                .withUsername(user.username)
+                .withPassword(user.password)
+                .build();
+    }
+    ```
+    
 # Script Runner
 * https://app.gitbook.com/@autonomx/s/autonomx/script-runner-1/installation
 * Script Server will run the test suites on a web browser
