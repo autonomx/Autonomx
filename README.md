@@ -182,7 +182,8 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 	}
 	```
 	* Creating a service keyword in a csv file and calling the test case name
-	![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lr2tMRfr9spslKkUR1c%2F-Lr2u7t4K_FWlspqTn78%2Fimage.png?alt=media&token=f9352116-b196-41ec-b638-a65e44f8b97f
+	
+![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lr2tMRfr9spslKkUR1c%2F-Lr2u7t4K_FWlspqTn78%2Fimage.png?alt=media&token=f9352116-b196-41ec-b638-a65e44f8b97f
 	``` java)
 	
 	public void login(CommonUser user) {
