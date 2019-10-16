@@ -156,6 +156,42 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
  * CSV files will run in parallel
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
   ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)	
+
+# Service UI Integration
+* https://docs.autonomx.io/service-level-testing/service-ui-integration
+* We can run our service test with the UI based tests
+* There are 2 methods of achieving this goal
+	* Creating a service object and calling the service interface directly
+	``` java 
+	public Response loginWithServiceObject(CommonUser user) {
+		
+		ServiceObject loginApi = Service.create()
+				.withUriPath("/auth/local")
+				.withContentType("application/json")
+				.withMethod("POST")
+				.withRequestBody("{" + 
+						"\"identifier\": \""+ user.username +"\",\r\n" + 
+						"\"password\": \"" +user.password + "\"" + 
+						"}")
+				.withOutputParams(
+						"user.role.id:<$roles>;"
+						+ "jwt:<$accessTokenAdmin>;"
+						+ "user.id:<$userId>");
+				
+		return RestApiInterface.RestfullApiInterface(loginApi);
+	}
+	```
+	* Creating a service keyword in a csv file and calling the test case name
+	![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-Lr2tMRfr9spslKkUR1c%2F-Lr2u7t4K_FWlspqTn78%2Fimage.png?alt=media&token=f9352116-b196-41ec-b638-a65e44f8b97f
+	``` java)
+	
+	public void login(CommonUser user) {
+		Service.getToken
+				.withUsername(user.username)
+				.withPassword(user.password)
+				.build();
+	}
+	```
 	
 # Script Runner
 * https://app.gitbook.com/@autonomx/s/autonomx/script-runner-1/installation
