@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/unx4763/Autonomx/_apis/build/status/Autonomx%20Release?branchName=master)](https://dev.azure.com/unx4763/Autonomx/_build/latest?definitionId=3&branchName=master)
+
 Main Site: https://autonomx.io/
 
 Documentation: https://docs.autonomx.io
