@@ -159,8 +159,8 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
  * Parallel run value can be set at automation/resources/properties.property "parallel_test_count"
   ![alt text](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LZhvc5eykluSdIwbEC_%2F-LcZtOaQshb5y9jBNTv4%2F-LcZtovj2NX0VVwc5weJ%2Fimage.png?alt=media&token=fc5ed2ae-8d03-4170-ab2b-ef95d4c83760)   
 
-# Service UI Integration
-* https://docs.autonomx.io/service-level-testing/service-ui-integration
+# Service Code Integration
+* https://docs.autonomx.io/service-level-testing/service-code-integration
 * We can run our service test with the UI based tests
 * There are 2 methods of achieving this goal
     * Creating a service object and calling the service interface directly
