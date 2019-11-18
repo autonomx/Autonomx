@@ -11,11 +11,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.microsoft.azure.servicebus.primitives.StringUtil;
+
+import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.configReader.PropertiesReader;
 import core.support.logger.TestLog;
+import core.support.objects.TestObject;
 import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
 
@@ -24,18 +28,19 @@ import test.module.framework.TestBase;
  *
  */
 public class ServiceRunnerMultipleTestCsv extends TestBase {
-	
+	String csvTestPath_destination = StringUtil.EMPTY;
 	AtomicInteger testCount = new AtomicInteger(0);
-	
-	String csvTestPath = PropertiesReader.getLocalRootPath()
-			+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) +  "TestCases_UserValidation.csv";
-
-	String csvTestPath_destination = PropertiesReader.getLocalRootPath()
-			+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) + "TestCases_UserValidation2.csv";
 
 
 	@BeforeClass
 	public void beforeClass() throws IOException  {		
+
+		String csvTestPath = PropertiesReader.getLocalRootPath()
+				+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) +  "TestCases_UserValidation.csv";
+
+		csvTestPath_destination = PropertiesReader.getLocalRootPath()
+				+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) + "TestCases_UserValidation2.csv";
+		
 		TestLog.When("I create additional csv test file");
 		TestDataProvider.csvFileIndex.set(0);
 		Files.copy(new File(csvTestPath).toPath(),new File(csvTestPath_destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -55,7 +60,13 @@ public class ServiceRunnerMultipleTestCsv extends TestBase {
     	ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
     				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
     				TcComments, tcName, tcIndex, testType);
-    	testCount.incrementAndGet(); 	
+    	testCount.incrementAndGet(); 
+    	
+    	// setting the test to default. in real testing scenario, the testId gets set to default
+    	// test after the csv test file is complete
+    	TestObject.setTestId(TestObject.DEFAULT_TEST);
+		ConfigVariable.apiParallelTestcasePath().setValue("../apiTestData/testCases/frameworkTests/");
+
 	}
 	
 	@AfterClass

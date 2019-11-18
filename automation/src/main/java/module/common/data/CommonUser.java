@@ -43,7 +43,7 @@ public class CommonUser {
 		CommonUser user = new CommonUser();
 		user.name = USER_PREFIX + "auto" + rand;
 		user.username = USER_PREFIX + "autoUser" + rand;
-		user.email = "autoUser" + rand + "@email.com";
+		user.email = "autoUser" + rand + "@gmail.com";
 		user.password = USER_PREFIX + "autoPass" + rand;
 		user.language = "Java";
 		user.acceptAds = true;

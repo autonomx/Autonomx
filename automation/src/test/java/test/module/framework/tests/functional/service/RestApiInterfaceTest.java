@@ -1,6 +1,7 @@
 package test.module.framework.tests.functional.service;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.BeforeClass;
@@ -47,7 +48,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 		
 		TestLog.And("I verify response matches expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -71,8 +74,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -90,7 +93,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -108,8 +113,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test( )
@@ -127,8 +132,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -146,8 +151,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test(expectedExceptions = { AssertionError.class } )
@@ -165,7 +170,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors =  RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
 	}
 	
 	@Test()
@@ -183,7 +189,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors =  RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -201,8 +209,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -220,7 +228,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
 	}
 	
 	@Test( )
@@ -238,8 +247,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -257,7 +266,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors =  RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -275,8 +286,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -294,7 +306,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors =  RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -312,8 +326,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -330,7 +344,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -347,8 +363,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -366,7 +383,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -384,8 +403,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -403,7 +422,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors =  RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -420,8 +441,8 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
-		Helper.assertTrue("errors not caught", !errors.isEmpty());
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
 	}
 	
 	@Test()
@@ -439,7 +460,9 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does match expected");
-		RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+
 	}
 	
 	@Test()
@@ -456,9 +479,158 @@ public class RestApiInterfaceTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 			
 		TestLog.And("I verify response does not match expected");
-		List<String> errors = RestApiInterface.validateExpectedValues(response, serviceObject);
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
+	}
+	@Test()
+	public void verifyJson_by_keyword_jsonString() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		
+		String expectedJson =
+				"[{\n" + 
+				"   \"name\" : \"Authenticated\",\n" + 
+				"   \"description\" : \"Default role given to authenticated user.\",\n" + 
+				"   \"type\" : \"authenticated\"\n" + 
+				"}]";
+		
+		Config.putValue("localVariable", "local");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ role:jsonbody("+ expectedJson +"); provider:sequence(local); ");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+	}
+	
+	@Test(expectedExceptions = { AssertionError.class } )
+	public void verifyJson_by_keyword_jsonString_invalid_expected_json() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		
+		String expectedJson =
+				"{\n" + 
+				"   \"name\" : \"Authenticated\",\n" + 
+				"   \"description\" : \"Default role given to authenticated user.\",\n" + 
+				"   \"type\" : \"authenticated\"\n" + 
+				"}";
+		
+		Config.putValue("localVariable", "local");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ role:jsonbody("+ expectedJson +"); provider:sequence(local); ");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+	}
+	
+	@Test()
+	public void verifyJson_by_keyword_jsonString_invalid() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		
+		String expectedJson =
+				"[{\n" + 
+				"   \"name\" : \"Authenticated2\",\n" + 
+				"   \"description\" : \"Default role given to authenticated user.\",\n" + 
+				"   \"type\" : \"authenticated2\"\n" + 
+				"}]";
+		
+		Config.putValue("localVariable", "local");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ role:jsonbody("+ expectedJson +"); provider:sequence(local); ");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
 		Helper.assertTrue("errors not caught", !errors.isEmpty());
 	}
 	
+	@Test()
+	public void verifyJson_by_keyword_IntegerGreaterThan() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ id:1:integerGreaterThan(1)");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does not match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+	}
 	
+	@Test()
+	public void verifyJson_by_keyword_IntegerGreaterThan_invalid() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ id:1:integerGreaterThan(12356789)");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does not match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
+	}
+	@Test()
+	public void verifyJson_by_keyword_IntegerLessThan() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ id:1:integerLessThan(123456789)");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does not match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), errors.isEmpty());
+	}
+	
+	@Test()
+	public void verifyJson_by_keyword_IntegerLessThan_invalid() {	
+		
+		TestLog.When("I set keyword expected response for service object");
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("_VERIFY.JSON.PART_ id:1:integerLessThan(1)");
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+			
+		TestLog.And("I verify response does not match expected");
+		List<String> errors = RestApiInterface.validateExpectedValues(response.getBody().asString(), serviceObject);
+		Helper.assertTrue("errors not caught: " + Arrays.toString(errors.toArray()), !errors.isEmpty());
+	}
 }

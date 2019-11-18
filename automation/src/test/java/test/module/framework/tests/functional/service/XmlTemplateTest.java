@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import core.apiCore.helpers.DataHelper;
 import core.apiCore.helpers.XmlHelper;
 import core.helpers.Helper;
+import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.ServiceObject;
 import core.support.objects.TestObject;
@@ -38,19 +39,19 @@ public class XmlTemplateTest extends TestBase {
 
 
 		TestLog.Then("I verify tag values have been updated");		
-		String tagValue = XmlHelper.getTagValue(xmlString, tag);
+		String tagValue = XmlHelper.getXmlTagValue(xmlString, tag);
 		Helper.assertEquals("test33", tagValue);
 		
-		tagValue = XmlHelper.getTagValue(xmlString, tag, 2);
+		tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 2);
 		Helper.assertEquals("test44", tagValue);
 		
-		tagValue = XmlHelper.getTagValue(xmlString, tag, 3);
+		tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 3);
 		Helper.assertEquals("test55", tagValue);
 		
 		TestLog.Then("I verify xml string is valid");		
 		Document doc = XmlHelper.convertXmlStringToDocument(xmlString);
 		String convertedXml = XmlHelper.convertDocumentToString(doc);
-		tagValue = XmlHelper.getTagValue(convertedXml, tag, 3);
+		tagValue = XmlHelper.getXmlTagValue(convertedXml, tag, 3);
 		Helper.assertEquals("test55", tagValue);
 	}
 	
@@ -69,10 +70,10 @@ public class XmlTemplateTest extends TestBase {
 		xmlString = XmlHelper.replaceRequestTagValues(serviceObject);
 		
 		TestLog.Then("I verify tag values have been updated");		
-		String tagValue = XmlHelper.getTagValue(xmlString, tag, 1);
-		Helper.assertEquals("equip_"+ TestObject.getTestInfo().getTestStartTime(), tagValue);
+		String tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 1);
+		Helper.assertEquals("equip_"+ Config.getValue(TestObject.START_TIME_STRING), tagValue);
 		
-	    tagValue = XmlHelper.getTagValue(xmlString, tag, 2);
+	    tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 2);
 		Helper.assertEquals("equip_313", tagValue);
 	}
 	
@@ -92,7 +93,7 @@ public class XmlTemplateTest extends TestBase {
 		
 		TestLog.Then("I verify tag values have been updated");		
 		
-	    String tagValue = XmlHelper.getTagValue(xmlString, tag, 1);
+	    String tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 1);
 		Helper.assertEquals("R5578", tagValue);
 	}
 }

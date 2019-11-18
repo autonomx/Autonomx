@@ -2,7 +2,7 @@
 # report options
 # report types: html (single html page) or klov (server using mongodb)
 report.reporterType = html
-report.launchReportAfterTest = false
+report.launchReportAfterTest = true
 report.enableDetailedReport = true
 
 # Options: MARY
@@ -15,5 +15,5 @@ report.reportExpireDays = 5
 # klov reporting info
 klov.server.url = http://localhost
 klov.mongodb.url = "localhost:27017"
-console.annotation.debug = false
+console.annotation.debug = true
 console.printLogoOnSuccess = true

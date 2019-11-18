@@ -31,6 +31,10 @@ rm -rf ./azure-pipelines.yml
 # remove project separator
 rm -rf ./runner/utils/project-separator
 
+# remove maven and script server folder
+rm -rf ./runner/utils/maven
+rm -rf ./runner/utils/script-server
+
 # remove maven central
 rm -rf ./automation/pom.xml
 mv ./automation/maven-central/pom.xml ./automation/pom.xml

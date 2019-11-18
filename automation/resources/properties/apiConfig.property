@@ -1,3 +1,5 @@
+# for json path: https://github.com/json-path/JsonPath  validation: http://jsonpath.herokuapp.com/
+
 # global configuration
 #UriPath= https://de-qa.azurefd.net
 api.uriPath = http://demo.autonomx.io
@@ -5,9 +7,16 @@ adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
+api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"
 api.proxy.host = ""
 api.proxy.port = ""
+
+api.base.path = "../apiTestData/keywords/testBase/"
+api.base.before.testfile = "TestCases_RunBefore.csv"
+api.base.after.testfile = "TestCases_RunAfter.csv"
+api.base.before.suite = "TestCases_RunBeforeSuite.csv"
+api.base.after.suite = "TestCases_RunAfterSuite.csv"
 
 # timeout in seconds
 api.timeout.connect.seconds = 5
@@ -35,3 +44,18 @@ db.password=123
 #db.name=tpch?rebuildschema=false
 #db.username=dbuser
 #db.password=dbusehttps://de-qa.azurefd.netr
+
+
+# Rabbit MQ
+rabbitMq.host = ""
+rabbitMq.virtualhost = ""
+rabbitMq.user = ""
+rabbitMq.password = ""
+rabbitMq.exchange = ""
+rabbitMq.defaultQueue = ""
+
+# Kafka 
+kafka.server.url = ""
+kafka.server.port = ""
+kafka.client.id = ""
+kafka.topic = ""

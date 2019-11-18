@@ -62,7 +62,6 @@ public class TestBase extends ModuleBase {
 		ConfigVariable.setValue("beforeSuiteValue", true);
 		ConfigVariable.setValue("beforeSuiteOverride", 15);
 		ConfigVariable.globalTimeoutSeconds().setValue(90);
-	
 	}
 
 	@AfterSuite(alwaysRun = true)

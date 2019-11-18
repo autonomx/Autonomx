@@ -2,6 +2,8 @@ package test.module.framework.tests.functional;
 
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
@@ -10,10 +12,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import configManager.ConfigVariable;
+import core.apiCore.interfaces.Authentication;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
-import test.module.web.TestBase;
+import test.module.framework.TestBase;
 
 /*
  * prerequisite:
@@ -28,6 +31,9 @@ public class ConfigTest extends TestBase {
 		ConfigVariable.setValue("beforeClassValue", true);
 		ConfigVariable.appiumLogging().setValue(true);
 		ConfigVariable.setValue("beforeSuiteOverride", 25);
+		
+		boolean beforeSuiteValue = ConfigVariable.getBooleanValue("beforeSuiteValue");
+		Helper.assertTrue("before suite config value not set", beforeSuiteValue);
 	}
 
 	@BeforeMethod()
@@ -168,4 +174,19 @@ public class ConfigTest extends TestBase {
 		Helper.assertTrue("before class config value should be true", beforeClassValue2);
 		Helper.assertEquals(90, beforeSuiteValue2);
 	}
+	
+	@Test
+	public void verifyConfigObject() {
+		List<String> credentials = new ArrayList<String>();
+		credentials.add("username1");
+		credentials.add("password1");
+		
+		// store basic request in config
+		Config.putValue(Authentication.BASIC_AUTHORIZATION, credentials);
+		ArrayList<String> basicRequest = (ArrayList<String>) Config.getObjectValue(Authentication.BASIC_AUTHORIZATION);
+	
+		Helper.assertEquals("username1", basicRequest.get(0));
+		Helper.assertEquals("password1", basicRequest.get(1));
+	}
+	
 }

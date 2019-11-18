@@ -23,9 +23,16 @@ rm -rf ./automation/test-output
 # remove git folders
 rm -rf ./.git
 
+# remove project separator
+rm -rf ./runner/utils/project-separator
+
 # remove apiTestData
 echo remove apiTestData 
  rm -rf apiTestData
+
+ # remove maven and script server folder
+rm -rf ./runner/utils/maven
+rm -rf ./runner/utils/script-server
 
  # remove bitbucket pipelines
 rm -rf ./bitbucket-pipelines.yml

@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="Framework Test">
+<suite name="Framework Test" preserve-order="true">
 
-	<test name="framework tests">
+	<test name="framework tests" preserve-order="true" group-by-instances="true">
 
 		<classes>
+			<class name="test.module.framework.tests.functional.service.ServiceRunnerRetryTest" />	
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerConfigTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerMultipleTestCsv" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestCaseTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestFileTest" />
-				
+			
+			<class name="test.module.framework.tests.functional.service.RabbitMqInterfaceTest" />
+		    <class name="test.module.framework.tests.functional.service.SqlInterfaceTest" />	
+			<class name="test.module.framework.tests.functional.service.RestApiInterfaceTest" />	
+		   	<class name="test.module.framework.tests.functional.service.RestApiInterfaceTimeoutTest" />
+		   		
+		   	<class name="test.module.framework.tests.functional.service.CsvReaderTest" />		   		
 		    <class name="test.module.framework.tests.functional.service.DataHelperTest" />
-		    <class name="test.module.framework.tests.functional.service.JsonHelperTest" />
-		   	<class name="test.module.framework.tests.functional.service.RestApiInterfaceTest" />		    
+		    <class name="test.module.framework.tests.functional.service.JsonHelperTest" />	    
 			<class name="test.module.framework.tests.functional.service.XmlTemplateTest" />
+			<class name="test.module.framework.tests.functional.service.XmlHelperTest" />
 			
 			<class name="test.module.framework.tests.functional.ConfigTest" />		
 			<class name="test.module.framework.tests.functional.DataFileTest" />
 			<class name="test.module.framework.tests.functional.DefaultTestObjectTest" />
 			<class name="test.module.framework.tests.functional.MavenRunnerTest" />
 			<class name="test.module.framework.tests.functional.RetryTest" />
+			
+			<class name="test.module.framework.tests.functional.Helper.UtilityHelperTests" />
 		</classes>
 	</test>
 

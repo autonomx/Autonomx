@@ -25,6 +25,17 @@ rm -rf ./automation/test-output
 # remove git folders
 rm -rf ./.git
 
+# remove framework test data
+echo remove framework test data
+ rm -rf apiTestData/testCases/frameworkTests
+
+ # remove project separator
+rm -rf ./runner/utils/project-separator
+
+# remove maven and script server folder
+rm -rf ./runner/utils/maven
+rm -rf ./runner/utils/script-server
+
 # remove bitbucket pipelines
 rm -rf bitbucket-pipelines.yml
 rm -rf ./azure-pipelines.yml
@@ -75,7 +86,7 @@ rm -rf ./pom.xml.versionsBackup
 mvn clean compile
 cd ../
 
-# remove runner 
+# run runner 
 echo remove runner 
 bash runner/generateScripts.sh
 

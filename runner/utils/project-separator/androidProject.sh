@@ -28,6 +28,13 @@ rm -rf ./.git
 echo remove apiTestData 
  rm -rf apiTestData
 
+ # remove project separator
+rm -rf ./runner/utils/project-separator
+
+ # remove maven and script server folder
+rm -rf ./runner/utils/maven
+rm -rf ./runner/utils/script-server
+
  # remove bitbucket pipelines
 rm -rf ./bitbucket-pipelines.yml
 rm -rf ./azure-pipelines.yml
