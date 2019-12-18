@@ -1,4 +1,5 @@
-[![Build Status](https://dev.azure.com/Autonomx/Autonomx/_apis/build/status/Autonomx?branchName=master&jobName=Job)](https://dev.azure.com/Autonomx/Autonomx/_build/latest?definitionId=2&branchName=master)(https://dev.azure.com/autonomx/Autonomx/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/Autonomx/Autonomx/_apis/build/status/Autonomx?branchName=master&jobName=Job)](https://dev.azure.com/Autonomx/Autonomx/_build/latest?definitionId=2&branchName=master)
+
 [![Maven Central](https://img.shields.io/maven-central/v/io.autonomx/autonomx-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.autonomx%22%20AND%20a:%22autonomx-core%22)
 
 Main Site: https://autonomx.io/
