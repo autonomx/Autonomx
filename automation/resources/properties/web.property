@@ -26,6 +26,8 @@ web.element.highlight.waitDurationInSeconds = 0.1
 
 # Options: LATEST or version number. eg. 56.4
 web.driver.manager.version = LATEST
+
+# web driver manager proxy info
 web.driver.manager.proxy.forceCache = false
 web.driver.manager.timeoutSeconds = 5
 web.driver.manager.proxy.server = ""

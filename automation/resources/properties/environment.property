@@ -8,5 +8,6 @@ environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # maven home (path to maven root path). set value if not found automatically
 # eg. windows: "c:\\apache-maven-3.6.2"
 maven.home = ""
-# url to download maven if not found on the system
-maven.url = "http://apache.mirror.globo.tech/maven/maven-3/3.6.2/binaries/apache-maven-3.6.2-bin.zip"
+
+# url to download maven if not found on the system. can find versions at: https://archive.apache.org/dist/maven/maven-3/
+maven.url = "https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip"

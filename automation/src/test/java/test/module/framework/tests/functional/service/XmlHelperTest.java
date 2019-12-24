@@ -210,4 +210,39 @@ public class XmlHelperTest extends TestBase {
 		Helper.assertTrue("xml string was not converted to document", value != null);
 	}
 	
+	@Test()
+	public void isValidXmlString() {
+		String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+				"<bookstore>\n" + 
+				"<book>\n" + 
+				"  <title lang=\"en\">Harry Potter</title>\n" + 
+				"  <price>29.99</price>\n" + 
+				"</book>\n" + 
+				"<book>\n" + 
+				"  <title lang=\"en\">Learning XML</title>\n" + 
+				"  <price>39.95</price>\n" + 
+				"</book>\n" + 
+				"</bookstore>";
+		
+		boolean isValidXml= XmlHelper.isValidXmlString(xmlString);
+		Helper.assertTrue("xml is not valid", isValidXml);
+	}
+	
+	@Test()
+	public void isValidXmlString_invalid() {
+		String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+				"<bookstore>\n" + 
+				"<book>\n" + 
+				"  <title lang=\"en\">Harry Potter</title>\n" + 
+				"  <price>29.99</price>\n" + 
+				"</book>\n" + 
+				"<book>\n" + 
+				"  <title lang=\"en\">Learning XML</title>\n" + 
+				"  <price>39.95</price>\n" + 
+				"</bookstore>";
+		
+		boolean isValidXml= XmlHelper.isValidXmlString(xmlString);
+		Helper.assertTrue("xml is valid", !isValidXml);
+	}
+	
 }

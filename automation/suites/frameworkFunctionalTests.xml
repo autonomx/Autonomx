@@ -13,8 +13,7 @@
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestCaseTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestFileTest" />
 			
-			<class name="test.module.framework.tests.functional.service.RabbitMqInterfaceTest" />
-		    <class name="test.module.framework.tests.functional.service.SqlInterfaceTest" />	
+			<class name="test.module.framework.tests.functional.service.MessageQueueHelperTest" />		
 			<class name="test.module.framework.tests.functional.service.RestApiInterfaceTest" />	
 		   	<class name="test.module.framework.tests.functional.service.RestApiInterfaceTimeoutTest" />
 		   		

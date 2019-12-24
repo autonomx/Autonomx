@@ -25,7 +25,7 @@ public class ListHelperTest extends TestBase {
 	public void beforeMethod() throws Exception {
 		setupWebDriver(app.webApp.getWebDriver());
 	}
-	
+		
 	@Test
 	public void verifyTableMap() {
 		User user = Data.webApp.user().admin();

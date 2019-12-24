@@ -45,7 +45,11 @@
         <level value="DEBUG" />
         <appender-ref ref="file" />
     </logger>
-
+    
+   <logger name="org.apache.kafka" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="file" />
+    </logger>  
 
     <logger name="com.abb.wfm.apitest">
       <level value="off"/>
@@ -57,6 +61,12 @@
     <logger name="marytts">
       <level value="off"/>
     </logger>
+    
+    <logger name="javax.xml.parsers">
+      <level value="off"/>
+    </logger>
+
+   
 
     <root>
         <priority value="INFO" />

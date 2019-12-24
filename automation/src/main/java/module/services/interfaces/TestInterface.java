@@ -15,9 +15,9 @@ public class TestInterface {
 	 * @param apiObject
 	 * @return
 	 */
-	public void testInterface(ServiceObject apiObject) {
+	public void testInterface(ServiceObject serviceObject) {
 
-		if (apiObject == null)
-			Helper.assertFalse("apiobject is null");	
+		if (serviceObject == null)
+			Helper.assertFalse("serviceObject is null");	
 	}
 }

@@ -1,7 +1,6 @@
 # for json path: https://github.com/json-path/JsonPath  validation: http://jsonpath.herokuapp.com/
 
 # global configuration
-#UriPath= https://de-qa.azurefd.net
 api.uriPath = http://demo.autonomx.io
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
@@ -30,32 +29,49 @@ api.testCaseFile = ""
 api.testCase = ""
 
 # Database Server
-db.driver = org.postgresql.Driver
-db.url=jdbc:postgresql://localhost:5432
-db.name=testdb
-db.username=postgres
-db.password=123
-
+db.1.driver = org.postgresql.Driver
+db.1.url=jdbc:postgresql://localhost:5432
+db.1.name=testdb
+db.1.username=postgres
+db.1.password=123
 
 # mongoDb
-#db.driver = mongodb.jdbc.MongoDriver
-#db.url=jdbc:mongo://ds029847.mongolab.com:29847
+#db.1.driver = mongodb.jdbc.MongoDriver
+#db.1.url=jdbc:mongo://ds029847.mongolab.com:29847
 # first time set rebuildschema=true
-#db.name=tpch?rebuildschema=false
-#db.username=dbuser
-#db.password=dbusehttps://de-qa.azurefd.netr
+#db.1.name=tpch?rebuildschema=false
+#db.1.username=
+#db.1.password=
 
+# Message queue
+messagequeue.timeout.seconds = 60
 
 # Rabbit MQ
-rabbitMq.host = ""
-rabbitMq.virtualhost = ""
-rabbitMq.user = ""
-rabbitMq.password = ""
-rabbitMq.exchange = ""
-rabbitMq.defaultQueue = ""
+rabbitMQ.host = "localhost"
+rabbitMQ.port = ""
+rabbitMQ.virtualhost = ""
+rabbitMQ.user = ""
+rabbitMQ.password = ""
+rabbitMQ.exchange = ""
+rabbitMQ.outbound.exchange = ""
+rabbitMQ.exchange.type = ""
+rabbitMQ.queue = ""
+rabbitMQ.outbound.queue = ""
+rabbitMQ.Queue.durable = true
+rabbitMQ.msgId.prefix = "rabbitTestMsgID"
 
 # Kafka 
-kafka.server.url = ""
-kafka.server.port = ""
-kafka.client.id = ""
+kafka.bootstrap.servers = ""
+kafka.clientId = ""
 kafka.topic = ""
+kafka.outbound.topic = ""
+kafka.group.id = ""
+kafka.msgId.prefix = "kafkaTestMsgID"
+
+# Servicebus
+servicebus.connectionString = ""
+servicebus.queue = ""
+servicebus.topic = ""
+servicebus.outbound.topic = ""
+servicebus.host = ""
+servicebus.msgId.prefix = "servicebusTestMsgID"

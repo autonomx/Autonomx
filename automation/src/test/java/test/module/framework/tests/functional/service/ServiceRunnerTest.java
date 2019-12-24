@@ -11,6 +11,7 @@ import core.apiCore.driver.ApiTestDriver;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
+import core.support.objects.ServiceObject;
 import core.uiCore.drivers.AbstractDriverTestNG;
 import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
@@ -109,4 +110,18 @@ public class ServiceRunnerTest extends TestBase {
 		 testname = AbstractDriverTestNG.testName.get();
 		 Helper.assertEquals("ServiceRunnerTest-setServiceTestName_invalid", testname);
      }
+	 
+	@Test()
+	public void evaluateRequestbody_with_backlash()  {	
+		String requestBody = "{\n" + 
+				"    \"partyBaseUri\": \"<@partyBaseUri>\",\n" + 
+				"    \"locationBaseUri\": \"<@locationBaseUri>\",\n" + 
+				"    \"csv\": \"Adrian Young,Adrian.Young@abb.com,\\\"-123.113918, 49.261100\\\",\\\"-123.113918, 49.261100\\\",Vancouver City Hall\\nAudrey May,Audrey.May@abb.com,\\\"-123.130507, 49.299778\\\",\\\"-123.130507, 49.299778\\\",Vancouver Aquarium\\nAustin Hughes,Austin.Hughes@abb.com,\\\"-123.179996, 49.194356\\\",\\\"-123.179996, 49.194356\\\",Vancouver Intl Airport\\nBenjamin Wilson,Benjamin.Wilson@abb.com,\\\"-123.118136, 49.282487\\\",\\\"-123.118136, 49.282487\\\",Vancouver City Center\"\n" + 
+				"}";
+		requestBody = ServiceObject.normalize(requestBody);
+		ServiceObject serviceObject = new ServiceObject().withRequestBody(requestBody);
+		
+		Helper.assertEquals(requestBody, serviceObject.getRequestBody());
+		
+	}
 }

@@ -34,7 +34,7 @@ public class JsonHelperTest extends TestBase {
 			"		\"id\": 2,\n" + 
 			"		\"name\": \"Authenticated\",\n" + 
 			"		\"description\": \"Default role given to authenticated user.\",\n" + 
-			"		\"type\": \"authenticated\"\n" + 
+			"		\"type\": \"Create WorkOrder\"\n" + 
 			"	}\n" + 
 			"}";
 	
@@ -212,7 +212,7 @@ public class JsonHelperTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 		
 		TestLog.Then("I verify invalid variable format throws assertion error");
-		JsonHelper.configMapJsonKeyValues(response, "role.name:<$name>; provider:1:<@local>");
+		JsonHelper.configMapJsonKeyValues(response, "role.name:1:<$name>; provider:1:<@local>");
 		Helper.assertEquals("Authenticated", Config.getValue("name"));
 		Helper.assertEquals("local", Config.getValue("local"));
 	}
@@ -385,7 +385,6 @@ public class JsonHelperTest extends TestBase {
 		String updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
 		
 		Helper.assertEquals(newVal, updatedValue);
-	
 	}
 	
 	@Test()
@@ -416,6 +415,48 @@ public class JsonHelperTest extends TestBase {
 				"    }\n" + 
 				"   }\n" + 
 				" }";
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, newVal);
+		String updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
+		
+		Helper.assertEquals(newVal, updatedValue);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_valid_work_order() {
+		String jsonPath = ".data..workOrders[0].asset";
+		String newVal = "RMQAS_012345678";
+		
+		String originalJson = "{\n" + 
+				"\"sourceSystem\":\"TEST\",\n" + 
+				"\"data\":{\n" + 
+				"\"workOrders\":[\n" + 
+				"{\n" + 
+				"\"workOrderId\":\"RMQWO_0010efsx8\",\n" + 
+				"\"workOrderTemplate\":\"TMP01\",\n" + 
+				"\"description\":\"Test DEIM WO Ingestion\",\n" + 
+				"\"status\":\"Potential\",\n" + 
+				"\"userStatus\":\"\",\n" + 
+				"\"assetWork\":true,\n" + 
+				"\"workType\":\"Maintenance - Scheduled\",\n" + 
+				"\"priority\":1,\n" + 
+				"\"raisedDateTime\":1557460241123,\n" + 
+				"\"raisedBy\":\"Service Scheduler\",\n" + 
+				"\"assigedTo\":\"Service Scheduler\",\n" + 
+				"\"requiredByDateTime\":1557460241245,\n" + 
+				"\"plannedStartDateTime\":1557460241378,\n" + 
+				"\"plannedFinishDateTime\":1557460241376,\n" + 
+				"\"actualStartDateTime\":1557460241456,\n" + 
+				"\"actualFinishDateTime\":1557460241376,\n" + 
+				"\"closedDateTime\":1557460241987,\n" + 
+				"\"plannedDuration\":2880000,\n" + 
+				"\"actualDuration\":1440000,\n" + 
+				"\"completedBy\":\"Maintenance Team\",\n" + 
+				"\"completionComments\":\"Ring successfully replaced.\",\n" + 
+				"\"asset\":\"ERSASSET01\"\n" + 
+				"}\n" + 
+				"]\n" + 
+				"}\n" + 
+				"}";
 		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, newVal);
 		String updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
 		
@@ -488,6 +529,8 @@ public class JsonHelperTest extends TestBase {
 				.withRequestBody("quiz.sport.q1.options:2:value_<@quizItem>");
 		
 		String updatedJson = JsonHelper.getRequestBodyFromJsonTemplate(serviceObject);
+		updatedJson = DataHelper.replaceParameters(updatedJson);
+
 		String updatedValue = JsonHelper.getJsonValue(updatedJson, "quiz.sport.q1.options");
 		
 		Helper.assertEquals("value_quiz2", updatedValue);
@@ -750,6 +793,10 @@ public class JsonHelperTest extends TestBase {
 		String error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
+		criteria = "_VERIFY.RESPONSE.BODY_ equalTo({\"id\":\"1234\"})";
+		error = JsonHelper.validateResponseBody(criteria, "{\"id\":\"1234\"}");
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
 		criteria = "_VERIFY.RESPONSE.BODY_ equalTo(response)";
 		error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
@@ -779,14 +826,27 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY.RESPONSE.BODY_ notContain(confirmed)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		String json2 = "{\n" + 
+				"    \"workOrderId\": \"WO_<@_RAND6>\",\n" + 
+				"    \"workOrderUUID\": \"WO_<@_RAND6>\",\n" + 
+				"    \"description\": \"Create WorkOrder\"}";
+		
+		criteria = "_VERIFY.RESPONSE.BODY_ notContain(Create WorkOrder)";
+		error = JsonHelper.validateResponseBody(criteria, json2);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
-	
+
 	@Test()
 	public void validateResponseBody_contains() {
 		TestLog.When("I verify a valid json against correct value");
 
 		String criteria = "_VERIFY.RESPONSE.BODY_ contains(confirmed)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY.RESPONSE.BODY_ contains(\"confirmed\": null)";
+		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
 		criteria = "_VERIFY.RESPONSE.BODY_ contains(invalid)";

@@ -12,7 +12,7 @@
 
 	<groupId>io.autonomx</groupId>
 	<artifactId>autonomx-core</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.7</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -99,11 +99,8 @@
 		</repository>
 	</distributionManagement>
 	
+
 	<repositories>
-		<repository>
-			<id>jcenter</id>
-			<url>https://jcenter.bintray.com/</url>
-		</repository>
 
 		<repository>
 			<id>jitpack.io</id>
@@ -124,12 +121,13 @@
 
 	</repositories>
 
+
 	<dependencies>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>28.0-jre</version>
+			<version>28.1-jre</version>
 		</dependency>
 
 		<dependency>
@@ -146,18 +144,18 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.17-atlassian-1</version>
+			<version>1.2.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.8.0-beta4</version>
+			<version>1.7.29</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
-			<version>1.8.0-beta4</version>
+			<version>1.7.29</version>
 		</dependency>
 
 		<dependency>
@@ -176,13 +174,13 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>7.0.0</version>
+			<version>7.3.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>4.1.0</version>
+			<version>4.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>xml-apis</groupId>
@@ -193,7 +191,7 @@
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>4.6</version>
+			<version>5.0</version>
 		</dependency>
 
 		<dependency>
@@ -206,13 +204,19 @@
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
-			<version>4.0.0</version>
+			<version>4.1.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
 			<version>1.5.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -233,32 +237,33 @@
 			<artifactId>azure-storage</artifactId>
 			<version>8.4.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
 		<dependency>
-		    <groupId>org.apache.pdfbox</groupId>
-		    <artifactId>pdfbox</artifactId>
-		    <version>2.0.16</version>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.17</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.5</version>
+			<version>2.8.6</version>
+			<scope>compile</scope>
+		</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+		<dependency>
+		    <groupId>org.codehaus.groovy</groupId>
+		    <artifactId>groovy-all</artifactId>
+		    <version>2.4.3</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>2.4.3</version>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.beust</groupId>
-		    <artifactId>jcommander</artifactId>
-		    <version>1.78</version>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.78</version>
 		</dependency>
 
 		<dependency>
@@ -278,12 +283,12 @@
 			<artifactId>appium-test-extension</artifactId>
 			<version>1.5</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5.9</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.10</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
@@ -320,12 +325,13 @@
 			<version>6.14.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4.1208-jdbc42-atlassian-hosted</version>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.2.9</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.github.allbegray</groupId>
@@ -344,14 +350,20 @@
 		<dependency>
 			<groupId>com.sikulix</groupId>
 			<artifactId>sikulixapi</artifactId>
-			<version>1.1.4-SNAPSHOT</version>
+			<version>2.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-nop</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j -->
 		<dependency>
 			<groupId>net.sourceforge.tess4j</groupId>
 			<artifactId>tess4j</artifactId>
-			<version>4.4.0</version>
+			<version>4.4.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -365,9 +377,9 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>com.microsoft.azure</groupId>
-		    <artifactId>azure-servicebus</artifactId>
-		    <version>3.0.0</version>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-servicebus</artifactId>
+			<version>3.1.3</version>
 		</dependency>
 
 		<dependency>
@@ -382,35 +394,49 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.11</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
 		<dependency>
-		    <groupId>com.google.auto.service</groupId>
-		    <artifactId>auto-service</artifactId>
-		    <version>1.0-rc6</version>
+			<groupId>com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>1.0-rc6</version>
 		</dependency>
-		
-	<!-- screen recorder -->
+
+		<!-- screen recorder -->
 		<dependency>
-		    <groupId>com.pojosontheweb</groupId>
-		    <artifactId>monte-repack</artifactId>
-		    <version>1.0.1</version>
+			<groupId>com.pojosontheweb</groupId>
+			<artifactId>monte-repack</artifactId>
+			<version>1.0.1</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.shared/maven-invoker -->
 		<dependency>
-		    <groupId>org.apache.maven.shared</groupId>
-		    <artifactId>maven-invoker</artifactId>
-		    <version>3.0.1</version>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-invoker</artifactId>
+			<version>3.0.1</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/net.lingala.zip4j/zip4j -->
 		<dependency>
-		    <groupId>net.lingala.zip4j</groupId>
-		    <artifactId>zip4j</artifactId>
-		    <version>2.1.4</version>
+			<groupId>net.lingala.zip4j</groupId>
+			<artifactId>zip4j</artifactId>
+			<version>2.2.7</version>
 		</dependency>
-		
+
+		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>

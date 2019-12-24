@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Framework Test" preserve-order="true">
+
+	<test name="framework tests" preserve-order="true" group-by-instances="true">
+
+		<classes>	
+			<class name="test.module.framework.tests.functional.service.RabbitMqInterfaceTest" />	   
+			<class name="test.module.framework.tests.functional.service.KafkaInterfaceTest" />	
+			<class name="test.module.framework.tests.functional.service.SqlInterfaceTest" />			   	
+		</classes>
+	</test>
+
+</suite>

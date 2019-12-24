@@ -4,6 +4,7 @@ package test.module.framework.tests.functional.service;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -11,10 +12,12 @@ import org.testng.annotations.Test;
 import configManager.ConfigVariable;
 import core.apiCore.helpers.DataHelper;
 import core.apiCore.helpers.JsonHelper;
+import core.apiCore.helpers.XmlHelper;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.KeyValue;
+import core.support.objects.ServiceObject;
 import test.module.framework.TestBase;
 
 /**
@@ -70,6 +73,16 @@ public class DataHelperTest extends TestBase {
 		Helper.assertEquals("EquipmentID", keywords.get(0).key);
 		Helper.assertEquals("", keywords.get(0).position);
 		Helper.assertEquals("equip_1", keywords.get(0).value.toString());
+	}
+	
+	@Test()
+	public void getValidationMap_jsonPath() {
+		
+		TestLog.Then("I verify key, value combination");
+		List<KeyValue> keywords = DataHelper.getValidationMap("event.data.parties..data.partyUUID:contains(1234)");
+		Helper.assertEquals("event.data.parties..data.partyUUID", keywords.get(0).key);
+		Helper.assertEquals("", keywords.get(0).position);
+		Helper.assertEquals("contains(1234)", keywords.get(0).value.toString());
 	}
 	
 	@Test()
@@ -144,11 +157,11 @@ public class DataHelperTest extends TestBase {
 	public void replaceParameters_time() {
 
 		TestLog.Then("I verify date replacement");
-		String result = DataHelper.replaceParameters("user:<@_TIME19>");
-		Helper.assertEquals(24, result.length());
+		String result = DataHelper.replaceParameters("user:<@_TIME17>");
+		Helper.assertEquals(22, result.length());
 		
 		result = DataHelper.replaceParameters("user:<@_TIME20>");
-		Helper.assertEquals(24, result.length());	
+		Helper.assertEquals(22, result.length());	
 	}
 	
 	@Test()
@@ -349,6 +362,13 @@ public class DataHelperTest extends TestBase {
 		Helper.assertEquals("soi:EquipmentID", keywords.get(0).key);
 		Helper.assertEquals("", keywords.get(0).position);
 		Helper.assertEquals("notEqualTo(2019110423T11:00:00.000Z)", keywords.get(0).value.toString());
+	
+		//TODO: fix bug with parsing this value
+//		keywords = DataHelper.getValidationMap("soi:EquipmentID:1:equip_2019-12-04T05:18:51");
+//		Helper.assertEquals("soi:EquipmentID", keywords.get(0).key);
+//		Helper.assertEquals("1", keywords.get(0).position);
+//		Helper.assertEquals("equip_2019-12-04T05:18:51", keywords.get(0).value.toString());
+
 	}
 	
 	@Test()
@@ -376,4 +396,146 @@ public class DataHelperTest extends TestBase {
 		Helper.assertEquals("1", keywords.get(0).position);
 		Helper.assertEquals("isEmpty", keywords.get(0).value.toString());
 	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_xml_valid_multi_line() throws Exception {
+		
+		TestLog.When("I replace the tag at different positions in the xml file");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Defects.xml")
+				.withRequestBody("soi:EquipmentID:1:test33; \n soi:EquipmentID:2:test34;");
+		
+		String xmlString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("xml string is empty", !xmlString.isEmpty());
+
+		TestLog.Then("I verify tag values have been updated");		
+		String tagValue = XmlHelper.getXmlTagValue(xmlString, "soi:EquipmentID");
+		Helper.assertEquals("test33", tagValue);
+		
+		tagValue = XmlHelper.getXmlTagValue(xmlString, "soi:EquipmentID", 2);
+		Helper.assertEquals("test34", tagValue);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_xml_date() throws Exception {
+		
+		TestLog.When("I replace the tag at different positions in the xml file");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Defects.xml")
+				.withRequestBody("soi:EquipmentID:1:wo_<@_TIME_ISO_24>");
+		
+		String xmlString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("xml string is empty", !xmlString.isEmpty());
+
+		TestLog.Then("I verify tag values have been updated");		
+		String tagValue = XmlHelper.getXmlTagValue(xmlString, "soi:EquipmentID");
+		String result = DataHelper.replaceParameters("wo_<@_TIME_ISO_24>");
+		Helper.assertEquals(result, tagValue);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_json_valid() throws Exception {
+		
+		TestLog.When("I replace the tag at different positions in the json file");
+		Config.putValue("quizItem", "quiz2");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Quiz.json")
+				.withRequestBody("quiz.sport.q1.options:2:value_<@quizItem>");
+		
+		String jsonString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		jsonString = DataHelper.replaceParameters(jsonString);
+		Helper.assertTrue("json string is empty", !jsonString.isEmpty());
+		
+		String updatedValue = JsonHelper.getJsonValue(jsonString, "quiz.sport.q1.options");
+		
+		Helper.assertEquals("value_quiz2", updatedValue);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_json_date() throws Exception {
+		
+		TestLog.When("I replace the tag at different positions in the json file");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Quiz.json")
+				.withRequestBody("quiz.sport.q1.options:2:value_<@_TIME_ISO_24>");
+		
+		String jsonString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("json string is empty", !jsonString.isEmpty());
+		
+		String updatedValue = JsonHelper.getJsonValue(jsonString, "quiz.sport.q1.options");
+		String result = DataHelper.replaceParameters("value_<@_TIME_ISO_24>");
+
+		Helper.assertEquals("[\"" + result + "\"]", updatedValue);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_txt_valid() throws Exception {
+		
+		TestLog.When("I use a text file as template");
+		Config.putValue("dataReplace", "correct");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("data.txt");
+		
+		String textString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("text string is empty", !textString.isEmpty());
+		
+		Helper.assertEquals("Data template example for request body: correct", textString);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_no_template() throws Exception {
+		
+		TestLog.When("I use request body without template");
+		Config.putValue("dataReplace", "correct");
+		ServiceObject serviceObject = new ServiceObject()
+				.withRequestBody("this is the content: <@dataReplace>");
+		
+		String textString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("text string is empty", !textString.isEmpty());
+		
+		Helper.assertEquals("this is the content: correct", textString);
+	}
+	
+	@Test(expectedExceptions = { AssertionError.class } )
+	public void getRequestBodyIncludingTemplate_invalid_wrong_template() throws Exception {
+		
+		TestLog.When("I use a non existant template");
+		ServiceObject serviceObject = new ServiceObject().withTemplateFile("invalid.json");
+		
+		 DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+	}
+	@Test()
+	public void validateExpectedValues_empty_response() throws Exception {
+		
+		TestLog.When("I receive empty responses");
+		
+		 List<String> responses = new ArrayList<String>();
+		 responses.add("");
+		 responses.add(" ");
+		 responses.add(" ");
+		 
+		 TestLog.Then("then error should be returned");
+
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, "expected");
+		 Helper.assertTrue("errors was not returned", !errors.isEmpty());
+	}
+	
+	@Test()
+	public void validateExpectedValues_empty_expected_response() throws Exception {
+		
+		TestLog.When("I receive empty expected");
+		
+		 List<String> responses = new ArrayList<String>();
+		 responses.add("response");
+		 
+		 TestLog.Then("then error should be returned");
+
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, "");
+		 Helper.assertTrue("errors was returned", errors.isEmpty());
+		 
+		 errors =  DataHelper.validateExpectedValues(responses, " ");
+		 Helper.assertTrue("errors was returned", errors.isEmpty());
+	}
+	
+	
 }
