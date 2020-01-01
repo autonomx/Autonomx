@@ -1,5 +1,6 @@
 [![Build Status](https://dev.azure.com/Autonomx/Autonomx/_apis/build/status/Autonomx?branchName=master)](https://dev.azure.com/autonomx/Autonomx/_build/latest?definitionId=2&branchName=master)
 [![Maven Central](https://img.shields.io/maven-central/v/io.autonomx/autonomx-core.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.autonomx%22%20AND%20a:%22autonomx-core%22)
+[![Gitter](https://badges.gitter.im/Autonomx/community.svg)](https://gitter.im/Autonomx/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Main Site: https://autonomx.io/
 
