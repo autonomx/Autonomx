@@ -1,9 +1,7 @@
 package test.module.framework.tests.ui;
 
 
-import java.util.HashMap;
-import java.util.List;
-
+import org.openqa.selenium.Point;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -19,31 +17,27 @@ import test.module.framework.TestBase;
  * @author ehsan matean
  *
  */
-public class ListHelperTest extends TestBase {
+public class ClickHelperTest extends TestBase {
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {
 		setupWebDriver(app.framework.getWebDriver());
 	}
-		
+	
 	@Test
-	public void verifyTableMap() {
+	public void verifyClickPoint() {
+		
 		User user = Data.framework.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.framework.login.loginWithCsvData(user);
 		
 		TestLog.And("I select user panel");
 		app.framework.side.selectPanel(Panels.USERS);
-		
-		TestLog.And("I map the user table");
-		HashMap<String, List<String>> table = Helper.list.getTableMap(UserPanel.elements.USER_COLUMN_HEADERS, UserPanel.elements.USER_ROWS,UserPanel.elements.USER_ROW_CELLS);
+				
+		TestLog.Then("I click a point");
+		Point position = Helper.getElementPosition(UserPanel.elements.NEW_USER_BUTTON, 0);
+		//Helper.clickPointsAndExpect(1039, 92, UserPanel.elements.SAVE_BUTTON);
 
-		TestLog.Then("I verify the data is data is mapped");
-		// last column data is empty, is not added to map
-		int columnCount = Helper.getListCount(UserPanel.elements.USER_COLUMN_HEADERS) - 1;
-		Helper.assertEquals(columnCount, table.size());	
-		
-		Helper.assertEquals(table.get("Username").get(0), "autoAdmin1");
-		Helper.assertEquals(table.get("Email").get(0), "autouser313@gmail.com");
+		Helper.clickPointsAndExpect(position.getX(), position.getY(), UserPanel.elements.SAVE_BUTTON);
 	}
 }

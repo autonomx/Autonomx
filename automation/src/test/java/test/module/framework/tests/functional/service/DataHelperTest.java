@@ -1,9 +1,12 @@
 package test.module.framework.tests.functional.service;
 
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.KeyValue;
 import core.support.objects.ServiceObject;
+import core.support.objects.TestObject;
 import test.module.framework.TestBase;
 
 /**
@@ -155,14 +159,201 @@ public class DataHelperTest extends TestBase {
 	
 	@Test()
 	public void replaceParameters_time() {
-
+		
 		TestLog.Then("I verify date replacement");
 		String result = DataHelper.replaceParameters("user:<@_TIME17>");
 		Helper.assertEquals(22, result.length());
 		
-		result = DataHelper.replaceParameters("user:<@_TIME20>");
-		Helper.assertEquals(22, result.length());	
+		result = DataHelper.replaceParameters("user:<@_TIME20_>");
+		Helper.assertEquals(25, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_17;FORMAT:yyyyMMddHHmmssSSS>");
+		Helper.assertEquals(22, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_15;FORMAT:MM/dd/yyyy>");
+		Helper.assertEquals(15, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_17;FORMAT:dd-M-yyyy hh:mm:ss>");
+		Helper.assertEquals(22, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME17;FORMAT:dd MMM yyyy HH:mm:ss z>");
+		Helper.assertEquals(22, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_17+72h;FORMAT:yyyyMMddHHmmssSSS>");
+		Helper.assertEquals(22, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME17+72h;FORMAT:yyyy.MM.dd G 'at' HH:mm:ss z>");
+		Helper.assertEquals(22, result.length());
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_24+72h>");
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME24+72h_>");
+		time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		newTime = time.plus(72, ChronoUnit.HOURS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
 	}
+	
+	@Test()
+	public void replaceParameters_time_set_time() {
+		
+		TestLog.Then("I verify setting fixed time value");
+		String result = DataHelper.replaceParameters("<@_TIME24+72h;setTime:14:23:33>");
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		newTime = newTime.atZone(ZoneOffset.UTC)
+		        .withHour(14)
+		        .withMinute(23)
+		        .withSecond(33)
+		        .withNano(0)
+		        .toInstant();
+		Helper.assertEquals(newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("<@_TIME24+72h;setTime:08:11:00>");
+		time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		newTime = time.plus(72, ChronoUnit.HOURS);
+		newTime = newTime.atZone(ZoneOffset.UTC)
+		        .withHour(8)
+		        .withMinute(11)
+		        .withSecond(0)
+		        .withNano(0)
+		        .toInstant();
+		Helper.assertEquals(newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("<@_TIME24+72h;setTime:8:1:0>");
+		time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		newTime = time.plus(72, ChronoUnit.HOURS);
+		newTime = newTime.atZone(ZoneOffset.UTC)
+		        .withHour(8)
+		        .withMinute(1)
+		        .withSecond(0)
+		        .withNano(0)
+		        .toInstant();
+		Helper.assertEquals(newTime.toString(), result);
+	}
+	
+	@Test()
+	public void replaceParameters_time_modify_iso() {
+
+		TestLog.Then("I verify date replacement");
+		String result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+72h>");
+		
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		Helper.assertEquals("user:" +newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24-72h>");
+		newTime = time.minus(72, ChronoUnit.HOURS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+72m>");
+		newTime = time.plus(72, ChronoUnit.MINUTES);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24-72m>");
+		newTime = time.minus(72, ChronoUnit.MINUTES);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24-2d>");
+		newTime = time.minus(2, ChronoUnit.DAYS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+2d>");
+		newTime = time.plus(2, ChronoUnit.DAYS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+	}
+	
+	@Test()
+	public void replaceParameters_time_modify() {
+		TestLog.Then("I verify date replacement");
+		String result = DataHelper.replaceParameters("user:<@_TIME_STRING_17+72h>");
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		String value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17-72h>");
+		newTime = time.minus(72, ChronoUnit.HOURS);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17+72m>");
+		newTime = time.plus(72, ChronoUnit.MINUTES);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17-72m>");
+		newTime = time.minus(72, ChronoUnit.MINUTES);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+	}
+	
+	@Test()
+	public void replaceParameters_time_string_modify() {
+		TestLog.Then("I verify date replacement");
+		String result = DataHelper.replaceParameters("user:<@_TIME_STRING_17+72h>");
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		String value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17-72h>");
+		newTime = time.minus(72, ChronoUnit.HOURS);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17+72m>");
+		newTime = time.plus(72, ChronoUnit.MINUTES);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+		result = DataHelper.replaceParameters("user:<@_TIME_STRING_17-72m>");
+		newTime = time.minus(72, ChronoUnit.MINUTES);
+		formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+				.withZone(ZoneId.of("UTC"));
+		value = formatter.format(newTime);
+		Helper.assertEquals("user:" + value, result);
+	}
+	
+	@Test()
+	public void replaceParameters_time_ms_modify() {
+		TestLog.Then("I verify date replacement");
+		
+		String result = DataHelper.replaceParameters("user:<@_TIME_MS_13+72h>");
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		Instant newTime = time.plus(72, ChronoUnit.HOURS);
+		String value = String.valueOf(newTime.toEpochMilli());
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_MS_13-72h>");	
+		newTime = time.minus(72, ChronoUnit.HOURS);
+		value = String.valueOf(newTime.toEpochMilli());
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_MS_13+72m>");
+		newTime = time.plus(72, ChronoUnit.MINUTES);
+		value = String.valueOf(newTime.toEpochMilli());
+		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_MS_13-72m>");
+		newTime = time.minus(72, ChronoUnit.MINUTES);
+		value = String.valueOf(newTime.toEpochMilli());
+		Helper.assertEquals("user:" + value, result);
+	}
+	
 	
 	@Test()
 	public void replaceParameters_multiple_colon() {
@@ -363,11 +554,25 @@ public class DataHelperTest extends TestBase {
 		Helper.assertEquals("", keywords.get(0).position);
 		Helper.assertEquals("notEqualTo(2019110423T11:00:00.000Z)", keywords.get(0).value.toString());
 	
-		//TODO: fix bug with parsing this value
-//		keywords = DataHelper.getValidationMap("soi:EquipmentID:1:equip_2019-12-04T05:18:51");
-//		Helper.assertEquals("soi:EquipmentID", keywords.get(0).key);
-//		Helper.assertEquals("1", keywords.get(0).position);
-//		Helper.assertEquals("equip_2019-12-04T05:18:51", keywords.get(0).value.toString());
+		keywords = DataHelper.getValidationMap("soi:EquipmentID:1:2019-05-10 03:50:41.123Z");
+		Helper.assertEquals("soi:EquipmentID", keywords.get(0).key);
+		Helper.assertEquals("1", keywords.get(0).position);
+		Helper.assertEquals("2019-05-10 03:50:41.123Z", keywords.get(0).value.toString());
+		
+		keywords = DataHelper.getValidationMap("..raisedDateTime:2019-05-10 03:50:41.123Z");
+		Helper.assertEquals("..raisedDateTime", keywords.get(0).key);
+		Helper.assertEquals("", keywords.get(0).position);
+		Helper.assertEquals("2019-05-10 03:50:41.123Z", keywords.get(0).value.toString());
+		
+		keywords = DataHelper.getValidationMap("$.store.book[?(@.price < 10)]:equip_2019-12-04T05:01:51");
+		Helper.assertEquals("$.store.book[?(@.price < 10)]", keywords.get(0).key);
+		Helper.assertEquals("", keywords.get(0).position);
+		Helper.assertEquals("equip_2019-12-04T05:01:51", keywords.get(0).value.toString());
+		
+		keywords = DataHelper.getValidationMap("$.store.book[?(@.price < 10)]:3:2019-12-04T05:01:51");
+		Helper.assertEquals("$.store.book[?(@.price < 10)]", keywords.get(0).key);
+		Helper.assertEquals("3", keywords.get(0).position);
+		Helper.assertEquals("2019-12-04T05:01:51", keywords.get(0).value.toString());
 
 	}
 	
@@ -537,5 +742,47 @@ public class DataHelperTest extends TestBase {
 		 Helper.assertTrue("errors was returned", errors.isEmpty());
 	}
 	
+	@Test()
+	public void validateExpectedValues_multiple_expectations() throws Exception {
+		
+		TestLog.When("I have multiple expectations, with expection 1 having an error: zzz_updatetoknzjjl0708karbinvalid");
+		
+		 List<String> responses = new ArrayList<String>();
+		 responses.add("[{\"id\":6473,\"username\":\"zzz_updatetoknzjjl0708karb\",\"email\":\"testUpdate+2020011307105959@gmail.com\",\"provider\":\"local\",\"confirmed\":true,\"blocked\":null,\"role\":{\"id\":2,\"name\":\"Authenticated\",\"description\":\"Default role given to authenticated user.\",\"type\":\"authenticated\"}}]");
+		 String expected = "{\"id\":6473,\n" + 
+		 		"\"username\":\"zzz_updatetoknzjjl0708karbinvalid\",\n" + 
+		 		"\"email\":\"testUpdate+2020011307105959@gmail.com\",\n" + 
+		 		"\"provider\":\"local\",\n" + 
+		 		"\"confirmed\":true,\n" + 
+		 		"\"blocked\":null,\n" + 
+		 		"\"role\":\n" + 
+		 		"      {\n" + 
+		 		"       \"name\":\"Authenticated\",\n" + 
+		 		"        \"description\":\"Default role given to authenticated user.\",\n" + 
+		 		"        \"type\":\"authenticated\"\n" + 
+		 		"      }\n" + 
+		 		"}\n" + 
+		 		"&&\n" + 
+		 		"_VERIFY.JSON.PART_\n" + 
+		 		".role:jsonbody([{\n" + 
+		 		"       \"name\":\"Authenticated\",\n" + 
+		 		"        \"description\":\"Default role given to authenticated user.\",\n" + 
+		 		"        \"type\":\"authenticated\"\n" + 
+		 		"      }])";
+		 TestLog.Then("then error should be returned");
+
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, expected);
+		 Helper.assertTrue("errors was not returned", !errors.isEmpty());
+	}
 	
+	@Test()
+	public void saveDataToConfig_valid() {
+		
+		DataHelper.saveDataToConfig("testvalue1:<$value1>; testvalue2:<$value2>");
+		Helper.assertEquals("testvalue1", Config.getValue("value1"));
+		Helper.assertEquals("testvalue2", Config.getValue("value2"));
+		
+		DataHelper.saveDataToConfig("testvalue1:<@value3>");
+		Helper.assertEquals("", Config.getValue("value3"));
+	}
 }

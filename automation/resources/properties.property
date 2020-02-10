@@ -1,4 +1,4 @@
-# properties/conf file location. add additional locations by prefixing with "config_". eg. config.api = "../apiTestData/"
+# properties/conf file location. add additional locations by prefixing with "config". eg. config.api = "../apiTestData/"
 # location from root directory ( where pom.xml file is located at )
 # note: to have config properties generated for new directory, add location to ant.xml file ( root directory, where pom.xml is )
 # at checkforCsvAndConfigchanges section. eg. <srcfiles dir="resources" includes="**/*.property"/>

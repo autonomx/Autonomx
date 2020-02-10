@@ -39,9 +39,9 @@ public class ServiceRunnerTest extends TestBase {
         String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
         		"user.id:<$userId>";
         
-		ServiceRunner.TestRunner("suite1", "test1", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", "",
-				"", "TestCases_UserValidation.csv", "1:1", "service");
+				"", "TestCases_UserValidation.csv", "1:1", "service", "");
 		
 		String roles = Config.getValue("roles");
 		Helper.assertEquals(roles, "1");
@@ -58,9 +58,9 @@ public class ServiceRunnerTest extends TestBase {
         String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
         		"user.id:<$userId>";
         
-		ServiceRunner.TestRunner("suite1", "test1", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
-				"", "", "", requestBody, OutputParams, "300", "",
-				"", "TestCases_UserValidation.csv", "1:1", "service");
+		ServiceRunner.TestRunner("suite1", "invalid_responseCode", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+				"", "", "", requestBody, OutputParams, "320", "",
+				"", "TestCases_UserValidation.csv", "1:1", "service", "");
 	}
 	
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
@@ -68,7 +68,7 @@ public class ServiceRunnerTest extends TestBase {
 			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
 			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
 			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType) throws Exception {
+			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
 		
 		String testname = AbstractDriverTestNG.testName.get();
 		String testClass = ApiTestDriver.getTestClass(tcName);
@@ -76,14 +76,14 @@ public class ServiceRunnerTest extends TestBase {
 
 		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
 				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex, testType);
+				TcComments, tcName, tcIndex, testType, serviceSteps);
 	}
 	
 	 @Test()
  	public void setServiceTestName_valid() {
 		 
 		 TestLog.And("I verify service test name with valid values");		 
-		 Object[] testData = new Object[]{"","user","","","","","","","","","","","","","","","TestCases_valididateUser.csv","0","service"};
+		 Object[] testData = new Object[]{"","user","","","","","","","","","","","","","","","TestCases_valididateUser.csv","0","service",""};
 		 ApiTestDriver.setServiceTestName(testData);
 		 String testname = AbstractDriverTestNG.testName.get();
 		 Helper.assertEquals("valididateUser-user", testname); 	
@@ -123,5 +123,7 @@ public class ServiceRunnerTest extends TestBase {
 		
 		Helper.assertEquals(requestBody, serviceObject.getRequestBody());
 		
+		
 	}
+	
 }

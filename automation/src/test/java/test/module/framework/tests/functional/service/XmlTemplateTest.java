@@ -3,8 +3,6 @@ package test.module.framework.tests.functional.service;
 
 import java.nio.file.Path;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -65,7 +63,7 @@ public class XmlTemplateTest extends TestBase {
 		TestLog.When("I replace the tag at different positions in the xml file");
 		ServiceObject serviceObject = new ServiceObject()
 				.withTemplateFile("Defects.xml")
-				.withRequestBody("soi:EquipmentID:1:equip_<@_TIME_19>; soi:EquipmentID:2:equip_313");
+				.withRequestBody("soi:EquipmentID:1:equip_<@_TIME_22>; soi:EquipmentID:2:equip_313");
 		
 		String xmlString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
 		Helper.assertTrue("xml string is empty", !xmlString.isEmpty());
@@ -74,11 +72,9 @@ public class XmlTemplateTest extends TestBase {
 		
 		TestLog.Then("I verify tag values have been updated");		
 		String tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 1);
-		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING_MS));
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
-				.withZone(ZoneId.of("UTC"));
-		String value = formatter.format(time);
-		Helper.assertEquals("equip_"+ value, tagValue);
+		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+
+		Helper.assertEquals("equip_"+ time.toString().substring(0, 22), tagValue);
 		
 	    tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 2);
 		Helper.assertEquals("equip_313", tagValue);

@@ -51,7 +51,7 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner("suite1", "test-verifyTestbaseTest", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", "_VERIFY.JSON.PART_" + 
 						"user.username:1: notEqualTo(<@rolesBeforeClass>);",
-				"", "TestCases_UserValidation.csv", "0:1", "service");
+				"", "TestCases_UserValidation.csv", "0:1", "service", "");
 		
 		TestLog.Then("I verify before class values are accessible in test");
 		String roles = TestObject.getTestInfo("UserValidation-test-verifyTestbaseTest").config.get("rolesBeforeClass").toString();
@@ -86,7 +86,7 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner("suite1", "testBaseOverride", "Y", "", ServiceManager.EXTERNAL_INTERFACE, "", "", "beforeCsvFile:none;\n" + 
 				"afterCsvFile:none;",
 				"", "", "", "", "", "", "",
-				"", "TestCases_UserValidation.csv", "0:2", "service");
+				"", "TestCases_UserValidation.csv", "0:2", "service", "");
 		
 		Helper.assertEquals("", Config.getValue(ServiceManager.TEST_BASE_BEFORE_CLASS));
 		Helper.assertEquals("", Config.getValue(ServiceManager.TEST_BASE_AFTER_CLASS));
@@ -94,7 +94,7 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner("suite1", "verifyTestbaseTest", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", "_VERIFY.JSON.PART_" + 
 						"user.username:1: notEqualTo(<@rolesBeforeClass>);",
-				"", "TestCases_UserValidation.csv", "1:2", "service");
+				"", "TestCases_UserValidation.csv", "1:2", "service", "");
 		
 		TestLog.Then("I verify before class and after class did not run");
 		TestObject beforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");

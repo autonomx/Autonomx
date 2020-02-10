@@ -12,7 +12,7 @@
 
 	<groupId>io.autonomx</groupId>
 	<artifactId>autonomx-core</artifactId>
-	<version>1.0.7</version>
+	<version>1.0.8</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -436,9 +436,8 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-
 	</dependencies>
-
+	
 	<profiles>
 	</profiles>
 </project>

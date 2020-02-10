@@ -1,6 +1,9 @@
 # for json path: https://github.com/json-path/JsonPath  validation: http://jsonpath.herokuapp.com/
 
 # global configuration
+service.csv.separator = ","
+service.csv.dataprovider.count = 20
+
 api.uriPath = http://demo.autonomx.io
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
@@ -8,8 +11,7 @@ adminUserPassword = "autoPass1"
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"
-api.proxy.host = ""
-api.proxy.port = ""
+api.templateDataFile = "../apiTestData/templates/data/"
 
 api.base.path = "../apiTestData/keywords/testBase/"
 api.base.before.testfile = "TestCases_RunBefore.csv"
@@ -18,7 +20,7 @@ api.base.before.suite = "TestCases_RunBeforeSuite.csv"
 api.base.after.suite = "TestCases_RunAfterSuite.csv"
 
 # timeout in seconds
-api.timeout.connect.seconds = 5
+api.response.timeout.seconds = 30
 
 # will retry the request, expecting to pass validation for duration of specified duration in seconds
 api.timeout.validation.isEnabled = false
@@ -27,6 +29,13 @@ api.timeout.validation.seconds = 2
 # set file name to run single csv file
 api.testCaseFile = ""
 api.testCase = ""
+
+# api validation rules
+api.validation.fail.on.escapechars = false
+
+# api url encoding
+api.encoding.url = true
+api.encoding.parameter = false
 
 # Database Server
 db.1.driver = org.postgresql.Driver
@@ -57,6 +66,7 @@ rabbitMQ.outbound.exchange = ""
 rabbitMQ.exchange.type = ""
 rabbitMQ.queue = ""
 rabbitMQ.outbound.queue = ""
+rabbitMQ.queue.declare = true
 rabbitMQ.Queue.durable = true
 rabbitMQ.msgId.prefix = "rabbitTestMsgID"
 

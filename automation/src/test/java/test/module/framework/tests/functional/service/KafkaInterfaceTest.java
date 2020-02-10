@@ -33,9 +33,9 @@ public class KafkaInterfaceTest extends TestBase {
 		ServiceObject serviceObject = new ServiceObject()
 				.withRequestBody("test from autonomx" + random)
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.HEADER.PART_ isEmpty"
-						+ " && _VERIFY.TOPIC.PART_ equalTo(test)"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ random +")");
+						+ " && _VERIFY_HEADER_PART_ isEmpty"
+						+ " && _VERIFY_TOPIC_PART_ equalTo(test)"
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random +")");
 				
 		KafkaInterface.testKafkaInterface(serviceObject);
 	}
@@ -78,8 +78,8 @@ public class KafkaInterfaceTest extends TestBase {
 		ServiceObject serviceObject = new ServiceObject()
 				.withRequestBody(message)
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.HEADER.PART_ isEmpty"
-						+ " && _VERIFY.TOPIC.PART_ equalTo(test)"
+						+ " && _VERIFY_HEADER_PART_ isEmpty"
+						+ " && _VERIFY_TOPIC_PART_ equalTo(test)"
 						+ " && _VERIFY.JSON.PART_ event.data.parties..data.partyUUID:contains(uuid"+ random +")");
 				
 		KafkaInterface.testKafkaInterface(serviceObject);
@@ -125,10 +125,33 @@ public class KafkaInterfaceTest extends TestBase {
 				.withTemplateFile("Defects.xml")
 				.withRequestBody("soi:EquipmentID:1:" + random)
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.HEADER.PART_ isEmpty"
-						+ " && _VERIFY.TOPIC.PART_ equalTo(test)"
+						+ " && _VERIFY_HEADER_PART_ isEmpty"
+						+ " && _VERIFY_TOPIC_PART_ equalTo(test)"
 						+ " && " + expectedResponse);
 				
+		KafkaInterface.testKafkaInterface(serviceObject);
+	}
+	
+	@Test(description = "verify kafka interface with separate validation")
+	public void evaluateKafkaInterface_json_validate_only() throws Exception {
+		// reset values
+		Config.putValue(KafkaInterface.KAFKA_SERVER_URL, "localhost:9092");
+		Config.putValue(KafkaInterface.KFAKA_TOPIC, "test");
+		Config.setGlobalValue(KafkaInterface.KFAKA_TOPIC, "test");
+		Config.putValue(KafkaInterface.KAFKA_GROUP_ID, "test-consumer-group");
+
+		String random = Helper.generateRandomString(3);
+
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Group.json")
+				.withRequestBody("event.data.groups..data.groupUUID:uuid-" + random);
+				
+		KafkaInterface.testKafkaInterface(serviceObject);
+
+		serviceObject = new ServiceObject()
+				.withOption("response_identifier:" + random)
+				.withExpectedResponse("_VERIFY.JSON.PART_ event.data.groups..data.groupUUID:contains(uuid-" + random + ")");
+
 		KafkaInterface.testKafkaInterface(serviceObject);
 	}
 }

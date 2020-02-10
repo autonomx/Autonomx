@@ -1,5 +1,6 @@
 package test.module.framework.tests.functional.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.annotations.Test;
@@ -8,9 +9,10 @@ import core.apiCore.TestDataProvider;
 import core.apiCore.helpers.CsvReader;
 import core.helpers.Helper;
 import core.support.configReader.Config;
+import test.module.framework.TestBase;
 
 // these include actions tests. Action tests are added to existing tests when invoked in csv file
-public class CsvReaderTest {
+public class CsvReaderTest extends TestBase {
 	
 	@Test(description = "update csv list with action tests")
 	public void getTestCasesFromCsvFile_action_valid_singleAction() throws Exception {
@@ -51,6 +53,35 @@ public class CsvReaderTest {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationNoAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action2");
-		CsvReader.getTestCasesFromCsvFile();		
+		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(2, list.size());
+	}
+	
+	@Test(description = "csv file multiple runs set for different tests")
+	public void getTestCasesFromCsvFile_csv_multirun() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/multirun/");
+		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidation_multirun.csv");
+
+		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(12, list.size());
+	}
+	
+	@Test(description = "csv file with tests combined using test steps postfix")
+	public void getTestCasesFromCsvFile_csv_test_steps() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/testStep/");
+		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidation_step.csv");
+
+		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(4, list.size());
+	}
+	
+	@Test(description = "csv file escape characters and quotes")
+	public void getTestCasesFromCsvFile_csv_escape_character() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/escapeChar/");
+		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_escapeChar.csv");
+
+		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(1, list.size());
+		Helper.assertTrue("list doesnt include escape chars: " + Arrays.toString(list.get(0)), Arrays.toString(list.get(0)).contains("\\\""));
 	}
 }

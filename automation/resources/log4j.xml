@@ -42,18 +42,15 @@
     </logger>
 
     <logger name="com.journaldev.log4j.logic" additivity="false">
-        <level value="DEBUG" />
+        <level value="ERROR" />
         <appender-ref ref="file" />
     </logger>
     
    <logger name="org.apache.kafka" additivity="false">
-        <level value="INFO" />
+        <level value="ERROR" />
         <appender-ref ref="file" />
     </logger>  
 
-    <logger name="com.abb.wfm.apitest">
-      <level value="off"/>
-    </logger>
     <logger name="com.microsoft.azure">
       <level value="off"/>
     </logger>

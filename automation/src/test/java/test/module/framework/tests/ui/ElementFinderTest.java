@@ -23,7 +23,7 @@ public class ElementFinderTest extends TestBase {
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {
-		setupWebDriver(app.webApp.getWebDriver());
+		setupWebDriver(app.framework.getWebDriver());
 	}
 	
 	@Test

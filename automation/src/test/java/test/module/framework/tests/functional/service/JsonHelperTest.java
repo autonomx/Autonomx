@@ -11,10 +11,10 @@ import core.apiCore.helpers.JsonHelper;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
-import core.support.objects.ServiceObject;
 import data.Data;
 import io.restassured.response.Response;
 import module.common.data.CommonUser;
+import net.minidev.json.JSONArray;
 import test.module.framework.TestBase;
 
 /**
@@ -58,7 +58,7 @@ public class JsonHelperTest extends TestBase {
 			"                \"category\": \"fiction\",\n" + 
 			"                \"author\": \"Herman Melville\",\n" + 
 			"                \"title\": \"Moby Dick\",\n" + 
-			"                \"isbn\": \"0-553-21311-3\",\n" + 
+			"                \"isbn\": \"H/APPR\",\n" + 
 			"                \"price\": 8.99\n" + 
 			"            },\n" + 
 			"            {\n" + 
@@ -86,7 +86,7 @@ public class JsonHelperTest extends TestBase {
 		
 		TestLog.When("I verify a valid json string");
 		
-		boolean isJson = JsonHelper.isJSONValid(jsonString, true);
+		boolean isJson = JsonHelper.isJSONValid(jsonString, false);
 		Helper.assertTrue("is not valid json", isJson);
 	}
 	
@@ -95,7 +95,7 @@ public class JsonHelperTest extends TestBase {
 		
 		TestLog.When("I verify an invalid json string");
 		String jsonStringInvalid = jsonString.replaceFirst("\\{", "[");
-		boolean isJson = JsonHelper.isJSONValid(jsonStringInvalid, true);
+		boolean isJson = JsonHelper.isJSONValid(jsonStringInvalid, false);
 		Helper.assertTrue("should be invalid json", !isJson);
 	}
 	
@@ -104,15 +104,15 @@ public class JsonHelperTest extends TestBase {
 		
 		TestLog.When("I verify an invalid json string");
 		String keyword_indicator = DataHelper.VERIFY_JSON_PART_INDICATOR;
-		boolean isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, true);
+		boolean isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, false);
 		Helper.assertTrue("should be invalid json", !isJson);
 		
 		keyword_indicator = DataHelper.VERIFY_RESPONSE_BODY_INDICATOR;
-		isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, true);
+		isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, false);
 		Helper.assertTrue("should be invalid json", !isJson);
 		
 		keyword_indicator = DataHelper.VERIFY_RESPONSE_NO_EMPTY;
-		 isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, true);
+		 isJson = JsonHelper.isJSONValid(keyword_indicator + "\n " + jsonString, false);
 		Helper.assertTrue("should be invalid json", !isJson);
 	}
 	
@@ -248,7 +248,7 @@ public class JsonHelperTest extends TestBase {
 				"      \"category\" : \"fiction\",\n" + 
 				"      \"author\" : \"Herman Melville\",\n" + 
 				"      \"title\" : \"Moby Dick\",\n" + 
-				"      \"isbn\" : \"0-553-21311-3\",\n" + 
+				"      \"isbn\" : \"H/APPR\",\n" + 
 				"      \"price\" : 8.99\n" + 
 				"   }\n" + 
 				"]";
@@ -483,6 +483,253 @@ public class JsonHelperTest extends TestBase {
 		Helper.assertEquals(newVal, updatedValue);
 	}
 	
+	@Test()
+	public void replaceJsonPathValue_null_value() {
+		String jsonPath = ".prefix";
+		String newVal = "value1";
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": null,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": \"active\",\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": []\n" + 
+				"}";
+		
+		String updatedValue = JsonHelper.getJsonValue(originalJson, ".givenName");	
+		Helper.assertEquals("null", updatedValue);
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, newVal);
+		updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
+		Helper.assertEquals(newVal, updatedValue);	
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".familyName", "null");
+		updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
+		Helper.assertEquals("null", updatedValue);
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".workLocation", "vancouver");
+		updatedValue = JsonHelper.getJsonValue(updatedJson, ".workLocation");
+		Helper.assertEquals("vancouver", updatedValue);
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".workLocation", "12.1");
+		updatedValue = JsonHelper.getJsonValue(updatedJson, ".workLocation");
+		Helper.assertEquals("12.1", updatedValue);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_number() {
+		String jsonPath = ".givenName";
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": 12.1,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": \"active\",\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": []\n" + 
+				"}";
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, "313");
+		Object updatedValue = JsonHelper.getJsonPathValue(updatedJson, jsonPath, true);
+	
+		Object value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not integer: " + value, value instanceof Integer);
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, "313.453");
+		updatedValue = JsonHelper.getJsonPathValue(updatedJson, jsonPath, true);
+	
+		value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not Double: " + value, value instanceof Double);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_boolean() {
+		String jsonPath = ".partyStatus";
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": 12,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": true,\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": []\n" + 
+				"}";
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, "false");
+		Object updatedValue = JsonHelper.getJsonPathValue(updatedJson, jsonPath, true);
+	
+		Object value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not boolean: " + value, value instanceof Boolean);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_null() {
+		String jsonPath = ".prefix";
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": 12,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": true,\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": []\n" + 
+				"}";
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, "null");
+		Object updatedValue = JsonHelper.getJsonPathValue(updatedJson, jsonPath, true);
+	
+		Object value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not null: " + value, value == null);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_String() {
+		String jsonPath = ".individualId";
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": 12,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": true,\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": []\n" + 
+				"}";
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, jsonPath, "person");
+		Object updatedValue = JsonHelper.getJsonPathValue(updatedJson, jsonPath, true);
+	
+		Object value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not string: " + value, value instanceof String);
+		
+		// testing replacing array
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".solutionAttributes", "[]");
+		updatedValue = JsonHelper.getJsonPathValue(updatedJson, ".solutionAttributes", true);
+	
+		value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not string: " + value, value instanceof JSONArray);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_Array() {
+		
+		String originalJson = "{\n" + 
+				"\"individualId\": \"DDDDDDDD-DDDD-4444\",\n" + 
+				"\"familyName\": \"DDDD4\",\n" + 
+				"\"givenName\": 12,\n" + 
+				"\"middleName\": null,\n" + 
+				"\"preferredName\": null,\n" + 
+				"\"prefix\": null,\n" + 
+				"\"suffix\": null,\n" + 
+				"\"workLocation\": null,\n" + 
+				"\"partyStatus\": true,\n" + 
+				"\"partyRelationship\": null,\n" + 
+				"\"solutionAttributes\": [],\n" + 
+				"\"customAttributes\": [ \"Sahil\", \"Vivek\", \"Rahul\" ]\n" + 
+				"}";
+		
+		// testing replacing array
+		
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".solutionAttributes", "[]");
+		Object updatedValue = JsonHelper.getJsonPathValue(updatedJson, ".solutionAttributes", true);
+	
+		Object value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not array: " + value, value instanceof JSONArray);
+		
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".customAttributes", "[ \"Sahil2\", \"Vivek2\", \"Rahul2\" ]");
+		updatedValue = JsonHelper.getJsonPathValue(updatedJson, ".customAttributes", true);
+	
+		value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not array: " + value, value instanceof JSONArray);
+		
+		updatedJson = JsonHelper.replaceJsonPathValue(originalJson, ".customAttributes", "[\n" + 
+				"        {\"id\" : 101},\n" + 
+				"        {\"id\" : 102},\n" + 
+				"        {\"id\" : 103}\n" + 
+				"  ]");
+		updatedValue = JsonHelper.getJsonPathValue(updatedJson, ".customAttributes", true);
+	
+		value = null;
+		if(updatedValue instanceof List) {
+			net.minidev.json.JSONArray array = (net.minidev.json.JSONArray) updatedValue;
+			if(!array.isEmpty())
+				value = array.get(0);
+		}
+		Helper.assertTrue("updatedValue is not array: " + value, value instanceof JSONArray);
+	}
+	
  	@Test()
 	public void replaceJsonPathValue_jsonArray_replaceAll() {
 		String jsonPath = "cars..name";
@@ -519,34 +766,6 @@ public class JsonHelperTest extends TestBase {
 		String updatedValue = JsonHelper.getJsonValue(updatedJson, jsonPath);
 		
 		Helper.assertEquals(newVal, updatedValue);
-	}
-	
-	@Test()
-	public void getRequestBodyFromJsonTemplate_valid() {
-		Config.putValue("quizItem", "quiz2");
-		ServiceObject serviceObject = new ServiceObject()
-				.withTemplateFile("Quiz.json")
-				.withRequestBody("quiz.sport.q1.options:2:value_<@quizItem>");
-		
-		String updatedJson = JsonHelper.getRequestBodyFromJsonTemplate(serviceObject);
-		updatedJson = DataHelper.replaceParameters(updatedJson);
-
-		String updatedValue = JsonHelper.getJsonValue(updatedJson, "quiz.sport.q1.options");
-		
-		Helper.assertEquals("value_quiz2", updatedValue);
-	}
-	
-	@Test()
-	public void getRequestBodyFromJsonTemplate_valid_no_body() {
-		Config.putValue("quizItem", "quiz2");
-		ServiceObject serviceObject = new ServiceObject()
-				.withTemplateFile("Quiz.json")
-				.withRequestBody("");
-		
-		String updatedJson = JsonHelper.getRequestBodyFromJsonTemplate(serviceObject);
-		String updatedValue = JsonHelper.getJsonValue(updatedJson, "quiz.sport.q1.options");
-		
-		Helper.assertEquals("New York Bulls,Los Angeles Kings,Golden State Warriros,Huston Rocket", updatedValue);
 	}
 	
 	@Test()
@@ -745,7 +964,7 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_contain() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ contains(confirmed)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ contains(confirmed)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 	}
@@ -754,7 +973,7 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_invalid() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ contains(invalid)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ contains(invalid)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -763,11 +982,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_hasItems() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ hasItems(confirmed)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ hasItems(confirmed)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ hasItems(invalid)";
+		criteria = "_VERIFY_RESPONSE_BODY_ hasItems(invalid)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -776,11 +995,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_notHaveItems() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ notHaveItems(invalid)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ notHaveItems(invalid)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ notHaveItems(confirmed)";
+		criteria = "_VERIFY_RESPONSE_BODY_ notHaveItems(confirmed)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -789,15 +1008,15 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_equalTo() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ equalTo(response value)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ equalTo(response value)";
 		String error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ equalTo({\"id\":\"1234\"})";
+		criteria = "_VERIFY_RESPONSE_BODY_ equalTo({\"id\":\"1234\"})";
 		error = JsonHelper.validateResponseBody(criteria, "{\"id\":\"1234\"}");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ equalTo(response)";
+		criteria = "_VERIFY_RESPONSE_BODY_ equalTo(response)";
 		error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -806,11 +1025,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_notEqualTo() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ notEqualTo(invalid)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ notEqualTo(invalid)";
 		String error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ notEqualTo(response value)";
+		criteria = "_VERIFY_RESPONSE_BODY_ notEqualTo(response value)";
 		error = JsonHelper.validateResponseBody(criteria, "response value");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -819,11 +1038,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_notContain() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ notContain(invalid)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ notContain(invalid)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ notContain(confirmed)";
+		criteria = "_VERIFY_RESPONSE_BODY_ notContain(confirmed)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 		
@@ -832,7 +1051,7 @@ public class JsonHelperTest extends TestBase {
 				"    \"workOrderUUID\": \"WO_<@_RAND6>\",\n" + 
 				"    \"description\": \"Create WorkOrder\"}";
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ notContain(Create WorkOrder)";
+		criteria = "_VERIFY_RESPONSE_BODY_ notContain(Create WorkOrder)";
 		error = JsonHelper.validateResponseBody(criteria, json2);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -841,15 +1060,15 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_contains() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ contains(confirmed)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ contains(confirmed)";
 		String error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ contains(\"confirmed\": null)";
+		criteria = "_VERIFY_RESPONSE_BODY_ contains(\"confirmed\": null)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ contains(invalid)";
+		criteria = "_VERIFY_RESPONSE_BODY_ contains(invalid)";
 		error = JsonHelper.validateResponseBody(criteria, jsonString);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -858,11 +1077,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_integerGreaterThan() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ integerGreaterThan(4)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ integerGreaterThan(4)";
 		String error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ integerGreaterThan(6)";
+		criteria = "_VERIFY_RESPONSE_BODY_ integerGreaterThan(6)";
 		error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -871,11 +1090,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_integerLessThan() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ integerLessThan(6)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ integerLessThan(6)";
 		String error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ integerLessThan(4)";
+		criteria = "_VERIFY_RESPONSE_BODY_ integerLessThan(4)";
 		error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -884,11 +1103,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_integerEqual() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ integerEqual(5.32)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ integerEqual(5.32)";
 		String error = JsonHelper.validateResponseBody(criteria, "5.32");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ integerEqual(4.33)";
+		criteria = "_VERIFY_RESPONSE_BODY_ integerEqual(4.33)";
 		error = JsonHelper.validateResponseBody(criteria, "5.32");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -897,11 +1116,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_integerNotEqual() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ integerNotEqual(6)";
+		String criteria = "_VERIFY_RESPONSE_BODY_ integerNotEqual(6)";
 		String error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ integerNotEqual(5)";
+		criteria = "_VERIFY_RESPONSE_BODY_ integerNotEqual(5)";
 		error = JsonHelper.validateResponseBody(criteria, "5");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -910,11 +1129,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_isNotEmpty() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ isNotEmpty";
+		String criteria = "_VERIFY_RESPONSE_BODY_ isNotEmpty";
 		String error = JsonHelper.validateResponseBody(criteria, "json response");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ isNotEmpty";
+		criteria = "_VERIFY_RESPONSE_BODY_ isNotEmpty";
 		error = JsonHelper.validateResponseBody(criteria, "");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -923,11 +1142,11 @@ public class JsonHelperTest extends TestBase {
 	public void validateResponseBody_isEmpty() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.RESPONSE.BODY_ isEmpty";
+		String criteria = "_VERIFY_RESPONSE_BODY_ isEmpty";
 		String error = JsonHelper.validateResponseBody(criteria, "");
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
-		criteria = "_VERIFY.RESPONSE.BODY_ isEmpty";
+		criteria = "_VERIFY_RESPONSE_BODY_ isEmpty";
 		error = JsonHelper.validateResponseBody(criteria, "json response");
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
@@ -936,8 +1155,12 @@ public class JsonHelperTest extends TestBase {
 	public void validateByKeywords_hasItems() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:hasItems(Herman Melville)";
+		String criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:hasItems(Herman Melville)";
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY.JSON.PART_ store.book..isbn:hasItems(H/APPR))";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
 		
 		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:hasItems(Nigel Rees,Herman Melville)";
@@ -1039,6 +1262,13 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:contains(invalid)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		
+		String json = "[{\"appointmentUUID\":\"2c50e604-3aa7-4d8e-888f-84d12fdd05b5\",\"party\":\"e6e42f5f-9375-410b-9ded-adc1c31ea789\",\"workOrder\":\"2c50e604-3aa7-4d8e-888f-84d12fdd05b5\",\"appointmentId\":\"WO_SCHAPI_001\",\"appointmentName\":\"Update WorkOrder WO_SCHAPI_001 planned start date time\",\"status\":\"Scheduled\",\"travelDuration\":603000,\"returnTravelDuration\":0,\"returnTravelStart\":1580320800000,\"estimatedOnsite\":1580288022000,\"estimatedComplete\":1580289822000,\"estimatedEnroute\":1580287419000,\"lockFlag\":0,\"shiftId\":\"12229\"},{\"appointmentUUID\":\"35d8e48f-bbb3-44b3-879f-885bcabd9a5a\",\"party\":\"e6e42f5f-9375-410b-9ded-adc1c31ea789\",\"workOrder\":\"35d8e48f-bbb3-44b3-879f-885bcabd9a5a\",\"appointmentId\":\"WO_SCHAPI_002\",\"appointmentName\":\"Create WorkOrder WO_SCHAPI_002\",\"status\":\"Scheduled\",\"travelDuration\":105000,\"returnTravelDuration\":159000,\"returnTravelStart\":1580320641000,\"estimatedOnsite\":1580289927000,\"estimatedComplete\":1580291727000,\"estimatedEnroute\":1580289822000,\"lockFlag\":0,\"shiftId\":\"12229\"},{\"appointmentUUID\":\"4beb68e5-553e-4f6d-9fec-500e4f5b43a8\",\"party\":\"e6e42f5f-9375-410b-9ded-adc1c31ea789\",\"workOrder\":\"4beb68e5-553e-4f6d-9fec-500e4f5b43a8\",\"appointmentId\":\"WO_SCHAPI_004\",\"appointmentName\":\"Create WorkOrder WO_SCHAPI_004\",\"status\":\"Scheduled\",\"travelDuration\":819000,\"returnTravelDuration\":0,\"returnTravelStart\":1580320800000,\"estimatedOnsite\":1580285619000,\"estimatedComplete\":1580287419000,\"estimatedEnroute\":1580284800000,\"lockFlag\":0,\"shiftId\":\"12229\"},{\"appointmentUUID\":\"a059e007-f53a-42d4-baae-4fced7da6b7f\",\"party\":\"40e2cc5d-6225-4447-9f0c-bc9015613ca8\",\"workOrder\":\"a059e007-f53a-42d4-baae-4fced7da6b7f\",\"appointmentId\":\"WO_SCHAPI_003\",\"appointmentName\":\"Create WorkOrder WO_SCHAPI_003\",\"status\":\"Scheduled\",\"travelDuration\":243000,\"returnTravelDuration\":243000,\"returnTravelStart\":1580320557000,\"estimatedOnsite\":1580285043000,\"estimatedComplete\":1580285943000,\"estimatedEnroute\":1580284800000,\"lockFlag\":0,\"shiftId\":\"12225\"}]";
+		criteria = "_VERIFY.JSON.PART_ [?(@.workOrder == \"2c50e604-3aa7-4d8e-888f-84d12fdd05b5\")].estimatedOnsite:contains(2020-01-29T14:00:00.000Z)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
 	}
 	
 	@Test()
@@ -1132,6 +1362,34 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY.JSON.PART_ .book[?(@.author =~ /.*REES/i)].price:integerEqual(8.950)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		String json1 = "{\"attachments\": [\n" + 
+				"                {\n" + 
+				"                    \"name\": \"<@_TIME_MS_13>-att 4\",\n" + 
+				"                    \"url\": \"http://1000lifehacks.com/1\"\n" + 
+				"                },\n" + 
+				"                {\n" + 
+				"                    \"name\": \"<@_TIME_MS_13>-att 3\",\n" + 
+				"                    \"url\": \"http://1000lifehacks.com/\"\n" + 
+				"                },\n" + 
+				"                {\n" + 
+				"                    \"name\": \"<@_TIME_MS_13>-att 1\",\n" + 
+				"                    \"url\": \"http://1000lifehacks.com/1\"\n" + 
+				"                },\n" + 
+				"                {\n" + 
+				"                    \"attachmentId\": \"<@_TIME_MS_13>-a1\",\n" + 
+				"                    \"name\": \"<@_TIME_MS_13>-att 5\",\n" + 
+				"                    \"url\": \"http://1000lifehacks.com/1\"\n" + 
+				"                },\n" + 
+				"                {\n" + 
+				"                    \"attachmentId\": \"<@_TIME_MS_13>-a2\",\n" + 
+				"                    \"name\": \"<@_TIME_MS_13>-att 3\",\n" + 
+				"                    \"url\": \"http://1000lifehacks.com/2\"\n" + 
+				"                }\n" + 
+				"            ]}";
+		criteria = "_VERIFY_JSON_PART_ .attachments.length():equalTo(5)";
+		error = JsonHelper.validateByKeywords(criteria, json1);
+		Helper.assertTrue("errors caught", error.isEmpty());
 	}
 	
 	@Test()
@@ -1167,6 +1425,10 @@ public class JsonHelperTest extends TestBase {
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", !error.isEmpty());
 		
+		criteria = "_VERIFY.JSON.PART_ .book[?(@.isbn)]:nodeSizeGreaterThan(1)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
 		criteria = "_VERIFY.JSON.PART_ store..price:nodeSizeGreaterThan(6)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", !error.isEmpty());
@@ -1181,6 +1443,10 @@ public class JsonHelperTest extends TestBase {
 		Helper.assertTrue("errors caught", !error.isEmpty());
 		
 		criteria = "_VERIFY.JSON.PART_ store..price:nodeSizeExact(5)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY.JSON.PART_ .book[?(@.isbn)]:nodeSizeExact(2)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
 		
@@ -1199,6 +1465,10 @@ public class JsonHelperTest extends TestBase {
 		
 		criteria = "_VERIFY.JSON.PART_ store..price:nodeSizeLessThan(5)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY.JSON.PART_ .book[?(@.isbn)]:nodeSizeLessThan(3)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
 		
 		criteria = "_VERIFY.JSON.PART_ store..price:nodeSizeLessThan(6)";
@@ -1214,7 +1484,7 @@ public class JsonHelperTest extends TestBase {
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", !error.isEmpty());
 		
-		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:sequence(Nigel Rees,Herman Melville)";
+		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:sequence(\"Nigel Rees\",  Herman Melville)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
@@ -1580,5 +1850,48 @@ public class JsonHelperTest extends TestBase {
 		String criteria = "_VERIFY.JSON.PART_ .data[?(@.assetId=~ /.*Asset_2019-11-13T21:47:07/i)]:jsonbody("+partialJson+")";
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonOriginal);
 		Helper.assertTrue("errors caught", error.isEmpty());
+	}
+	
+	@Test(expectedExceptions = { AssertionError.class } , description = "fail on illigal escape character")
+	public void validateByKeywords_response_illegal_escape_key() {
+		String response = "{\"partyBaseUri\": \"www.google\\.ca\", \"locationBaseUri\": \"www.yahoo.com\", \"csv\": \"Adrian Young,Adrian.Young@abb.com,\\\"-123.113918, 49.261100\\\",\\\"-123.113918, 49.261100\\\",Vancouver City Hall\\nAudrey May,Audrey.May@abb.com,\\\"-123.130507, 49.299778\\\",\\\"-123.130507, 49.299778\\\",Vancouver Aquarium\\nAustin Hughes,Austin.Hughes@abb.com,\\\"-123.179996, 49.194356\\\",\\\"-123.179996, 49.194356\\\",Vancouver Intl Airport\\nBenjamin Wilson,Benjamin.Wilson@abb.com,\\\"-123.118136, 49.282487\\\",\\\"-123.118136, 49.282487\\\",Vancouver City Center\" }";
+		JsonHelper.getJsonValue(response, ".partyBaseUri");
+	}
+	
+	@Test(expectedExceptions = { AssertionError.class } , description = "fail on invalid escape character")
+	public void validateByKeywords_response_invalid_escape_key() {
+		Config.putValue(JsonHelper.failOnEscapeChars, true);
+		
+		String response = "{\"partyBaseUri\": \"www.google.ca\", \"locationBaseUri\": \"www.yahoo.com\", \"csv\": \"Adrian Young,Adrian.Young@abb.com,\\\"-123.113918, 49.261100\\\",\\\"-123.113918, 49.261100\\\",Vancouver City Hall\\nAudrey May,Audrey.May@abb.com,\\\"-123.130507, 49.299778\\\",\\\"-123.130507, 49.299778\\\",Vancouver Aquarium\\nAustin Hughes,Austin.Hughes@abb.com,\\\"-123.179996, 49.194356\\\",\\\"-123.179996, 49.194356\\\",Vancouver Intl Airport\\nBenjamin Wilson,Benjamin.Wilson@abb.com,\\\"-123.118136, 49.282487\\\",\\\"-123.118136, 49.282487\\\",Vancouver City Center\" }";
+		JsonHelper.getJsonValue(response, ".partyBaseUri");
+	}
+	
+	@Test(description = "fail on back slash in response")
+	public void containsEscapeChar_valid() {
+		String response = "test\\\"";
+		boolean containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\b";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\n";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\r";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\f";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\'";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		response = "test\\\\";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
+		
+		response = "test\\\\\\n";
+		containsEscapeChar = JsonHelper.containsEscapeChar(response);
+		Helper.assertTrue("escape char not found", containsEscapeChar);
 	}
 }

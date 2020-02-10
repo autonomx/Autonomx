@@ -169,7 +169,7 @@ public class MessageQueueHelperTest extends TestBase {
 
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ random + ")");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);
 	}
@@ -194,7 +194,7 @@ public class MessageQueueHelperTest extends TestBase {
 		TestLog.And("I validate with 1 expected message, and expect the test to fail");
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ random + ")");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);
 	}
@@ -219,7 +219,7 @@ public class MessageQueueHelperTest extends TestBase {
 		TestLog.And("I validate with 1 expected message, and expect the test to fail");
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ random + ")");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);	
 	}
@@ -244,7 +244,7 @@ public class MessageQueueHelperTest extends TestBase {
 		TestLog.And("I validate with 1 expected message, and expect the test to fail");
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ random + ")");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);	
 	}
@@ -269,8 +269,8 @@ public class MessageQueueHelperTest extends TestBase {
 		TestLog.And("I validate with 2 expected message, and expect the test to pass");
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:2;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ "test"+ random + ")"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ "test"+ random2 + ")");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ "test"+ random + ")"
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ "test"+ random2 + ")");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);	
 	}
@@ -295,8 +295,8 @@ public class MessageQueueHelperTest extends TestBase {
 		TestLog.And("I validate with 2 expected message, and expect the test to pass");
 		ServiceObject serviceObject = new ServiceObject()
 				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:2;"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ "test"+ random + ")"
-						+ " && _VERIFY.RESPONSE.BODY_ contains("+ "test"+ random2 + "3)");
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ "test"+ random + ")"
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ "test"+ random2 + "3)");
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);	
 	}	

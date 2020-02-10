@@ -30,9 +30,6 @@ web.driver.manager.version = LATEST
 # web driver manager proxy info
 web.driver.manager.proxy.forceCache = false
 web.driver.manager.timeoutSeconds = 5
-web.driver.manager.proxy.server = ""
-web.driver.manager.proxy.user = ""
-web.driver.manager.proxy.password =""
 
 web.maximizeBrowser = false
 

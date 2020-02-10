@@ -62,9 +62,9 @@ public class UserPanel {
 		.withContentType("application/x-www-form-urlencoded")
 		.withMethod("POST")
 		.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
-		.withRequestBody("username:<@personUsername>;" + 
-				"email:<@personEmail>;" + 
-				"password:<@personPassword>;" + 
+		.withRequestBody("username:<@personUsername>," + 
+				"email:<@personEmail>," + 
+				"password:<@personPassword>," + 
 				"confirmed:<@personConfirmed>");
 		
 		return RestApiInterface.RestfullApiInterface(userAPI);
@@ -86,7 +86,7 @@ public class UserPanel {
 	 * @throws JSONException
 	 */
 	public void deleteAllUsers(String prefix) throws JSONException {
-		Helper.runApiContaining("username", prefix, "getUsers", "id", "userId", "deleteUser");
+		Helper.runApiContaining(".username", prefix, "getUsers", ".id", "userId", "deleteUser");
 	}
 
 	/**

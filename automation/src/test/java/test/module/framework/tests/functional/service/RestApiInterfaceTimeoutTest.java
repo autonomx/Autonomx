@@ -62,7 +62,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
 		
 		Helper.assertTrue("did not wait for timeout duration", passedTimeInSeconds >= 2);
-		Helper.assertTrue("timout waited too long: " + passedTimeInSeconds + " seconds", passedTimeInSeconds < 4);
+		Helper.assertTrue("timout waited too long: " + passedTimeInSeconds + " seconds", passedTimeInSeconds < 10);
 	}
 	
 	@Test(expectedExceptions = { AssertionError.class }, priority=2)

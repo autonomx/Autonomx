@@ -20,7 +20,7 @@ public class UserPanel{
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
 	public static class elements {
-		public static EnhancedBy NEW_USER_BUTTON = Element.byCss("[label*='addAnEntry']", "add new user");
+		public static EnhancedBy NEW_USER_BUTTON = Element.byCss("[label*='addAnEntry'] span", "add new user");
 		
 		// add/edit user panel
 		public static EnhancedBy USER_NAME_FILED = Element.byCss("#username", "username field");

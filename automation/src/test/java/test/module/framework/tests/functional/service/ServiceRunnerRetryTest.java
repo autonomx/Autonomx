@@ -40,7 +40,7 @@ public class ServiceRunnerRetryTest extends TestBase {
 			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
 			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
 			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType) throws Exception {
+			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
 		
 		
 		TestLog.When("I verify api runner test");
@@ -49,7 +49,7 @@ public class ServiceRunnerRetryTest extends TestBase {
 		ServiceObject apiObject = new ServiceObject().setServiceObject(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, 
 		UriPath, ContentType, Method, Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, 
 		RespCodeExp, ExpectedResponse, TcComments, tcName, 
-		tcIndex, testType); 
+		tcIndex, testType, serviceSteps); 
 		new AbstractDriverTestNG().setupApiDriver(apiObject); 
 
         int runCount = TestObject.getTestInfo().runCount;
@@ -59,14 +59,14 @@ public class ServiceRunnerRetryTest extends TestBase {
         	Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
         	ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
     				Option, "", TemplateFile, "", OutputParams, "600", ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType);
+    				TcComments, tcName, tcIndex, testType, serviceSteps);
 
     	}else if(runCount == 2) {
     		Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
     		
     		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
     				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType);
+    				TcComments, tcName, tcIndex, testType, serviceSteps);
     	}
 	}
 }

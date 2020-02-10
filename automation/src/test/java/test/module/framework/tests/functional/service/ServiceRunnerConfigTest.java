@@ -38,7 +38,7 @@ public class ServiceRunnerConfigTest extends TestBase {
 			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
 			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
 			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType) throws Exception {
+			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
 		
 		String username = ConfigVariable.getStringValue("adminUserName");
 		Helper.assertEquals("accessTokenAdmin", username);
@@ -47,7 +47,7 @@ public class ServiceRunnerConfigTest extends TestBase {
 
 		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
 				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex, testType);
+				TcComments, tcName, tcIndex, testType, serviceSteps);
 	}
 	
 	@AfterClass

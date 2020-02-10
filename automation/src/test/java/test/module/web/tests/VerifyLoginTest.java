@@ -12,7 +12,6 @@ import data.webApp.UserInvalid;
 import module.webApp.panel.LoginPanel;
 import module.webApp.panel.MainPanel;
 import test.module.web.TestBase;
-
 /**
  * this test class demonstrates 3 data types: data object, csv data and data provider
  * @author ehsan matean

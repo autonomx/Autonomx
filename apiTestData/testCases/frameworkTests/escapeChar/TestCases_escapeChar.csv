@@ -1,0 +1,6 @@
+TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Method,Option,RequestHeaders,TemplateFile,RequestBody,OutputParams,RespCodeExp,ExpectedResponse,TcComments
+TsUser,escapeChar,Y,Retrieve a token from Token Generator,RESTfulAPI,/auth/local,application/json,POST,,,,"{
+    ""partyBaseUri"": ""<@partyBaseUri>"",
+    ""locationBaseUri"": ""<@locationBaseUri>"",
+    ""csv"": ""Adrian Young,Adrian.Young@abb.com,\""-123.113918, 49.261100\"",\""-123.113918, 49.261100\"",Vancouver City Hall\nAudrey May,Audrey.May@abb.com,\""-123.130507, 49.299778\"",\""-123.130507, 49.299778\"",Vancouver Aquarium\nAustin Hughes,Austin.Hughes@abb.com,\""-123.179996, 49.194356\"",\""-123.179996, 49.194356\"",Vancouver Intl Airport\nBenjamin Wilson,Benjamin.Wilson@abb.com,\""-123.118136, 49.282487\"",\""-123.118136, 49.282487\"",Vancouver City Center""
+}","user.role.id:<$roles>; jwt:<$accessTokenAdmin>;user.id:<$userId>",200,"{       ""user"": {        ""username"":  ""<@adminUserName>"",        ""email"": ""autouser313@gmail.com"",        ""provider"": ""local"",        ""confirmed"": true,        ""blocked"": null    }}&&_VERIFY.JSON.PART_user.username:1: hasItems(<@adminUserName>);user.email:1: equalTo(autouser313@gmail.com);user.provider:1: isNotEmpty;user.role.name:1: contains(Administrator)&& _NOT_EMPTY_",

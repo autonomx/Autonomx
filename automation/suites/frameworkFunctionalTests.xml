@@ -8,11 +8,13 @@
 		<classes>
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerRetryTest" />	
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerConfigTest" />
+			<class name="test.module.framework.tests.functional.service.ServiceRunnerMultiRunTest" />	
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerMultipleTestCsv" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestCaseTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestFileTest" />
 			
+			<class name="test.module.framework.tests.functional.service.ExternalInterfaceTest" />		
 			<class name="test.module.framework.tests.functional.service.MessageQueueHelperTest" />		
 			<class name="test.module.framework.tests.functional.service.RestApiInterfaceTest" />	
 		   	<class name="test.module.framework.tests.functional.service.RestApiInterfaceTimeoutTest" />

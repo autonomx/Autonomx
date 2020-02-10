@@ -16,22 +16,22 @@ import test.module.framework.TestBase;
 
 /**
  * @author ehsan matean
- *
+ * Test to verify running single test case
  */
-public class ServiceRunnerTestFileTest extends TestBase {
+public class ServiceRunnerTestStepsTest extends TestBase {
 	
 	AtomicInteger testCount = new AtomicInteger(0);
 
 	@BeforeClass
 	public void beforeClass()  {
-		ConfigVariable.apiTestCaseFile().setValue("TestCases_UserValidation.csv");
-		TestDataProvider.csvFileIndex.set(0);
+		ConfigVariable.apiParallelTestcasePath().setValue("../apiTestData/testCases/frameworkTests/testStep/");
 
+		ConfigVariable.apiTestCaseFile().setValue("TestCases_UserValidation_step.csv");
 	}
 	
 	// verifying test retry on api runner
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void verifyApiRunner_TestCaseFile(String TestSuite, String TestCaseID, String RunFlag, String Description,
+	public void verifyApiRunner_TestStep(String TestSuite, String TestCaseID, String RunFlag, String Description,
 			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
 			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
 			String ExpectedResponse, String TcComments,
@@ -48,6 +48,6 @@ public class ServiceRunnerTestFileTest extends TestBase {
 	
 	@AfterClass
 	public void afterClass()  {	
-		Helper.assertEquals(5, testCount.get());
+		Helper.assertEquals(4, testCount.get());
 	}	
 }

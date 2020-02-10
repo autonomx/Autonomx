@@ -59,4 +59,10 @@ public class DefaultTestObjectTest extends TestBase {
 		String testName = TestObject.getDefaultTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.contains(TestObject.DEFAULT_TEST ));
 	}
+	
+	@Test(description = "verify test id based on test name")
+	public void verifyTestId() {
+		String testName = TestObject.getTestId();
+		Helper.assertTrue("wrong default test id", testName.equals("DefaultTestObjectTest-verifyTestId"));
+	}
 }
