@@ -1,7 +1,7 @@
 #!/bin/bash -l
 export LC_ALL=en_US.UTF-8
 
-Version=1.0.7
+Version=1.0.9
 
 cd "$(dirname ${BASH_SOURCE[0]})"
 

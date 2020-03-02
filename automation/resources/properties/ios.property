@@ -1,5 +1,6 @@
 #iOS
 ios.app = "eurika.app"
+
 ios.appDir = "resources/"
 ios.mobile = "iPhone 11 Pro"
 ios.tablet = "iPad Air 2"

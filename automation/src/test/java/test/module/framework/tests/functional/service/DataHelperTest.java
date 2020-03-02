@@ -2,6 +2,7 @@ package test.module.framework.tests.functional.service;
 
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -197,6 +198,37 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void replaceParameters_time_zone() {
+		
+		String result = DataHelper.replaceParameters("user:<@_TIME_55;ZONE:Asia/Kolkata>");
+		Instant	timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		LocalDateTime time = LocalDateTime.ofInstant(timeinstance, ZoneId.of("Asia/Kolkata"));	
+		ZoneId systemZone =  ZoneId.of("Asia/Kolkata");
+		ZoneOffset offset = systemZone.getRules().getOffset(timeinstance);
+		String dateString = time.toInstant(offset).toString();
+		Helper.assertEquals("user:" + dateString, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_55;ZONE:Asia/Kolkata;FORMAT:dd-M-yyyy hh:mm:ss>");
+		timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		time = LocalDateTime.ofInstant(timeinstance, ZoneId.of("Asia/Kolkata"));	
+		systemZone =  ZoneId.of("Asia/Kolkata");
+		offset = systemZone.getRules().getOffset(timeinstance);
+		timeinstance = time.toInstant(offset);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-M-yyyy hh:mm:ss").withZone(ZoneId.of("UTC"));
+		dateString = formatter.format(timeinstance);
+		Helper.assertEquals("user:" + dateString, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_55+4h;ZONE:Asia/Kolkata>");
+		timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+		timeinstance = timeinstance.plusSeconds(60*60*4);
+		time = LocalDateTime.ofInstant(timeinstance, ZoneId.of("Asia/Kolkata"));	
+		systemZone =  ZoneId.of("Asia/Kolkata");
+		offset = systemZone.getRules().getOffset(timeinstance);
+		dateString = time.toInstant(offset).toString();
+		Helper.assertEquals("user:" + dateString, result);
+	}
+	
+	@Test()
 	public void replaceParameters_time_set_time() {
 		
 		TestLog.Then("I verify setting fixed time value");
@@ -235,6 +267,58 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void replaceParameters_time_set_day() {
+		// this tuesday test
+		String result = DataHelper.replaceParameters("<@_TIME_ISO_25;setDay:Tuesday>");
+		Instant	timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+
+		LocalDateTime time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
+		int currentDay = Helper.date.getDayOfWeekIndex(time);
+		int targetDay = Helper.date.getDayOfWeekIndex("Tuesday");
+		int timeDifference = targetDay - currentDay;
+		time = time.plusDays(timeDifference);
+		Helper.assertEquals(time.toString(), result);
+		
+		// next week
+		result = DataHelper.replaceParameters("<@_TIME_ISO_25+2w;setDay:Tuesday>");
+		timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+
+		time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
+		time = time.plusWeeks(2);
+		currentDay = Helper.date.getDayOfWeekIndex(time);
+		targetDay = Helper.date.getDayOfWeekIndex("Tuesday");
+		timeDifference = targetDay - currentDay;
+		time = time.plusDays(timeDifference);
+		Helper.assertEquals(time.toString(), result);
+	}
+	
+	@Test()
+	public void replaceParameters_time_set_month() {
+		// this january
+		String result = DataHelper.replaceParameters("<@_TIME_ISO_25;setMonth:January>");
+		Instant	timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+
+		LocalDateTime time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
+		int currentMonth = Helper.date.getMonthOfYearIndex(time);
+		int targetMonth = Helper.date.getMonthOfYearIndex("January");
+		int timeDifference = targetMonth - currentMonth;
+		time = time.plusMonths(timeDifference);
+		Helper.assertEquals(time.toString(), result);
+		
+		// november
+		result = DataHelper.replaceParameters("<@_TIME_ISO_25+6w;setMonth:November>");
+		timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
+
+		time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
+		time = time.plusWeeks(6);
+		currentMonth = Helper.date.getMonthOfYearIndex(time);
+		targetMonth = Helper.date.getMonthOfYearIndex("November");
+		timeDifference = targetMonth - currentMonth;
+		time = time.plusMonths(timeDifference);
+		Helper.assertEquals(time.toString(), result);
+	}
+	
+	@Test()
 	public void replaceParameters_time_modify_iso() {
 
 		TestLog.Then("I verify date replacement");
@@ -263,6 +347,22 @@ public class DataHelperTest extends TestBase {
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+2d>");
 		newTime = time.plus(2, ChronoUnit.DAYS);
 		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+2w>");
+		newTime = time.plus(2 * 7, ChronoUnit.DAYS);
+		Helper.assertEquals("user:" + newTime.toString(), result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+2mo>");
+		LocalDateTime localTime = LocalDateTime.ofInstant(time, ZoneOffset.UTC);
+		localTime = localTime.plusMonths(2);
+		String dateString = localTime.toInstant(ZoneOffset.UTC).toString();
+		Helper.assertEquals("user:" + dateString, result);
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_24+2y>");
+		localTime = LocalDateTime.ofInstant(time, ZoneOffset.UTC);
+		localTime = localTime.plusYears(2);
+		dateString = localTime.toInstant(ZoneOffset.UTC).toString();
+		Helper.assertEquals("user:" + dateString, result);
 	}
 	
 	@Test()

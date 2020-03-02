@@ -1,0 +1,90 @@
+# for json path: https://github.com/json-path/JsonPath  validation: http://jsonpath.herokuapp.com/
+
+# global configuration
+service.csv.separator = ","
+service.csv.dataprovider.count = 20
+
+api.uriPath = http://demo.autonomx.io
+adminUserName = "autoAdmin1"
+adminUserPassword = "autoPass1"
+authentication.disabled = false 
+
+api.parallelTestcasePath = "../apiTestData/testCases/"
+api.csv.include.subdir = false
+
+api.actionTestcasePath = "../apiTestData/keywords/action/"
+api.templatePath = "../apiTestData/templates/"
+api.templateDataFile = "../apiTestData/templates/data/"
+
+api.base.path = "../apiTestData/keywords/testBase/"
+api.base.before.testfile = "TestCases_RunBefore.csv"
+api.base.after.testfile = "TestCases_RunAfter.csv"
+api.base.before.suite = "TestCases_RunBeforeSuite.csv"
+api.base.after.suite = "TestCases_RunAfterSuite.csv"
+
+# timeout in seconds for api calls to return response
+service.response.timeout.seconds = 60
+
+# will retry the request, expecting to pass validation for duration of specified duration in seconds
+service.timeout.validation.isEnabled = true
+service.timeout.validation.seconds = 2
+service.timeout.validation.delay.between.attempt.seconds = 3
+service.retry.count = 0
+service.retry.after.seconds = 0
+
+# set file name to run single csv file
+api.testCaseFile = ""
+api.testCase = ""
+
+# api validation rules
+api.validation.fail.on.escapechars = false
+
+# api url encoding
+api.encoding.url = true
+api.encoding.parameter = false
+
+# Database Server
+db.1.driver = org.postgresql.Driver
+db.1.url=jdbc:postgresql://localhost:5432
+db.1.name=testdb
+db.1.username=postgres
+db.1.password=123
+
+# mongoDb
+#db.1.driver = mongodb.jdbc.MongoDriver
+#db.1.url=jdbc:mongo://ds029847.mongolab.com:29847
+# first time set rebuildschema=true
+#db.1.name=tpch?rebuildschema=false
+#db.1.username=
+#db.1.password=
+
+# Rabbit MQ
+rabbitMQ.host = "localhost"
+rabbitMQ.port = ""
+rabbitMQ.virtualhost = ""
+rabbitMQ.user = ""
+rabbitMQ.password = ""
+rabbitMQ.exchange = ""
+rabbitMQ.outbound.exchange = ""
+rabbitMQ.exchange.type = ""
+rabbitMQ.queue = ""
+rabbitMQ.outbound.queue = ""
+rabbitMQ.queue.declare = true
+rabbitMQ.Queue.durable = true
+rabbitMQ.msgId.prefix = "rabbitTestMsgID"
+
+# Kafka 
+kafka.bootstrap.servers = ""
+kafka.clientId = ""
+kafka.topic = ""
+kafka.outbound.topic = ""
+kafka.group.id = ""
+kafka.msgId.prefix = "kafkaTestMsgID"
+
+# Servicebus
+servicebus.connectionString = ""
+servicebus.queue = ""
+servicebus.topic = ""
+servicebus.outbound.topic = ""
+servicebus.host = ""
+servicebus.msgId.prefix = "servicebusTestMsgID"

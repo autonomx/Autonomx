@@ -58,6 +58,8 @@ rm -rf automation/suites/iosSmokeTests.xml
 rm -rf automation/suites/winSmokeTests.xml
 rm -rf automation/suites/frameworkFunctionalTests.xml
 rm -rf automation/suites/frameworkUiTests.xml
+rm -rf automation/suites/frameworkMessageQueueTests.xml.xml
+
 # remove resources
 echo remove resources
 rm -rf automation/resources/eurika.app

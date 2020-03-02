@@ -65,6 +65,8 @@ rm -rf automation/suites/servicesTests.xml
 rm -rf automation/suites/serviceIntegration.xml
 rm -rf automation/suites/webSmokeTests.xml
 rm -rf automation/suites/frameworkTests.xml
+rm -rf automation/suites/frameworkMessageQueueTests.xml.xml
+
 # remove resources
 echo remove resources
 rm -rf automation/resources/eurika.app

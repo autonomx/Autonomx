@@ -11,11 +11,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import configManager.ConfigVariable;
 import core.apiCore.interfaces.Authentication;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
+import core.support.objects.TestObject;
 import test.module.framework.TestBase;
 
 /*
@@ -24,6 +28,7 @@ import test.module.framework.TestBase;
  * appium.logging = false
  * appium.logging.level = info 
  */
+@SuppressWarnings("unchecked")
 public class ConfigTest extends TestBase {
 	
 	@BeforeClass
@@ -189,4 +194,21 @@ public class ConfigTest extends TestBase {
 		Helper.assertEquals("password1", basicRequest.get(1));
 	}
 	
+	@Test
+	public void checkForDuplicateKeys_valid() {
+		Multimap<String, String> multimap = ArrayListMultimap.create();
+
+		multimap.put("1", "A");
+		multimap.put("1", "B");
+		multimap.put("1", "C");
+		multimap.put("1", "A");
+		multimap.put("2", "A");
+		multimap.put("2", "B");
+		multimap.put("2", "C");
+		multimap.put("2", "A");
+		
+		TestObject.getTestInfo().configKeys.putAll(multimap);
+		List<String> duplicates = Config.checkForDuplicateKeys();
+		Helper.assertEquals(2, duplicates.size());
+	}	
 }

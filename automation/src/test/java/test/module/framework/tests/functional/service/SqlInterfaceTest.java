@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import core.apiCore.ServiceManager;
 import core.apiCore.helpers.DataHelper;
 import core.apiCore.interfaces.SqlInterface;
 import core.helpers.Helper;
@@ -205,10 +206,10 @@ public class SqlInterfaceTest extends TestBase {
 		Config.putValue("db.1.username", "world");
 		Config.putValue("db.1.password", "world123");
 		
-		TestObject.getDefaultTestInfo().config.put(SqlInterface.DB_TIMEOUT_VALIDATION_ENABLED, "false");
-		TestObject.getDefaultTestInfo().config.put(SqlInterface.DB_TIMEOUT_VALIDATION_SECONDS, "4");
-		Config.putValue(SqlInterface.DB_TIMEOUT_VALIDATION_ENABLED, "false");
-		Config.putValue(SqlInterface.DB_TIMEOUT_VALIDATION_SECONDS, "4");
+		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, "false");
+		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_SECONDS, "4");
+		Config.putValue(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, "false");
+		Config.putValue(ServiceManager.SERVICE_TIMEOUT_VALIDATION_SECONDS, "4");
 
 		ServiceObject serviceObject = new ServiceObject()
 				.withRequestBody("select * From city where NAME='Herat'")

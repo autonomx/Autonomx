@@ -7,7 +7,7 @@ appium.isHybridApp = false
 appium.chromeVersion = LATEST
 
 # use with hybridDriver. eg. app.webApp.getHybridDriver(). For hybrid apps with webView
-# options: WEB, ANDROID, IOS
+# options: WEB, ANDROID_TABLET,ANDROID_MOBILE, IOS_MOBILE, IOS_TABLET, WINAPP
 appium.hybrid.driver = "WEB"
 
 # info or debug

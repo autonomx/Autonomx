@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import configManager.ConfigVariable;
+import core.apiCore.ServiceManager;
 import core.apiCore.interfaces.RestApiInterface;
 import core.helpers.Helper;
 import core.helpers.StopWatchHelper;
@@ -37,9 +38,9 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(RestApiInterface.API_TIMEOUT_VALIDATION_ENABLED, true);
-		ConfigVariable.apiTimeoutValidationIsEnabled().setValue(true);
-		ConfigVariable.apiTimeoutValidationSeconds().setValue(2);
+		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
+		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");
 		
 		watch = StopWatchHelper.start();
@@ -61,7 +62,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 
 		passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
 		
-		Helper.assertTrue("did not wait for timeout duration", passedTimeInSeconds >= 2);
+		Helper.assertTrue("did not wait for timeout duration. passed: " + passedTimeInSeconds, passedTimeInSeconds >= 2);
 		Helper.assertTrue("timout waited too long: " + passedTimeInSeconds + " seconds", passedTimeInSeconds < 10);
 	}
 	
@@ -72,9 +73,9 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(RestApiInterface.API_TIMEOUT_VALIDATION_ENABLED, true);
-		ConfigVariable.apiTimeoutValidationIsEnabled().setValue(true);
-		ConfigVariable.apiTimeoutValidationSeconds().setValue(2);
+		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
+		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");
 		
 		watch = StopWatchHelper.start();
@@ -87,7 +88,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 				.withRespCodeExp("600")
 				.withOption("NO_VALIDATION_TIMEOUT");
 		
-		boolean timeoutEnabled = ConfigVariable.apiTimeoutValidationIsEnabled().toBoolean();
+		boolean timeoutEnabled = ConfigVariable.serviceTimeoutValidationIsEnabled().toBoolean();
 		Helper.assertTrue("validation timeout is enabled", !timeoutEnabled);	
 		
 		RestApiInterface.RestfullApiInterface(userAPI);		 
@@ -110,9 +111,9 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(RestApiInterface.API_TIMEOUT_VALIDATION_ENABLED, true);
-		ConfigVariable.apiTimeoutValidationIsEnabled().setValue(true);
-		ConfigVariable.apiTimeoutValidationSeconds().setValue(2);
+		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
+		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");
 		
 		watch = StopWatchHelper.start();
@@ -125,7 +126,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 				.withRespCodeExp("600")
 				.withOption("NO_VALIDATION_TIMEOUT");
 		
-		boolean timeoutEnabled = ConfigVariable.apiTimeoutValidationIsEnabled().toBoolean();
+		boolean timeoutEnabled = ConfigVariable.serviceTimeoutValidationIsEnabled().toBoolean();
 		Helper.assertTrue("validation timeout is enabled", !timeoutEnabled);	
 		
 		RestApiInterface.RestfullApiInterface(userAPI);		 

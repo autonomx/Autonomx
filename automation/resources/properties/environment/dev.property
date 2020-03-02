@@ -7,8 +7,11 @@ service.csv.dataprovider.count = 20
 api.uriPath = http://demo.autonomx.io
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
+authentication.disabled = false 
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
+api.csv.include.subdir = false
+
 api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"
 api.templateDataFile = "../apiTestData/templates/data/"
@@ -19,12 +22,15 @@ api.base.after.testfile = "TestCases_RunAfter.csv"
 api.base.before.suite = "TestCases_RunBeforeSuite.csv"
 api.base.after.suite = "TestCases_RunAfterSuite.csv"
 
-# timeout in seconds
-api.response.timeout.seconds = 30
+# timeout in seconds for api calls to return response
+service.response.timeout.seconds = 60
 
 # will retry the request, expecting to pass validation for duration of specified duration in seconds
-api.timeout.validation.isEnabled = false
-api.timeout.validation.seconds = 2
+service.timeout.validation.isEnabled = true
+service.timeout.validation.seconds = 2
+service.timeout.validation.delay.between.attempt.seconds = 3
+service.retry.count = 0
+service.retry.after.seconds = 0
 
 # set file name to run single csv file
 api.testCaseFile = ""
@@ -51,9 +57,6 @@ db.1.password=123
 #db.1.name=tpch?rebuildschema=false
 #db.1.username=
 #db.1.password=
-
-# Message queue
-messagequeue.timeout.seconds = 60
 
 # Rabbit MQ
 rabbitMQ.host = "localhost"

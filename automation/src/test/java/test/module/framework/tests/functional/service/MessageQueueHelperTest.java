@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import core.apiCore.ServiceManager;
 import core.apiCore.helpers.MessageQueueHelper;
 import core.helpers.Helper;
 import core.support.configReader.Config;
@@ -179,7 +180,7 @@ public class MessageQueueHelperTest extends TestBase {
 		String random = Helper.generateRandomString(10);
 		String random2 = Helper.generateRandomString(11);
 		
-		Config.putValue(MessageQueueHelper.MQ_TIMEOUT_SECONDS, 2);
+		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, 2);
 
 		TestLog.When("I create 2 messages");
 		MessageObject message = new MessageObject().withMessageId("message" + random);
@@ -204,7 +205,7 @@ public class MessageQueueHelperTest extends TestBase {
 		String random = Helper.generateRandomString(10);
 		String random2 = Helper.generateRandomString(11);
 		
-		Config.putValue(MessageQueueHelper.MQ_TIMEOUT_SECONDS, 1);
+		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, 1);
 
 		TestLog.When("I create 2 messages");
 		MessageObject message = new MessageObject().withMessageId("message" + random);
@@ -229,7 +230,7 @@ public class MessageQueueHelperTest extends TestBase {
 		String random = Helper.generateRandomString(10);
 		String random2 = Helper.generateRandomString(11);
 		
-		Config.putValue(MessageQueueHelper.MQ_TIMEOUT_SECONDS, 1);
+		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, 1);
 
 		TestLog.When("I create 2 messages");
 		MessageObject message = new MessageObject().withMessageId("message" + random);
@@ -254,7 +255,7 @@ public class MessageQueueHelperTest extends TestBase {
 		String random = Helper.generateRandomString(10);
 		String random2 = Helper.generateRandomString(11);
 		
-		Config.putValue(MessageQueueHelper.MQ_TIMEOUT_SECONDS, 1);
+		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, 1);
 
 		TestLog.When("I create 2 messages");
 		MessageObject message = new MessageObject().withMessageId("message" + random);
@@ -280,7 +281,7 @@ public class MessageQueueHelperTest extends TestBase {
 		String random = Helper.generateRandomString(10);
 		String random2 = Helper.generateRandomString(11);
 		
-		Config.putValue(MessageQueueHelper.MQ_TIMEOUT_SECONDS, 1);
+		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, 1);
 
 		TestLog.When("I create 2 messages");
 		MessageObject message = new MessageObject().withMessageId("message" + random);

@@ -1,5 +1,7 @@
 package test.module.framework.tests.functional.service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,5 +85,18 @@ public class CsvReaderTest extends TestBase {
 		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(1, list.size());
 		Helper.assertTrue("list doesnt include escape chars: " + Arrays.toString(list.get(0)), Arrays.toString(list.get(0)).contains("\\\""));
+	}
+	
+	@Test(description = "csv file from subdirectories")
+	public void getTestCasesFromCsvFile_sub_directories() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/testSubDir/");
+		Config.putValue(CsvReader.SERVICE_CSV_INCLUDE_SUB_DIR, true);
+		
+		ArrayList<File> testCsvList = CsvReader.getTestDataCsvFileList();
+		Helper.assertEquals(6, testCsvList.size());
+		
+		Config.putValue(CsvReader.SERVICE_CSV_INCLUDE_SUB_DIR, false);	
+		testCsvList = CsvReader.getTestDataCsvFileList();
+		Helper.assertEquals(2, testCsvList.size());
 	}
 }

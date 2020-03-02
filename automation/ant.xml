@@ -21,9 +21,9 @@
 	-->
 	
 	<target name="dirChangeDetector" description="detect changes in main and keyword directory, delete file.maker on detection">
-	 	  <java classname="fileDetector.dirChangeDetector">
+	 	  <java classname="mavenRunner.dirChangeDetector">
 	 	    <classpath>
-	 	      <pathelement location="library/dirChangeDetector.jar"/>
+	 	      <pathelement location="library/mavenRunner.jar"/>
 	 	    </classpath>
 	 	  </java>
 	 	</target>

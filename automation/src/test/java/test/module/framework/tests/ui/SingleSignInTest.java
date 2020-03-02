@@ -101,11 +101,15 @@ public class SingleSignInTest extends TestBase {
 				
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+
 	}
 	
 	@Test(dependsOnMethods = "verifySameUserPart1", priority=3)
 	public void verifySameUserPart2() throws Exception {
 		setupWebDriver(app.framework.getWebDriver());
+		
+		Helper.refreshPage();
 		
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);

@@ -1269,6 +1269,17 @@ public class JsonHelperTest extends TestBase {
 		error = JsonHelper.validateByKeywords(criteria, json);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 		
+		json = "{\"timestamp\":\"2020-02-11T20:59:55.119+0000\",\"status\":500,\"error\":\"Internal Server Error\",\"message\":\"Invalid Request Body: Json Validation Error for de.product.service.requirement.api.createupdate.request-1.0.0.json\",\"path\":\"/v1/productservicerequirements\"}\r\n" + 
+				"2020-02-11 12:54";
+		criteria = "_VERIFY_JSON_PART_ .message:contains(Invalid Request Body: Json Validation Error for de.product.service.requirement.api.createupdate.request-1.0.0.json)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		json = "{\"key\":\"value1234\"}";
+		criteria = "_VERIFY.JSON.PART_ .key:contains(1234)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
 	}
 	
 	@Test()
