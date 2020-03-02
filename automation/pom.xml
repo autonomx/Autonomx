@@ -73,14 +73,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.unity.jdbc</groupId>
-			<artifactId>unityJdbc</artifactId>
-			<version>1.0.1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/library/unityjdbc.jar</systemPath>
-		</dependency>
-
-		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
 			<version>LATEST</version>
