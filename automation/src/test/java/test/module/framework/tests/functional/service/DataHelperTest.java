@@ -229,6 +229,16 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void replaceParameters_format_cc() {
+		
+		String result = DataHelper.replaceParameters("user:<@_TIME_55;FORMAT:ccyy-MM-dd hh:mm:ss>");
+		Helper.assertTrue("result does not contain 21", result.contains("21"));
+		
+		result = DataHelper.replaceParameters("user:<@_TIME_10+1w;FORMAT:CCyy-MM-dd hh:mm:ss>");
+		Helper.assertTrue("result does not contain 21", result.contains("21"));	
+	}
+	
+	@Test()
 	public void replaceParameters_time_set_time() {
 		
 		TestLog.Then("I verify setting fixed time value");

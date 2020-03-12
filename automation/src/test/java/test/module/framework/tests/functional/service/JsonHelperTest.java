@@ -1240,6 +1240,33 @@ public class JsonHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void validateByKeywords_custom_command() {
+		String criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllNumbersGreaterThanSumOf,3,5)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllNumbersGreaterThanSumOf,10,1)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllDifferent)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+	}
+	
+	@Test()
+	public void validateResponseBody_custom_command() {
+		
+		String criteria = "_VERIFY_RESPONSE_BODY_ command(Command.containsValue,Nigel Rees)";
+		String error = JsonHelper.validateResponseBody(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_RESPONSE_BODY_ command(Command.containsValue,invalid)";
+		error = JsonHelper.validateResponseBody(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
+	@Test()
 	public void validateByKeywords_contains() {
 		TestLog.When("I verify a valid json against correct value");
 
@@ -1275,11 +1302,30 @@ public class JsonHelperTest extends TestBase {
 		error = JsonHelper.validateByKeywords(criteria, json);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
+		criteria = "_VERIFY_JSON_PART_ .message:contains(Invalid, de.product, createupdate)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
 		json = "{\"key\":\"value1234\"}";
 		criteria = "_VERIFY.JSON.PART_ .key:contains(1234)";
 		error = JsonHelper.validateByKeywords(criteria, json);
 		Helper.assertTrue("errors not caught", error.isEmpty());
 		
+		json = "{\n" + 
+				"    \"Timestamp\": \"03/05/2020 08:23:01 +00:00\",\n" + 
+				"    \"Status\": 400,\n" + 
+				"    \"Error\": \"Bad Request\",\n" + 
+				"    \"Message\": \"Json Validation Error against de.party.api.createupdate.request-1.0.0.json : #/PartyRelationship/2/startDate \\\"1582812826442\\\" is not in an acceptable \\\"date-time\\\" format.;#/PartyRelationship/2/startDate Values of type \\\"string\\\" are not one of the allowed types \\\"integer\\\".;#/PartyRelationship/2/startDate \\\"1582812826442\\\" is not in an acceptable \\\"date-time\\\" format.\",\n" + 
+				"    \"Path\": \"/v1/parties\"\n" + 
+				"}";
+		
+		criteria = "_VERIFY.JSON.PART_ $.Message:contains(\\\"1582812826442\\\" is not in an acceptable";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY.JSON.PART_ $.Message:contains(\\\"1582812826443\\\" is not in an acceptable";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
 	
 	@Test()
@@ -1505,6 +1551,103 @@ public class JsonHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void validateByKeywords_dateInBetween() {
+		String dateJson = "{\"dates\":[\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-05T12:08:56\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-10T12:08:56\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"date\":\"2001-05-15T12:08:56\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .date:isBetweenDate(2001-05-04T12:08:56, 2001-05-16T12:08:56)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isBetweenDate(2001-05-06T12:08:56, 2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isBetweenDate(2001-05-06T12:08:56, 2001-05-15T12:08:57)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isBetweenDate(2001-05-05T12:08:56, 2001-05-16T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isBetweenDate(2001-05-05T12:08:57, 2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:2:isBetweenDate(2001-05-05T12:08:56, 2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:2:isBetweenDate(2001-05-05T12:08:55, 2001-05-15T12:08:57)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isBetweenDate(2001-05-05T12:08:56, 2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isBetweenDate(2001-05-05T12:08:57, 2001-05-07T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());	
+	}
+	
+	@Test()
+	public void validateByKeywords_allValuesEqualTo() {
+		String json = "{\"sameVals\":[\n" + 
+				"            {\n" + 
+				"               \"same\":\"11\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"same\":\"11\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"same\":\"11\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .same:allValuesEqualTo(11)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .same:allValuesEqualTo(12)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
+	@Test()
+	public void validateByKeywords_allValuesEqualTo_different() {
+		String json = "{\"sameVals\":[\n" + 
+				"            {\n" + 
+				"               \"same\":\"11\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"same\":\"11\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"same\":\"12\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .same:allValuesEqualTo(11)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .same:allValuesEqualTo(12)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
+	@Test()
 	public void validateByKeywords_jsonbody() {
 		TestLog.When("I verify a valid json against correct value");
 		
@@ -1520,7 +1663,96 @@ public class JsonHelperTest extends TestBase {
 		String criteria = "_VERIFY.JSON.PART_ .book[?(@.author =~ /.*REES/i)]:jsonbody("+partialJson+")";
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		 partialJson ="[\n" + 
+		 		"   {\n" + 
+		 		"      \"attachments\" : [\n" + 
+		 		"         {\n" + 
+		 		"            \"name\" : \"Installation Guide\",\n" + 
+		 		"            \"url\" : \"https://docs.jboss.org/author/display/WFLY8/Admin+Guide\"\n" + 
+		 		"         }\n" + 
+		 		"      ],\n" + 
+		 		"      \"assetId\" : \"Asset_test\",\n" + 
+		 		"      \"name\" : \"BIGTRACK42\",\n" + 
+		 		"      \"assetModel\" : {\n" + 
+		 		"         \"assetModelId\": \"TESTEGISTEVE\",\n" + 
+		 		"                            \"name\": \"FUSE\",\n" + 
+		 		"                            \"description\": \"FUSE_Model\",\n" + 
+		 		"                            \"status\": \"Active\"\n" + 
+		 		"      },\n" + 
+		 		"      \"description\" : \"Test Equipment\",\n" + 
+		 		"      \"status\" : \"Active\"\n" + 
+		 		"   }\n" + 
+		 		"]";
+
+			criteria = "_VERIFY_JSON_PART_ .*[?(@.assetId=~ /.*Asset_test/i)]:jsonbody("+partialJson+")";
+			error = JsonHelper.validateByKeywords(criteria, partialJson);
+			Helper.assertTrue("errors caught", error.isEmpty());
 	}
+	
+	@Test()
+	public void validateByKeywords_jsonbody_2() {
+		TestLog.When("I verify a valid json against correct value");
+		
+		String partialJson ="[\n" + 
+		 		"   {\n" + 
+		 		"      \"attachments\" : [\n" + 
+		 		"         {\n" + 
+		 		"            \"name\" : \"Installation Guide\",\n" + 
+		 		"            \"url\" : \"https://docs.jboss.org/author/display/WFLY8/Admin+Guide\"\n" + 
+		 		"         }\n" + 
+		 		"      ],\n" + 
+		 		"      \"assetId\" : \"Asset_abcd\",\n" + 
+		 		"      \"name\" : \"BIGTRACK42\",\n" + 
+		 		"      \"assetModel\" : {\n" + 
+		 		"         \"assetModelId\": \"TESTEGISTEVE\",\n" + 
+		 		"                            \"name\": \"FUSE\",\n" + 
+		 		"                            \"description\": \"FUSE_Model\",\n" + 
+		 		"                            \"status\": \"Active\"\n" + 
+		 		"      },\n" + 
+		 		"      \"description\" : \"Test Equipment\",\n" + 
+		 		"      \"status\" : \"Active\"\n" + 
+		 		"   }\n" + 
+		 		"]";
+
+			String criteria = "_VERIFY_JSON_PART_ .*[?(@.assetId=~ /.*Asset_abcd/i)]:jsonbody("+partialJson+")";
+			List<String> error = JsonHelper.validateByKeywords(criteria, partialJson);
+			Helper.assertTrue("errors caught", error.isEmpty());
+			
+			String errorValues = DataHelper.validateExpectedCommand("jsonbody", "", partialJson, "");
+			Helper.assertTrue("errors not caught", !errorValues.isEmpty());
+	}
+	
+	@Test()
+	public void validateByKeywords_jsonbody_invalidJson() {
+		TestLog.When("I verify a valid json against correct value");
+		
+		String partialJson ="[\n" + 
+		 		"   {\n" + 
+		 		"      \"attachments\" : [\n" + 
+		 		"         {\n" + 
+		 		"            \"name\" : \"Installation Guide\",\n" + 
+		 		"            \"url\" : \"https://docs.jboss.org/author/display/WFLY8/Admin+Guide\"\n" + 
+		 		"         }\n" + 
+		 		"      ],\n" + 
+		 		"      \"assetId\" : \"Asset_test4\",\n" + 
+		 		"      \"name\" : \"BIGTRACK42\",\n" + 
+		 		"      \"assetModel\" : {\n" + 
+		 		"         \"assetModelId\": \"TESTEGISTEVE\",\n" + 
+		 		"                            \"name\": \"FUSE\",\n" + 
+		 		"                            \"description\": \"FUSE_Model\",\n" + 
+		 		"                            \"status\": \"Active\"\n" + 
+		 		"      },\n" + 
+		 		"      \"description\" : \"Test Equipment\",\n" + 
+		 		"      \"status\" : \"Active\"\n" + 
+		 		"   }\n" + 
+		 		"]";
+
+			String criteria = "_VERIFY_JSON_PART_ .*[?(@.assetId=~ /.*Asset_test4/i)]:jsonbody(invalid json)";
+			List<String> error = JsonHelper.validateByKeywords(criteria, partialJson);
+			Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
 	
 	@Test()
 	public void validateByKeywords_jsonbody_invalid() {

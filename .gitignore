@@ -2,8 +2,7 @@
 automation/target/
 automation/extentReport/
 automation/logs/
-automation/bin
-automation/mvn-target
+automation/mvn-target/
 automation/target/
 automation/test-output/
 automation/target
@@ -14,8 +13,10 @@ automation/bin/
 automation/.annotations/
 automation/.apt_generated_tests/
 automation/.settings/
-*.war
 automation/.idea/
 runner/utils/maven/
 runner/utils/script-server/
-**/.DS_Store
+*.DS_Store
+*.war
+*.log
+*.iml

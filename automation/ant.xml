@@ -36,11 +36,6 @@
 	   </target>
 	
 	<target name="mvn-compile" depends="checkDirChanges" unless="noDirchanges" description="compile to check for errors and delete generated folder if no errors">
-		 <java jar="library/mavenRunner.jar" fork='true'>
-		 			<arg value="compile"/>
-		 </java>
-		
-		 	 <!-- cleaning source generated folder -->
 		 	
 		 	 <delete dir="${dir.generated}"/>   <!-- delete generated folder -->
 	 		 <delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->

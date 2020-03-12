@@ -3,6 +3,7 @@ package test.module.framework.tests.functional.service;
 
 import java.lang.reflect.Method;
 
+import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,6 +13,7 @@ import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.ServiceObject;
+import core.support.objects.TestObject;
 import core.uiCore.drivers.AbstractDriverTestNG;
 import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
@@ -121,9 +123,38 @@ public class ServiceRunnerTest extends TestBase {
 		requestBody = ServiceObject.normalize(requestBody);
 		ServiceObject serviceObject = new ServiceObject().withRequestBody(requestBody);
 		
-		Helper.assertEquals(requestBody, serviceObject.getRequestBody());
+		Helper.assertEquals(requestBody, serviceObject.getRequestBody());	
+	}
+	
+	// test1 will fail, test2 depends on test1. test2 will be skipped
+	@Test(expectedExceptions = SkipException.class)
+	public void verifyApiRunner_depends_on_test() throws Exception {
 		
-		
+		TestLog.When("I verify api runner test");
+        String requestBody = "{\n" + 
+        		"\"identifier\": \"<@adminUserName>\",\n" + 
+        		"\"password\": \"<@adminUserPassword>\"\n" + 
+        		"}";
+        String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
+        		"user.id:<$userId>";
+        
+        try {
+		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+				"", "", "", requestBody, OutputParams, "600", "",
+				"", "TestCases_DependsOn.csv", "1:1", "service", "");
+        }catch(AssertionError e) {
+        	e.getMessage();
+        }
+        
+        // simulate an error
+        TestObject.getTestInfo().caughtThrowable = new Throwable();
+        
+		// if service test, parent test objects keeps track of the child test objects
+		ApiTestDriver.parentTrackChildTests();
+        
+		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+				"DEPENDS_ON_TEST:test1valid", "", "", requestBody, OutputParams, "200", "",
+				"", "TestCases_DependsOn.csv", "1:1", "service", "");
 	}
 	
 }

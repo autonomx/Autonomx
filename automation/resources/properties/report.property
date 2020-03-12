@@ -16,6 +16,10 @@ report.reportExpireDays = 5
 klov.server.url = http://localhost
 klov.mongodb.url = "localhost:27017"
 
+# console log
+log.limit.enabled = true
+log.max.limit.char = 2000
+
 # debug
 console.debug.enable = false
 console.annotation.debug = true

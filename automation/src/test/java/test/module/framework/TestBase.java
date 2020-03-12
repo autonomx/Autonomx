@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeSuite;
 
 import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
+import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import data.Data;
 import module.common.data.CommonUser;
@@ -62,6 +63,9 @@ public class TestBase extends ModuleBase {
 		ConfigVariable.setValue("beforeSuiteValue", true);
 		ConfigVariable.setValue("beforeSuiteOverride", 15);
 		ConfigVariable.globalTimeoutSeconds().setValue(90);
+		
+		Config.setGlobalValue("service.response.timeout.seconds", "2");
+
 	}
 
 	@AfterSuite(alwaysRun = true)

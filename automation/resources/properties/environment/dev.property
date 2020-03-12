@@ -26,7 +26,7 @@ api.base.after.suite = "TestCases_RunAfterSuite.csv"
 service.response.timeout.seconds = 60
 
 # will retry the request, expecting to pass validation for duration of specified duration in seconds
-service.timeout.validation.isEnabled = true
+service.timeout.validation.isEnabled = false
 service.timeout.validation.seconds = 2
 service.timeout.validation.delay.between.attempt.seconds = 3
 service.retry.count = 0
