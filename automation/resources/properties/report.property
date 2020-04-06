@@ -2,7 +2,7 @@
 # report options
 # report types: html (single html page) or klov (server using mongodb)
 report.reporterType = html
-report.launchReportAfterTest = true
+report.launchReportAfterTest = false
 report.enableDetailedReport = true
 
 # Options: MARY
@@ -20,7 +20,10 @@ klov.mongodb.url = "localhost:27017"
 log.limit.enabled = true
 log.max.limit.char = 2000
 
+# include test steps with stack trace on errors
+log.steps.with.stacktrace = true
+
 # debug
 console.debug.enable = false
-console.annotation.debug = true
+console.annotation.debug = false
 console.printLogoOnSuccess = true

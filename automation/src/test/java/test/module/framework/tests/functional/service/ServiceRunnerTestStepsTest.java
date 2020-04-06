@@ -20,7 +20,7 @@ import test.module.framework.TestBase;
  */
 public class ServiceRunnerTestStepsTest extends TestBase {
 	
-	AtomicInteger testCount = new AtomicInteger(0);
+	AtomicInteger testStepCount = new AtomicInteger(0);
 
 	@BeforeClass
 	public void beforeClass()  {
@@ -31,23 +31,17 @@ public class ServiceRunnerTestStepsTest extends TestBase {
 	
 	// verifying test retry on api runner
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void verifyApiRunner_TestStep(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
+	public void verifyApiRunner_TestStep(Object objects) throws Exception {
 		
 		
 		TestLog.When("I verify api runner with specified csv file");
  
-    	ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-    				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType, serviceSteps);
-    	testCount.incrementAndGet(); 	
+    	ServiceRunner.TestRunner(objects);
+    	testStepCount.incrementAndGet(); 	
 	}
 	
 	@AfterClass
 	public void afterClass()  {	
-		Helper.assertEquals(4, testCount.get());
+		Helper.assertEquals(4, testStepCount.get());
 	}	
 }

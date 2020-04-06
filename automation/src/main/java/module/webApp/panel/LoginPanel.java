@@ -36,6 +36,7 @@ public class LoginPanel {
 	public void login(User user) {
 		
 		Helper.loginbuilder
+		.builder()
 		.withUsername(elements.USER_NAME_FIELD, user.getUsername())
 		.withPassword(elements.PASSWORD_FIELD, user.getPassword())
 		.withFormSubmit(elements.LOGIN_SUBMIT, MainPanel.elements.ADMIN_LOGO)
@@ -49,6 +50,7 @@ public class LoginPanel {
 	public void loginError(User user) {
 	
 		Helper.loginbuilder
+		.builder()
 		.withUsername(elements.USER_NAME_FIELD, user.getUsername())
 		.withPassword(elements.PASSWORD_FIELD, user.getPassword())
 		.withFormSubmit(elements.LOGIN_SUBMIT, elements.ERROR_MESSAGE)

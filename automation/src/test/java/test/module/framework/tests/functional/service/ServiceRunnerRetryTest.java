@@ -34,39 +34,35 @@ public class ServiceRunnerRetryTest extends TestBase {
 		TestDataProvider.csvFileIndex.set(0);
 	}
 	
-	// verifying test retry on service runner
-	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void verifyApiRunner_retryCount(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
+		// verifying test retry on service runner
+		@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
+		public void verifyApiRunner_retryCount(Object objects) throws Exception {
+			
+			
+			Object[] object2 = (Object[]) objects;
+			
+			TestLog.When("I verify api runner test");
 		
-		
-		TestLog.When("I verify api runner test");
-	
-		// setup api driver to get test case id
-		ServiceObject apiObject = new ServiceObject().setServiceObject(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, 
-		UriPath, ContentType, Method, Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, 
-		RespCodeExp, ExpectedResponse, TcComments, tcName, 
-		tcIndex, testType, serviceSteps); 
-		new AbstractDriverTestNG().setupApiDriver(apiObject); 
+			// setup api driver to get test case id
+			ServiceObject apiObject = new ServiceObject().setServiceObject(object2); 
+			new AbstractDriverTestNG().setupApiDriver(apiObject); 
 
-        int runCount = TestObject.getTestInfo().runCount;
-        Helper.assertTrue("run count should start at 1", runCount != 0);
-     
-        if(runCount == 1) {
-        	Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
-        	ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-    				Option, "", TemplateFile, "", OutputParams, "600", ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType, serviceSteps);
+	        int runCount = TestObject.getTestInfo().runCount;
+	        Helper.assertTrue("run count should start at 1", runCount != 0);
+	     
+	        Object[] object = object2.clone();
+	        object[9] = "";
+	        object[11] = "";
+	        object[13] = "600";
+	        
+	        if(runCount == 1) {
+	        	Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
+	        	ServiceRunner.TestRunner(object);
 
-    	}else if(runCount == 2) {
-    		Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
-    		
-    		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-    				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType, serviceSteps);
-    	}
-	}
+	    	}else if(runCount == 2) {
+	    		Helper.assertEquals(0, TestDataProvider.csvFileIndex.get());
+	    		
+	    		ServiceRunner.TestRunner(object2);
+	    	}
+		}
 }

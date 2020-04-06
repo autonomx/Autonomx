@@ -47,7 +47,7 @@ public class LoginPanel {
 				.withOutputParams(
 						"user.role.id:<$roles>;"
 						+ "jwt:<$accessTokenAdmin>;"
-						+ "user.id:<$userId>");
+						+ "user.id:<$userLoginId>");
 				
 		return RestApiInterface.RestfullApiInterface(loginApi);
 	}

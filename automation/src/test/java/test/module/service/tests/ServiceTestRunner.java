@@ -20,14 +20,8 @@ public class ServiceTestRunner extends TestBase {
 	}
 
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void serviceRunner(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
+	public void serviceRunner(Object objects) throws Exception {
 		
-		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex, testType, serviceSteps);
+		ServiceRunner.TestRunner(objects);
 	}
 }

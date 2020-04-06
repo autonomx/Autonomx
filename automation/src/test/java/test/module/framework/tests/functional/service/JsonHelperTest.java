@@ -1178,6 +1178,92 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:hasItems(invalid)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		String json = "{\n" + 
+				"    \"data\": {\n" + 
+				"        \"userStatus\": \"APPROVED\",\n" + 
+				"        \"assetWork\": false,\n" + 
+				"        \"plannedFinishDateTime\": \"2019-11-28T21:41:36.000Z\",\n" + 
+				"        \"actualDuration\": 12421,\n" + 
+				"        \"description\": \"Scheduling GUI Automation - pre test case test data cleanup\",\n" + 
+				"        \"responsibleOrg\": {\n" + 
+				"            \"partyUUID\": \"01\"\n" + 
+				"        },\n" + 
+				"        \"assignedTo\": {\n" + 
+				"            \"partyUUID\": \"John Doe\"\n" + 
+				"        },\n" + 
+				"        \"legalEntity\": {\n" + 
+				"            \"partyUUID\": \"\"\n" + 
+				"        },\n" + 
+				"        \"children\": [],\n" + 
+				"        \"plannedDuration\": 3600000,\n" + 
+				"        \"plannedStartDateTime\": \"2019-11-25T21:41:36.000Z\",\n" + 
+				"        \"raisedBy\": {\n" + 
+				"            \"partyUUID\": \"BLUDWIG\"\n" + 
+				"        },\n" + 
+				"        \"scheduleFlag\": \"Ready\",\n" + 
+				"        \"raisedDateTime\": \"2019-10-15T16:00:00.000Z\",\n" + 
+				"        \"parentWorkOrder\": {\n" + 
+				"            \"workOrderUUID\": \"WO1\"\n" + 
+				"        },\n" + 
+				"        \"createdTimestamp\": \"2019-10-03T21:03:26.895Z\",\n" + 
+				"        \"workOrderUUID\": \"5b92ffb2-c29b-4632-a694-ae9702f54065\",\n" + 
+				"        \"priority\": 6,\n" + 
+				"        \"lastModifiedTimestamp\": \"2020-03-20T01:52:06.646Z\",\n" + 
+				"        \"initiationType\": \"Schedule\",\n" + 
+				"        \"closedComments\": \"Completion comments\",\n" + 
+				"        \"workType\": \"Preventative\",\n" + 
+				"        \"solutionAttributes\": {\n" + 
+				"            \"assetSuite\": {\n" + 
+				"                \"unit\": \"12\",\n" + 
+				"                \"shutdownNbr\": \"12345678\",\n" + 
+				"                \"resourceCode\": \"56\",\n" + 
+				"                \"referenceNbr\": \"002-111\",\n" + 
+				"                \"referenceType\": \"WO\",\n" + 
+				"                \"outageUnit\": \"123456\",\n" + 
+				"                \"jobType\": \"CA\",\n" + 
+				"                \"referenceSubNbr\": \"01\",\n" + 
+				"                \"planner\": \"BLUDWIG\",\n" + 
+				"                \"resourceType\": \"34\"\n" + 
+				"            },\n" + 
+				"            \"scheduling\": {\n" + 
+				"                \"autoSchedulingFlag\": \"Ready\"\n" + 
+				"            }\n" + 
+				"        },\n" + 
+				"        \"location\": {\n" + 
+				"            \"locationUUID\": \"0f8decd3-21b4-4a0a-8975-8d5ca82a8b45\",\n" + 
+				"            \"createdTimestamp\": \"2019-11-07T00:28:41.554Z\",\n" + 
+				"            \"locationGIS\": {\n" + 
+				"                \"coordinates\": [\n" + 
+				"                    -123.150507,\n" + 
+				"                    49.299778\n" + 
+				"                ],\n" + 
+				"                \"type\": \"Point\"\n" + 
+				"            },\n" + 
+				"            \"solutionAttributes\": {},\n" + 
+				"            \"lastModifiedTimestamp\": \"2019-11-07T00:28:41.554Z\",\n" + 
+				"            \"customAttributes\": {}\n" + 
+				"        },\n" + 
+				"        \"workOrderId\": \"WO_SCHAPI_002\",\n" + 
+				"        \"extendedDescription\": \"Extended description\",\n" + 
+				"        \"account\": {\n" + 
+				"            \"accountUUID\": \"\"\n" + 
+				"        },\n" + 
+				"        \"status\": \"Closed\"\n" + 
+				"    }\n" + 
+				"}";
+		
+		criteria = "_VERIFY_JSON_PART_ data:hasItems(children)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ data:hasItems(workOrderUUID, workOrderId, description, status, initiationType, children, raisedDateTime)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ data:hasItems(children2)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
 	
 	@Test()
@@ -1295,7 +1381,7 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY.JSON.PART_ [?(@.workOrder == \"2c50e604-3aa7-4d8e-888f-84d12fdd05b5\")].estimatedOnsite:contains(2020-01-29T14:00:00.000Z)";
 		error = JsonHelper.validateByKeywords(criteria, json);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
-		
+	
 		json = "{\"timestamp\":\"2020-02-11T20:59:55.119+0000\",\"status\":500,\"error\":\"Internal Server Error\",\"message\":\"Invalid Request Body: Json Validation Error for de.product.service.requirement.api.createupdate.request-1.0.0.json\",\"path\":\"/v1/productservicerequirements\"}\r\n" + 
 				"2020-02-11 12:54";
 		criteria = "_VERIFY_JSON_PART_ .message:contains(Invalid Request Body: Json Validation Error for de.product.service.requirement.api.createupdate.request-1.0.0.json)";
@@ -1332,12 +1418,112 @@ public class JsonHelperTest extends TestBase {
 	public void validateByKeywords_notContain() {
 		TestLog.When("I verify a valid json against correct value");
 
-		String criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:notContain(invalid)";
+		String criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:notContain(invalid)";
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
 		
-		criteria = "_VERIFY.JSON.PART_ store.book[?(@.price < 10)].author:notContain(Herman Melville)";
+		criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:notContain(Herman Melville)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:notContain(Nigel Rees, Herman Melville)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:notContain(Herman Melville, invalid)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:notContain(Evelyn Waugh, invalid)";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		
+		String json = "{\n" + 
+				"    \"data\": {\n" + 
+				"        \"userStatus\": \"APPROVED\",\n" + 
+				"        \"assetWork\": false,\n" + 
+				"        \"plannedFinishDateTime\": \"2019-11-28T21:41:36.000Z\",\n" + 
+				"        \"actualDuration\": 12421,\n" + 
+				"        \"description\": \"Scheduling GUI Automation - pre test case test data cleanup\",\n" + 
+				"        \"responsibleOrg\": {\n" + 
+				"            \"partyUUID\": \"01\"\n" + 
+				"        },\n" + 
+				"        \"assignedTo\": {\n" + 
+				"            \"partyUUID\": \"John Doe\"\n" + 
+				"        },\n" + 
+				"        \"legalEntity\": {\n" + 
+				"            \"partyUUID\": \"\"\n" + 
+				"        },\n" + 
+				"        \"children\": [],\n" + 
+				"        \"plannedDuration\": 3600000,\n" + 
+				"        \"plannedStartDateTime\": \"2019-11-25T21:41:36.000Z\",\n" + 
+				"        \"raisedBy\": {\n" + 
+				"            \"partyUUID\": \"BLUDWIG\"\n" + 
+				"        },\n" + 
+				"        \"scheduleFlag\": \"Ready\",\n" + 
+				"        \"raisedDateTime\": \"2019-10-15T16:00:00.000Z\",\n" + 
+				"        \"parentWorkOrder\": {\n" + 
+				"            \"workOrderUUID\": \"WO1\"\n" + 
+				"        },\n" + 
+				"        \"createdTimestamp\": \"2019-10-03T21:03:26.895Z\",\n" + 
+				"        \"workOrderUUID\": \"5b92ffb2-c29b-4632-a694-ae9702f54065\",\n" + 
+				"        \"priority\": 6,\n" + 
+				"        \"lastModifiedTimestamp\": \"2020-03-20T01:52:06.646Z\",\n" + 
+				"        \"initiationType\": \"Schedule\",\n" + 
+				"        \"closedComments\": \"Completion comments\",\n" + 
+				"        \"workType\": \"Preventative\",\n" + 
+				"        \"solutionAttributes\": {\n" + 
+				"            \"assetSuite\": {\n" + 
+				"                \"unit\": \"12\",\n" + 
+				"                \"shutdownNbr\": \"12345678\",\n" + 
+				"                \"resourceCode\": \"56\",\n" + 
+				"                \"referenceNbr\": \"002-111\",\n" + 
+				"                \"referenceType\": \"WO\",\n" + 
+				"                \"outageUnit\": \"123456\",\n" + 
+				"                \"jobType\": \"CA\",\n" + 
+				"                \"referenceSubNbr\": \"01\",\n" + 
+				"                \"planner\": \"BLUDWIG\",\n" + 
+				"                \"resourceType\": \"34\"\n" + 
+				"            },\n" + 
+				"            \"scheduling\": {\n" + 
+				"                \"autoSchedulingFlag\": \"Ready\"\n" + 
+				"            }\n" + 
+				"        },\n" + 
+				"        \"location\": {\n" + 
+				"            \"locationUUID\": \"0f8decd3-21b4-4a0a-8975-8d5ca82a8b45\",\n" + 
+				"            \"createdTimestamp\": \"2019-11-07T00:28:41.554Z\",\n" + 
+				"            \"locationGIS\": {\n" + 
+				"                \"coordinates\": [\n" + 
+				"                    -123.150507,\n" + 
+				"                    49.299778\n" + 
+				"                ],\n" + 
+				"                \"type\": \"Point\"\n" + 
+				"            },\n" + 
+				"            \"solutionAttributes\": {},\n" + 
+				"            \"lastModifiedTimestamp\": \"2019-11-07T00:28:41.554Z\",\n" + 
+				"            \"customAttributes\": {}\n" + 
+				"        },\n" + 
+				"        \"workOrderId\": \"WO_SCHAPI_002\",\n" + 
+				"        \"extendedDescription\": \"Extended description\",\n" + 
+				"        \"account\": {\n" + 
+				"            \"accountUUID\": \"\"\n" + 
+				"        },\n" + 
+				"        \"status\": \"Closed\"\n" + 
+				"    }\n" + 
+				"}";
+		
+		
+		criteria = "_VERIFY_JSON_PART_ data:notContain(children2)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ data:notContain(children)";
+		error = JsonHelper.validateByKeywords(criteria, json);
+		Helper.assertTrue("errors not caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ data:notContain(workOrderUUID, workOrderId, description, status, initiationType, children, raisedDateTime)";
+		error = JsonHelper.validateByKeywords(criteria, json);
 		Helper.assertTrue("errors not caught", !error.isEmpty());
 	}
 	
@@ -1599,6 +1785,14 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY_JSON_PART_ .date:1:isBetweenDate(2001-05-05T12:08:57, 2001-05-07T12:08:56)";
 		error = JsonHelper.validateByKeywords(criteria, dateJson);
 		Helper.assertTrue("errors caught", !error.isEmpty());	
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isBetweenDate(987448137, 992718537)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isBetweenDate(987448137000, 992718537000)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
 	}
 	
 	@Test()

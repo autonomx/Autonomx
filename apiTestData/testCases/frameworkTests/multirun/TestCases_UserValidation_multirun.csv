@@ -2,18 +2,22 @@ TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Metho
 TsUser,removeBeforeCsvFile,N,do not run before csv for this test,EXTERNAL,,,"beforeCsvFile:none;afterCsvFile:none;",,,,,,,,
 TsUser,getAdminToken,Y,Retrieve a token from Token Generator,RESTfulAPI,/auth/local,application/json,POST,,,,"{""identifier"": ""<@adminUserName>"",""password"": ""<@adminUserPassword>""}","user.role.id:<$roles>; jwt:<$accessTokenAdmin>;user.id:<$userId>",200,"{       ""user"": {        ""username"":  ""<@adminUserName>"",        ""email"": ""autouser313@gmail.com"",        ""provider"": ""local"",        ""confirmed"": true,        ""blocked"": null    }}&&_VERIFY.JSON.PART_user:jsonbody([{        ""username"":  ""<@adminUserName>"",        ""email"": ""autouser313@gmail.com"",        ""provider"": ""local"",        ""confirmed"": true,        ""blocked"": null    }]);user[?(@.username == ""autoAdmin1"")].provider:equalTo(local);user.username:1: hasItems(<@adminUserName>);user.email:1: equalTo(autouser313@gmail.com);user.provider:1: isNotEmpty;user.role.name:1: contains(Administrator)&& _NOT_EMPTY_",
 TsUser,createUser,Y,create user,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,RUN_COUNT:5,Authorization: Bearer <@accessTokenAdmin>,,"username:zzz_test<@_RAND16><@_INCREMENT_FROM_1>,
-email:testuser+<@_TIME16><@_INCREMENT_FROM_1>@gmail.com,
-password:password<@_TIME16>,
+email:testuser+<@_TIME_MS_16><@_INCREMENT_FROM_1>@gmail.com,
+password:password<@_TIME_MS_16>,
 confirmed:true
 ",id:<$userId<@_INCREMENT_FROM_1>>,201,"{    ""provider"": ""local"",    ""blocked"": null}&&_VERIFY.JSON.PART_id: isNotEmpty",
-TsUser,createUserNoToken,Y,create user  no token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,RUN_COUNT:3,NO_TOKEN,,"username:zzz_test<@_TIME16>,email:testuser+<@_TIME16>@gmail.com,password:password<@_TIME16>,confirmed:true",,403,"{""statusCode"":403,""error"":""Forbidden"",""message"":""Forbidden""}",
-TsUser,createUserInvalidToken,Y,create user invalid token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,INVALID_TOKEN,,"username:zzz_test<@_RAND16>,email:testuser+<@_TIME16>@gmail.com,password:password<@_TIME16>,confirmed:true",,401,"{""statusCode"":401,""error"":""Unauthorized""}",
+TsUser,createUserNoToken,Y,create user  no token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,RUN_COUNT:3,NO_TOKEN,,"username:zzz_test<@_TIME_MS_16>,
+email:testuser+<@_TIME_MS_16>@gmail.com,
+password:password<@_TIME_MS_16>,
+confirmed:true
+",,403,"{""statusCode"":403,""error"":""Forbidden"",""message"":""Forbidden""}",
+TsUser,createUserInvalidToken,Y,create user invalid token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,INVALID_TOKEN,,"username:zzz_test<@_RAND16>,email:testuser+<@_TIME_MS_16>@gmail.com,password:password<@_TIME_MS_16>,confirmed:true",,401,"{""statusCode"":401,""error"":""Unauthorized""}",
 TsUser,updateUser,Y,update user,RESTfulAPI,/content-manager/explorer/user/<@userId2>?source=users-permissions,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update<@_RAND16>"",
-""email"":""testUpdate+<@_TIME16>@gmail.com"",
-""password"":""password<@_TIME16>"",
+""email"":""testUpdate+<@_TIME_MS_16>@gmail.com"",
+""password"":""password<@_TIME_MS_16>"",
 ""confirmed"":true}",,200,"{""id"":<@userId2>,
 ""username"":""zzz_update<@_RAND16>"",
-""email"":""testUpdate+<@_TIME16>@gmail.com"",
+""email"":""testUpdate+<@_TIME_MS_16>@gmail.com"",
 ""provider"":""local"",
 ""confirmed"":true,
 ""blocked"":null,

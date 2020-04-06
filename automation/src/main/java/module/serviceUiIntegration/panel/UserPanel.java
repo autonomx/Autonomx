@@ -86,7 +86,7 @@ public class UserPanel {
 	 * @throws JSONException
 	 */
 	public void deleteAllUsers(String prefix) throws JSONException {
-		Helper.runApiContaining(".username", prefix, "getUsers", ".id", "userId", "deleteUser");
+		Helper.runApiContaining(".username", prefix, "getUsers", ".id", "userLoginId", "deleteUser");
 	}
 
 	/**

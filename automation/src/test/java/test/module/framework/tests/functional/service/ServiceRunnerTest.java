@@ -41,9 +41,11 @@ public class ServiceRunnerTest extends TestBase {
         String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
         		"user.id:<$userId>";
         
-		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", "",
-				"", "TestCases_UserValidation.csv", "1:1", "service", "");
+				"", "TestCases_UserValidation.csv", "1:1", "service", ""};
+        
+		ServiceRunner.TestRunner(objects);
 		
 		String roles = Config.getValue("roles");
 		Helper.assertEquals(roles, "1");
@@ -60,25 +62,23 @@ public class ServiceRunnerTest extends TestBase {
         String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
         		"user.id:<$userId>";
         
-		ServiceRunner.TestRunner("suite1", "invalid_responseCode", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"suite1", "invalid_responseCode", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "320", "",
-				"", "TestCases_UserValidation.csv", "1:1", "service", "");
+				"", "TestCases_UserValidation.csv", "1:1", "service", ""};
+        
+		ServiceRunner.TestRunner(objects);
 	}
 	
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void verifyApiRunner_dataProvider_valid(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
-		
-		String testname = AbstractDriverTestNG.testName.get();
-		String testClass = ApiTestDriver.getTestClass(tcName);
-		Helper.assertEquals(testClass + "-" + TestCaseID, testname);
+	public void verifyApiRunner_dataProvider_valid(Object objects) throws Exception {
+		Object[] objectArray = (Object[]) objects;
+		ServiceObject serviceObject = new ServiceObject().setServiceObject(objectArray); 
 
-		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex, testType, serviceSteps);
+		String testname = AbstractDriverTestNG.testName.get();
+		String testClass = ApiTestDriver.getTestClass(serviceObject.getTcName());
+		Helper.assertEquals(testClass + "-" + serviceObject.getTestCaseID(), testname);
+
+		ServiceRunner.TestRunner(objects);
 	}
 	
 	 @Test()
@@ -139,9 +139,11 @@ public class ServiceRunnerTest extends TestBase {
         		"user.id:<$userId>";
         
         try {
-		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "600", "",
-				"", "TestCases_DependsOn.csv", "1:1", "service", "");
+				"", "TestCases_DependsOn.csv", "1:1", "service", ""};
+        
+		ServiceRunner.TestRunner(objects);
         }catch(AssertionError e) {
         	e.getMessage();
         }
@@ -151,10 +153,12 @@ public class ServiceRunnerTest extends TestBase {
         
 		// if service test, parent test objects keeps track of the child test objects
 		ApiTestDriver.parentTrackChildTests();
-        
-		ServiceRunner.TestRunner("suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+		
+		Object[] objects = {"suite1", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"DEPENDS_ON_TEST:test1valid", "", "", requestBody, OutputParams, "200", "",
-				"", "TestCases_DependsOn.csv", "1:1", "service", "");
+				"", "TestCases_DependsOn.csv", "1:1", "service", ""};
+        
+		ServiceRunner.TestRunner(objects);
 	}
 	
 }

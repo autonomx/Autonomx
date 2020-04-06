@@ -10,6 +10,7 @@ import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
 import core.helpers.Helper;
 import core.support.logger.TestLog;
+import core.support.objects.ServiceObject;
 import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
 
@@ -34,20 +35,15 @@ public class ServiceRunnerConfigTest extends TestBase {
 	
 	// admin user is set to "invalid" from before suite, tests are expected to fail
 	@Test(expectedExceptions = { AssertionError.class }, dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 1)
-	public void verifyApiRunner_dataProvider_valid(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
+	public void verifyApiRunner_dataProvider_valid(Object[] objects) throws Exception {
 		
 		String username = ConfigVariable.getStringValue("adminUserName");
 		Helper.assertEquals("accessTokenAdmin", username);
-		
-		if(RequestHeaders.equals("NO_TOKEN"))Helper.assertFalse("failed cause no token will fail this test, hence needs to be overwritten");
+		ServiceObject serviceObject = new ServiceObject().setServiceObject(objects); 
 
-		ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-				TcComments, tcName, tcIndex, testType, serviceSteps);
+		if(serviceObject.getRequestHeaders().equals("NO_TOKEN"))Helper.assertFalse("failed cause no token will fail this test, hence needs to be overwritten");
+
+		ServiceRunner.TestRunner(objects);
 	}
 	
 	@AfterClass

@@ -24,7 +24,7 @@ public class VerifyLoginTest extends TestBase {
 		setupWebDriver(app.webApp.getHybridDriver());
 	}
 	
-	@Test
+	@Test()
 	public void verifyAdminUserWithCsvData() {
 		
 	    User user = Data.webApp.user().admin();
@@ -55,5 +55,6 @@ public class VerifyLoginTest extends TestBase {
 		User user = Data.webApp.user().withUsername(username).withPassword(password);
 		TestLog.When("I login with invalid user");
 		app.webApp.login.loginError(user);
+
 	}
 }

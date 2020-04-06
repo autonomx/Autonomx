@@ -48,18 +48,12 @@ public class ServiceRunnerMultipleTestCsv extends TestBase {
 	
 	// verifying test retry on api runner
 	@Test(dataProvider = "parallelRun", dataProviderClass = TestDataProvider.class, threadPoolSize = 1, invocationCount = 2)
-	public void verifyApiRunner_TestCaseFile(String TestSuite, String TestCaseID, String RunFlag, String Description,
-			String InterfaceType, String UriPath, String ContentType, String Method, String Option,
-			String RequestHeaders, String TemplateFile, String RequestBody, String OutputParams, String RespCodeExp,
-			String ExpectedResponse, String TcComments,
-			String tcName, String tcIndex, String testType, Object serviceSteps) throws Exception {
+	public void verifyApiRunner_TestCaseFile(Object objects) throws Exception {
 		
 		
 		TestLog.When("I verify api runner with specified csv file");
  
-    	ServiceRunner.TestRunner(TestSuite, TestCaseID, RunFlag, Description, InterfaceType, UriPath, ContentType, Method,
-    				Option, RequestHeaders, TemplateFile, RequestBody, OutputParams, RespCodeExp, ExpectedResponse,
-    				TcComments, tcName, tcIndex, testType, serviceSteps);
+    	ServiceRunner.TestRunner(objects);
     	testCount.incrementAndGet(); 
     	
     	// setting the test to default. in real testing scenario, the testId gets set to default

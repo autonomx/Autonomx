@@ -59,5 +59,13 @@
 	 			<arg value="generate-sources"/>
 	 </java>
 </target>
+ 	
+	<target name="mvn-clean">
+ 	   
+ 	 	<delete dir="${dir.mvnstatus}"/> <!-- clean target dir -->
+ 		 <java jar="library/mavenRunner.jar" fork='true'>
+ 		 			<arg value="clean"/>
+ 		 </java>
+ 	</target>
 	
 </project>

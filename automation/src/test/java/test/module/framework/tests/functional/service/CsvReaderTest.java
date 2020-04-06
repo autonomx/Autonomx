@@ -21,7 +21,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationSingleAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
-		List<Object[]> csvTests = CsvReader.getTestCasesFromCsvFile();		
+		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(4, csvTests.size());	
 	}
 	
@@ -30,7 +30,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationMultipleAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
-		List<Object[]> csvTests = CsvReader.getTestCasesFromCsvFile();		
+		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();		
 		Helper.assertEquals(7, csvTests.size());	
 	}
 
@@ -55,7 +55,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationNoAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action2");
-		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		List<Object> list = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(2, list.size());
 	}
 	
@@ -64,7 +64,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/multirun/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidation_multirun.csv");
 
-		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		List<Object> list = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(12, list.size());
 	}
 	
@@ -73,7 +73,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/testStep/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidation_step.csv");
 
-		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		List<Object> list = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(4, list.size());
 	}
 	
@@ -82,9 +82,10 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/escapeChar/");
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_escapeChar.csv");
 
-		List<Object[]> list = CsvReader.getTestCasesFromCsvFile();	
+		List<Object> list = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(1, list.size());
-		Helper.assertTrue("list doesnt include escape chars: " + Arrays.toString(list.get(0)), Arrays.toString(list.get(0)).contains("\\\""));
+		Object[] values = (Object[]) list.get(0);
+		Helper.assertTrue("list doesnt include escape chars: " + Arrays.toString(values), Arrays.toString(values).contains("\\\""));
 	}
 	
 	@Test(description = "csv file from subdirectories")
