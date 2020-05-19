@@ -54,6 +54,8 @@ public class ServiceRunnerTest extends TestBase {
 	@Test(expectedExceptions = { AssertionError.class } )
 	public void verifyApiRunner_invalid_responseCode() throws Exception {
 		
+
+		
 		TestLog.When("I verify api runner test");
         String requestBody = "{\n" + 
         		"\"identifier\": \"<@adminUserName>\",\n" + 
@@ -62,7 +64,7 @@ public class ServiceRunnerTest extends TestBase {
         String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
         		"user.id:<$userId>";
         
-        Object[] objects = {"suite1", "invalid_responseCode", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"suite1_invalid_responseCode", "invalid_responseCode", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "320", "",
 				"", "TestCases_UserValidation.csv", "1:1", "service", ""};
         

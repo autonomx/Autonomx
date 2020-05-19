@@ -958,4 +958,103 @@ public class DataHelperTest extends TestBase {
 		LocalDateTime date = Helper.date.getLocalDateTime("2020-04-21T01:03:47.034");
 		Helper.assertTrue("", date != null);
 	}
+	
+	@Test()
+	public void validateExpectedValues_xml_ignoreNameSpace() throws Exception {
+		Config.putValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "true");
+		Config.setGlobalValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "true");
+		
+		 String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+			 		"<soapenv:Envelope\n" + 
+			 		"        xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n" + 
+			 		"        xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n" + 
+			 		"        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
+			 		"  <soapenv:Header>\n" + 
+			 		"    <ns1:RequestHeader\n" + 
+			 		"         soapenv:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" + 
+			 		"         soapenv:mustUnderstand=\"0\"\n" + 
+			 		"         xmlns:ns1=\"https://www.google.com/apis/ads/publisher/v202002\">\n" + 
+			 		"      <ns1:networkCode>123456</ns1:networkCode>\n" + 
+			 		"      <ns1:applicationName>DfpApi-Java-2.1.0-dfp_test</ns1:applicationName>\n" + 
+			 		"    </ns1:RequestHeader>\n" + 
+			 		"  </soapenv:Header>\n" + 
+			 		"  <soapenv:Body>\n" + 
+			 		"    <getAdUnitsByStatement xmlns=\"https://www.google.com/apis/ads/publisher/v202002\">\n" + 
+			 		"      <filterStatement>\n" + 
+			 		"        <query>WHERE parentId IS NULL LIMIT 500</query>\n" + 
+			 		"      </filterStatement>\n" + 
+			 		"    </getAdUnitsByStatement>\n" + 
+			 		"  </soapenv:Body>\n" + 
+			 		"</soapenv:Envelope>";
+		 
+		 String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+		 		"<soapenv:Envelope\n" + 
+		 		"        xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n" + 
+		 		"        xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n" + 
+		 		"        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + 
+		 		"  <soapenv:Header>\n" + 
+		 		"    <ns1:RequestHeader\n" + 
+		 		"         soapenv:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" + 
+		 		"         soapenv:mustUnderstand=\"0\"\n" + 
+		 		"         xmlns:ns1=\"https://www.google.com/apis/ads/publisher/v202002\">\n" + 
+		 		"      <ns1:networkCode>123456</ns1:networkCode>\n" + 
+		 		"    </ns1:RequestHeader>\n" + 
+		 		"  </soapenv:Header>\n" + 
+		 		"</soapenv:Envelope>";
+		
+		 List<String> responses = new ArrayList<String>();
+		 responses.add(xmlString);
+		 
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, expected);
+		 Helper.assertTrue("errors was not returned", errors.isEmpty());
+	}
+	
+	@Test()
+	public void validateExpectedValues_xml_ignoreNameSpace_enabled() throws Exception {
+		Config.putValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "true");
+		Config.setGlobalValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "true");
+		
+		 String xmlString = "<?xml version = \"1.0\" encoding = \"UTF-8\"?>\n" + 
+			 		"<cont:contact xmlns:cont = \"www.tutorialspoint.com/profile\">\n" + 
+			 		"   <cont:name>Tanmay Patil</cont:name>\n" + 
+			 		"   <cont:company>TutorialsPoint</cont:company>\n" + 
+			 		"   <cont:phone>(011) 123-4567</cont:phone>\n" + 
+			 		"</cont:contact>";
+		 
+		 String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
+		 		"<contact>\n" + 
+		 		"   <name>Tanmay Patil</name>\n" + 
+		 		"   <company>TutorialsPoint</company>\n" + 
+		 		"</contact>";
+		 List<String> responses = new ArrayList<String>();
+		 responses.add(xmlString);
+		 
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, expected);
+		 Helper.assertTrue("errors was not returned", errors.isEmpty());
+	}
+	
+	@Test()
+	public void validateExpectedValues2_xml_ignoreNameSpace_disabled() throws Exception {
+		Config.putValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "false");
+		Config.setGlobalValue(DataHelper.IS_IGNORE_XML_NAMESPACE, "false");
+		
+		 String xmlString = "<?xml version = \"1.0\" encoding = \"UTF-8\"?>\n" + 
+			 		"<cont:contact xmlns:cont = \"www.tutorialspoint.com/profile\">\n" + 
+			 		"   <cont:name>Tanmay Patil</cont:name>\n" + 
+			 		"   <cont:company>TutorialsPoint</cont:company>\n" + 
+			 		"   <cont:phone>(011) 123-4567</cont:phone>\n" + 
+			 		"</cont:contact>";
+		 
+		 String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + 
+		 		"<contact>\n" + 
+		 		"   <name>Tanmay Patil</name>\n" + 
+		 		"   <company>TutorialsPoint</company>\n" + 
+		 		"</contact>";
+		
+		 List<String> responses = new ArrayList<String>();
+		 responses.add(xmlString);
+		 
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, expected);
+		 Helper.assertTrue("errors was returned", !errors.isEmpty());
+	}
 }

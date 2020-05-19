@@ -30,6 +30,6 @@ public class PlainTableViewTest extends TestBase {
 		app.iosApp.plaintableview.fillForm(form);
 		
 		TestLog.Then("I return to the main panel");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.PLAIN_TABLE_VIEW_STYLE);
+		Helper.verifyElementIsDisplayed(MainPanel.PLAIN_TABLE_VIEW_STYLE);
 	}
 }

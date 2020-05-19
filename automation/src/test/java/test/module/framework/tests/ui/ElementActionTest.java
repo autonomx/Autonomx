@@ -22,26 +22,26 @@ public class ElementActionTest extends TestBase {
 	
 	@Test
 	public void moveMouseToPositionByPointsTest() {
-		int submitButtonWidth = Helper.findMiddleOfElement(LoginPanel.elements.LOGIN_SUBMIT)[0];
-		int submitButtonHeight = Helper.findMiddleOfElement(LoginPanel.elements.LOGIN_SUBMIT)[1];
+		int submitButtonWidth = Helper.findMiddleOfElement(LoginPanel.LOGIN_SUBMIT)[0];
+		int submitButtonHeight = Helper.findMiddleOfElement(LoginPanel.LOGIN_SUBMIT)[1];
 
 		TestLog.When("I test finding element by location");	
-		Helper.click.clickPointsAndExpect(submitButtonWidth, submitButtonHeight, LoginPanel.elements.INVALID_INPUT_MESSAGE);
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.INVALID_INPUT_MESSAGE);
+		Helper.click.clickPointsAndExpect(submitButtonWidth, submitButtonHeight, LoginPanel.INVALID_INPUT_MESSAGE);
+		Helper.verifyElementIsDisplayed(LoginPanel.INVALID_INPUT_MESSAGE);
 		
 		TestLog.Then("I verify element can be found by location once the mouse has been displaced");	
 		Helper.refreshPage();
-		Helper.click.clickPointsAndExpect(submitButtonWidth, submitButtonHeight, LoginPanel.elements.INVALID_INPUT_MESSAGE);
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.INVALID_INPUT_MESSAGE);	
+		Helper.click.clickPointsAndExpect(submitButtonWidth, submitButtonHeight, LoginPanel.INVALID_INPUT_MESSAGE);
+		Helper.verifyElementIsDisplayed(LoginPanel.INVALID_INPUT_MESSAGE);	
 	}
 	
 	@Test
 	public void doubleClickActionTest() {
-		int submitButtonWidth = Helper.findMiddleOfElement(LoginPanel.elements.LOGIN_SUBMIT)[0];
-		int submitButtonHeight = Helper.findMiddleOfElement(LoginPanel.elements.LOGIN_SUBMIT)[1];
+		int submitButtonWidth = Helper.findMiddleOfElement(LoginPanel.LOGIN_SUBMIT)[0];
+		int submitButtonHeight = Helper.findMiddleOfElement(LoginPanel.LOGIN_SUBMIT)[1];
 
 		TestLog.When("I test finding element by location");	
 		Helper.clickAction.doubleClickPoints(submitButtonWidth, submitButtonHeight);
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.INVALID_INPUT_MESSAGE);
+		Helper.verifyElementIsDisplayed(LoginPanel.INVALID_INPUT_MESSAGE);
 	}
 }

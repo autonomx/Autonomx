@@ -21,6 +21,31 @@ public class VerifyLoginTest extends TestBase {
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {
+		
+//		Map<String, Object> prefs = new HashMap<String, Object>();
+//		prefs.put("download.default_directory",  "C:\\Temp\\downloads");
+//		prefs.put("intl.accept_languages",  "fr");
+//
+//		ChromeOptions options = new ChromeOptions();
+//		options.setExperimentalOption("prefs", prefs);
+//		ChromeDriver driver = new ChromeDriver(options);
+//		driver.get("http://demo.autonomx.io/admin/");
+		
+//		Map<String, Object> prefs = new HashMap<String, Object>();
+//		prefs.put("download.default_directory",  "C:\\Temp\\downloads");
+//		prefs.put("intl.accept_languages",  "fr");
+//
+//		ChromeOptions options = new ChromeOptions();
+//		options.setExperimentalOption("prefs", prefs);
+//		DesiredCapabilities capabilities = new DesiredCapabilities();
+//		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+//		
+//		ChromeOptions chromeOptions = new ChromeOptions();
+//		chromeOptions.merge(capabilities);
+//		
+//		ChromeDriver driver = new ChromeDriver(capabilities);
+//		driver.get("http://demo.autonomx.io/admin/");
+		
 		setupWebDriver(app.webApp.getHybridDriver());
 	}
 	
@@ -32,13 +57,13 @@ public class VerifyLoginTest extends TestBase {
 		app.webApp.login.loginWithCsvData(user);
 				
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 		
 		TestLog.When("I logout");
 		app.webApp.main.logout();
 
 		TestLog.Then("I should see the login panel");
-		Helper.verifyElementIsDisplayed(LoginPanel.elements.LOGIN_SUBMIT);
+		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);
 	}
 	
 	/**

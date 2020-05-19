@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-import test.module.ModuleBase;
+import moduleManager.module.ModuleBase;
 
 /**
  * Add additional before/after method/class/suite for the test project

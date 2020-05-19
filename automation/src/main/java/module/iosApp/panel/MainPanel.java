@@ -26,23 +26,21 @@ public class MainPanel {
 
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
-	public static class elements {
-		public static EnhancedBy PLAIN_TABLE_VIEW_STYLE = Element.byAccessibility("Plain Table View Style", "plain table view style");
-		public static EnhancedBy LIST_SECTIONS = Element.byAccessibility("List Sections", "list sections");
-		public static EnhancedBy EUREKA = Element.byAccessibility("Eureka", "eureka logo");
+	public static EnhancedBy PLAIN_TABLE_VIEW_STYLE = Element.byAccessibility("Plain Table View Style", "plain table view style");
+	public static EnhancedBy LIST_SECTIONS = Element.byAccessibility("List Sections", "list sections");
+	public static EnhancedBy EUREKA = Element.byAccessibility("Eureka", "eureka logo");
 
-	}
 
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void selectPanel(options panel) {
 		switch (panel) {
 		case PLAIN_TABLE_VIEW_STYLE:
-			Helper.mobile.mobile_scrollToElement(elements.PLAIN_TABLE_VIEW_STYLE);
-			Helper.click.clickAndExpect(elements.PLAIN_TABLE_VIEW_STYLE, PlainTableViewPanel.elements.NAME);
+			Helper.mobile.mobile_scrollToElement(PLAIN_TABLE_VIEW_STYLE);
+			Helper.click.clickAndExpect(PLAIN_TABLE_VIEW_STYLE, PlainTableViewPanel.NAME);
 			break;
 		case LIST_SECTIONS:
-			Helper.click.clickAndExpect(elements.LIST_SECTIONS, ListSections.elements.BACK);
+			Helper.click.clickAndExpect(LIST_SECTIONS, ListSections.BACK);
 			break;
 		default:
 			throw new IllegalStateException("Unsupported panels " + panel);

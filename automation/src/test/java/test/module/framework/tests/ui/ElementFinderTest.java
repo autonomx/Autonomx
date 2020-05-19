@@ -10,7 +10,6 @@ import data.Data;
 import data.framework.User;
 import module.framework.panel.LoginPanel;
 import module.framework.panel.MainPanel;
-import module.framework.panel.MainPanel.elements;
 import module.framework.panel.SidePanel.Panels;
 import module.framework.panel.UserPanel;
 import test.module.framework.TestBase;
@@ -37,19 +36,19 @@ public class ElementFinderTest extends TestBase {
 		app.framework.side.selectPanel(Panels.USERS);
 				
 		TestLog.Then("I verify element in list");
-		int index = Helper.getElementIndexInList(elements.USER_ROWS,elements.EDIT_BUTTON);
+		int index = Helper.getElementIndexInList(MainPanel.USER_ROWS,MainPanel.EDIT_BUTTON);
 		
 		Helper.assertEquals(0, index);
 		
 		TestLog.And("I verify select element in list works");
 		app.framework.main.selectEditUser(user);
-		Helper.verifyElementIsDisplayed(UserPanel.elements.SAVE_BUTTON);
+		Helper.verifyElementIsDisplayed(UserPanel.SAVE_BUTTON);
 	}
 	
 	@Test
 	public void verifyElementIsNotDisplayed() {
 		
-		boolean isError = Helper.isPresent(LoginPanel.elements.ERROR_MESSAGE);
+		boolean isError = Helper.isPresent(LoginPanel.ERROR_MESSAGE);
 		Helper.assertTrue("error message should not be displayed", !isError);			
 	}
 	
@@ -64,22 +63,22 @@ public class ElementFinderTest extends TestBase {
 		Helper.setPageSize(800, 800);
 		
 		TestLog.And("I verify the visibility of admin logo");
-		boolean isVisible = Helper.isVisibleInViewport(MainPanel.elements.ADMIN_LOGO);
+		boolean isVisible = Helper.isVisibleInViewport(MainPanel.ADMIN_LOGO);
 		Helper.assertTrue("logo should be visible", isVisible);
 		
 		TestLog.And("I verify the submit button is present");
-		boolean isPresent = Helper.isPresent(MainPanel.elements.SUBMIT_BUTTON);
+		boolean isPresent = Helper.isPresent(MainPanel.SUBMIT_BUTTON);
 		Helper.assertTrue("submit button should be present", isPresent);
 	
 		TestLog.Then("I verify the visibility of submit button");
-		isVisible = Helper.isVisibleInViewport(MainPanel.elements.SUBMIT_BUTTON);
+		isVisible = Helper.isVisibleInViewport(MainPanel.SUBMIT_BUTTON);
 		Helper.assertTrue("logo should not be visible", !isVisible);
 	}
 	
 	@Test
 	public void verifyWaitForElement() {
 		TestLog.When("I set wait time of 3 seconds, and the element is not found, test should not fail");
-		Helper.waitForElementToLoad(MainPanel.elements.ADMIN_LOGO, 3, 1);
+		Helper.waitForElementToLoad(MainPanel.ADMIN_LOGO, 3, 1);
 	}
 	
 	

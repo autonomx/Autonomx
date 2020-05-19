@@ -22,28 +22,26 @@ public class ListSections {
 
 // Locators
 //--------------------------------------------------------------------------------------------------------		
-	public static class elements{
 		
-		// dynamic element
-		public static EnhancedBy question(String question) {
-			return Element.byAccessibility(question, question + " field");
-		}
-		
-		// static element
-		public static EnhancedBy BACK = Element.byAccessibility("Examples", "examples link");
-
+	// dynamic element
+	public static EnhancedBy question(String question) {
+		return Element.byAccessibility(question, question + " field");
 	}
+	
+	// static element
+	public static EnhancedBy BACK = Element.byAccessibility("Examples", "examples link");
+
 	
 // Actions
 //--------------------------------------------------------------------------------------------------------	
 	public void fillForm(ListSectionsObject form) {
 		setForm(form);
-		Helper.clickAndExpect(elements.BACK, MainPanel.elements.EUREKA);
+		Helper.clickAndExpect(BACK, MainPanel.EUREKA);
 	}
 
 	public void setForm(ListSectionsObject form) {
 		
-		Helper.form.selectCheckBox(elements.question(form.whereYouLive), true);
-		Helper.form.selectCheckBox(elements.question(form.oceans), true);
+		Helper.form.selectCheckBox(question(form.whereYouLive), true);
+		Helper.form.selectCheckBox(question(form.oceans), true);
 	}
 }

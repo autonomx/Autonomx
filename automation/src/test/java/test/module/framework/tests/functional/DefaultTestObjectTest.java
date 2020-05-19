@@ -24,39 +24,39 @@ public class DefaultTestObjectTest extends TestBase {
 	
 	@BeforeSuite
 	public void beforeSuite()  {
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.equals(TestObject.DEFAULT_TEST));
 	}
 	
 	@BeforeClass
 	public void beforeClass()  {
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.equals(TestObject.DEFAULT_TEST));
 
 	}
 	
 	@BeforeMethod()
 	public void beforeMethod(Method method) {
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.contains(TestObject.DEFAULT_TEST));
 	}
 	
 	@AfterClass
 	public void afterClass()  {
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.equals(TestObject.DEFAULT_TEST));
 	}
 	
 	@AfterSuite
 	public void afterSuite()  {
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.equals(TestObject.DEFAULT_TEST));
 	}
 	
 	@Test(description = "verify test object is named based on thread count")
 	public void verifyDefaultTestObject() {
 		TestLog.When("I run a test using default test object in thread 1");
-		String testName = TestObject.getDefaultTestInfo().testId;
+		String testName = TestObject.getGlobalTestInfo().testId;
 		Helper.assertTrue("wrong default test id", testName.contains(TestObject.DEFAULT_TEST ));
 	}
 	

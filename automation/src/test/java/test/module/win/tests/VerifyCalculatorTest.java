@@ -7,7 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import core.support.logger.TestLog;
-import test.module.ModuleBase;
+import moduleManager.module.ModuleBase;
 
 
 

@@ -79,7 +79,7 @@ public class SingleSignInTest extends TestBase {
 		app.framework.login.loginWithCsvData(user);
 				
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 	}
 	
 	@Test(dependsOnMethods = "verifyDifferentUserPart1", priority=2)
@@ -100,8 +100,8 @@ public class SingleSignInTest extends TestBase {
 		app.framework.login.loginWithCsvData(user);
 				
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 
 	}
 	
@@ -112,13 +112,13 @@ public class SingleSignInTest extends TestBase {
 		Helper.refreshPage();
 		
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 
 		User user = Data.framework.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.framework.login.loginWithCsvData(user);
 		
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.ADMIN_LOGO);
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 	}
 }

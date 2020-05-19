@@ -21,15 +21,12 @@ public class MainPanel {
 	
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
-	public static class elements {
 		public static EnhancedBy REGISTER_PANEL = Element.byAccessibility("startUserRegistrationCD", "registration button");
 		public static EnhancedBy POPUP_BUTTON = Element.byAccessibility("showPopupWindowButtonCD", "popup button");
-
-	}
 	
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void selectRegisterPanel() {
-		Helper.clickAndExpect(elements.REGISTER_PANEL, RegistrationPanel.elements.USERNAME_FIELD);
+		Helper.clickAndExpect(REGISTER_PANEL, RegistrationPanel.USERNAME_FIELD);
 	}
 }

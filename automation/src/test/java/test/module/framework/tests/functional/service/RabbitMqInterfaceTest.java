@@ -18,8 +18,8 @@ public class RabbitMqInterfaceTest extends TestBase {
 
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod() throws Exception {
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "realExchange");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "realQueue");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "realExchange");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "realQueue");
 	}
 
 	// @Ignore // requires real rabbitmq connection
@@ -27,10 +27,10 @@ public class RabbitMqInterfaceTest extends TestBase {
 	public void evaluateRabbitMqInterface_text_message() throws Exception {
 
 		// reset values
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
 
 		String random = Helper.generateRandomString(3);
 		ServiceObject serviceObject = new ServiceObject().withRequestBody("test from autonomx" + random)
@@ -46,10 +46,10 @@ public class RabbitMqInterfaceTest extends TestBase {
 	@Test(description = "verify rabbitmq interface with json message")
 	public void evaluateRabbitMqInterface_json_message() throws Exception {
 		// reset values
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
 
 		String random = Helper.generateRandomString(3);
 		String message = "{\n" + "    \"event\": {\n"
@@ -80,10 +80,10 @@ public class RabbitMqInterfaceTest extends TestBase {
 	@Test(description = "verify rabbitmq interface with json message")
 	public void evaluateRabbitMqInterface_json_data_message() throws Exception {
 		// reset values
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
 
 		String random = Helper.generateRandomString(3);
 
@@ -101,10 +101,10 @@ public class RabbitMqInterfaceTest extends TestBase {
 	@Test(description = "verify rabbitmq interface with json message")
 	public void evaluateRabbitMqInterface_json_validate_only() throws Exception {
 		// reset values
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
 
 		String random = Helper.generateRandomString(3);
 
@@ -129,10 +129,10 @@ public class RabbitMqInterfaceTest extends TestBase {
 	public void evaluateRabbitMqInterface_xml_message() throws Exception {
 
 		// reset values
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_HOST, "localhost");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "hello");
 
 		String random = Helper.generateRandomString(5);
 		String expectedResponse = "<msg:Message xmlns:hdr=\"urn:soi.sample.com:header:V1_3\" xmlns:msg=\"urn:soi.sample.com:message:V1_3\" xmlns:soi=\"urn:soi.sample.com:payload:V1_3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
@@ -166,8 +166,8 @@ public class RabbitMqInterfaceTest extends TestBase {
 		Config.putValue(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "realExchange");
 		Config.putValue(RabbitMqInterface.RABBIT_MQ_QUEUE, "realQueue");
 
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "realExchange");
-		TestObject.getDefaultTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "realQueue");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_EXCHANGE, "realExchange");
+		TestObject.getGlobalTestInfo().config.put(RabbitMqInterface.RABBIT_MQ_QUEUE, "realQueue");
 
 		ServiceObject serviceObject = new ServiceObject().withOption("EXCHANGE:fakeExchange; QUEUE:fakeQueue");
 

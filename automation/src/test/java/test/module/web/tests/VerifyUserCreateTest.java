@@ -39,7 +39,7 @@ public class VerifyUserCreateTest extends TestBase {
 		app.webApp.user.filterUsers(user);
 		
 		TestLog.And("I verify the user is displayed in the user list");
-		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, user.username);
+		Helper.verifyContainsIsInList(UserPanel.USER_ROWS, user.username);
 	}
 	
 	@Test
@@ -62,7 +62,7 @@ public class VerifyUserCreateTest extends TestBase {
 		app.webApp.user.filterUsers(user);
 		
 		TestLog.And("I verify the user is displayed in the user list");
-		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, user.username);
+		Helper.verifyContainsIsInList(UserPanel.USER_ROWS, user.username);
 		
 		TestLog.Then("I edit the user");
 		CommonUser editUser = Data.common.commonuser().withEdittUser();
@@ -73,6 +73,6 @@ public class VerifyUserCreateTest extends TestBase {
 		app.webApp.user.filterUsers(editUser);
 		
 		TestLog.And("I verify the user is displayed in the user list");
-		Helper.verifyContainsIsInList(UserPanel.elements.USER_ROWS, editUser.username);
+		Helper.verifyContainsIsInList(UserPanel.USER_ROWS, editUser.username);
 	}
 }

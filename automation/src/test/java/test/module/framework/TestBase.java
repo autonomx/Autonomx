@@ -17,7 +17,7 @@ import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import data.Data;
 import module.common.data.CommonUser;
-import test.module.ModuleBase;
+import moduleManager.module.ModuleBase;
 
 /**
  * Add additional before/after method/class/suite for the test project

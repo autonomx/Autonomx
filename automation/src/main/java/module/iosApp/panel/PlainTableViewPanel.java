@@ -22,27 +22,25 @@ public class PlainTableViewPanel {
 
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
-	public static class elements {
-		public static EnhancedBy NAME = Element.byAccessibility("Name", "name field");
-		public static EnhancedBy USER_NAME = Element.byAccessibility("Username", "username field");
-		public static EnhancedBy EMAIL_ADDRESS = Element.byAccessibility("Email Address", "email address filed");
-		public static EnhancedBy PASSWORD = Element.byAccessibility("Password", "password field");
-		public static EnhancedBy BACK = Element.byAccessibility("Examples", "examples link");
+	public static EnhancedBy NAME = Element.byAccessibility("Name", "name field");
+	public static EnhancedBy USER_NAME = Element.byAccessibility("Username", "username field");
+	public static EnhancedBy EMAIL_ADDRESS = Element.byAccessibility("Email Address", "email address filed");
+	public static EnhancedBy PASSWORD = Element.byAccessibility("Password", "password field");
+	public static EnhancedBy BACK = Element.byAccessibility("Examples", "examples link");
 
-	}
 	
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void fillForm(PlainTableViewObject form) {
 		setForm(form);
-		Helper.clickAndExpect(elements.BACK, MainPanel.elements.PLAIN_TABLE_VIEW_STYLE);
+		Helper.clickAndExpect(BACK, MainPanel.PLAIN_TABLE_VIEW_STYLE);
 	}
 
 	public void setForm(PlainTableViewObject form) {
 
-		Helper.form.setField(elements.NAME, form.name);
-		Helper.form.setField(elements.USER_NAME, form.username);
-		Helper.form.setField(elements.EMAIL_ADDRESS, form.emailAddress);
-		Helper.form.setField(elements.PASSWORD, form.password);
+		Helper.form.setField(NAME, form.name);
+		Helper.form.setField(USER_NAME, form.username);
+		Helper.form.setField(EMAIL_ADDRESS, form.emailAddress);
+		Helper.form.setField(PASSWORD, form.password);
 	}
 }

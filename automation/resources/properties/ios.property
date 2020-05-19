@@ -19,7 +19,7 @@ ios.keyboard.dismissByKeyPress = Done, DONE, Hide keyboard, Hide, Next
 
 # to add additional capabilities, add capability after the "ios.capabilities." prefix
 ios.capabilties.platform = iOS
-ios.capabilties.platformVersion = 13.3
+ios.capabilties.platformVersion = 13.4
 ios.capabilties.automationName = XCuiTest
 ios.capabilties.fullReset = false
 ios.capabilties.noReset = true

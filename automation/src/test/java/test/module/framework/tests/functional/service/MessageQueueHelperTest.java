@@ -2,6 +2,7 @@ package test.module.framework.tests.functional.service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -79,7 +80,7 @@ public class MessageQueueHelperTest extends TestBase {
 		filteredMessages.add("message1");
 		filteredMessages.add("message2");
 		List<String> errorMessages = MessageQueueHelper.validateExpectedMessageCount(request, filteredMessages);
-		Helper.assertTrue("errors not caught", !errorMessages.isEmpty());
+		Helper.assertTrue("errors caught: " + Arrays.toString(errorMessages.toArray()) , errorMessages.isEmpty());
 	}
 	
 	@Test(description = "")
@@ -301,4 +302,29 @@ public class MessageQueueHelperTest extends TestBase {
 		
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);	
 	}	
+	
+	
+	@Test(description = "")
+	public void findMessagesBasedOnResponseIdentifier() throws Exception {	
+		String random = Helper.generateRandomString(10);
+		String random2 = Helper.generateRandomString(11);
+		String random3 = Helper.generateRandomString(12);
+
+		MessageObject message = new MessageObject().withMessageId("message" + random);
+		message.withMessage("test"+ random );
+		
+		MessageObject message2 = new MessageObject().withMessageId("message" + random2);
+		message2.withMessage("test"+ random2 + " value" + random3);
+
+		MessageObject.outboundMessages.put(message, true);
+		MessageObject.outboundMessages.put(message2, true);
+		
+		Config.putValue(MessageQueueHelper.RESPONSE_IDENTIFIER, random2 + "," + random3);
+		Config.setGlobalValue(MessageQueueHelper.RESPONSE_IDENTIFIER, random2 + "," + random3);
+		
+		CopyOnWriteArrayList<MessageObject> filteredMessages = MessageQueueHelper.findMessagesBasedOnResponseIdentifier();
+
+		Helper.assertTrue("messages filtered are empty", !filteredMessages.isEmpty());
+		Helper.assertEquals("test"+ random2 + " value" + random3, filteredMessages.get(0).message);
+	}
 }

@@ -8,6 +8,8 @@ import core.support.objects.ServiceObject;
 @Service
 public class TestInterface {
 	
+	public static final String KEY1Option = "key1Option";
+	public static final String KEY1 = "key1";
 
 	/**
 	 * interface for restful API calls

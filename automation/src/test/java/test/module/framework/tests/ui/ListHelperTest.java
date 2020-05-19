@@ -36,11 +36,11 @@ public class ListHelperTest extends TestBase {
 		app.framework.side.selectPanel(Panels.USERS);
 		
 		TestLog.And("I map the user table");
-		HashMap<String, List<String>> table = Helper.list.getTableMap(UserPanel.elements.USER_COLUMN_HEADERS, UserPanel.elements.USER_ROWS,UserPanel.elements.USER_ROW_CELLS);
+		HashMap<String, List<String>> table = Helper.list.getTableMap(UserPanel.USER_COLUMN_HEADERS, UserPanel.USER_ROWS,UserPanel.USER_ROW_CELLS);
 
 		TestLog.Then("I verify the data is data is mapped");
 		// last column data is empty, is not added to map
-		int columnCount = Helper.getListCount(UserPanel.elements.USER_COLUMN_HEADERS) - 1;
+		int columnCount = Helper.getListCount(UserPanel.USER_COLUMN_HEADERS) - 1;
 		Helper.assertEquals(columnCount, table.size());	
 		
 		Helper.assertEquals(table.get("Username").get(0), "autoAdmin1");

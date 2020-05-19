@@ -12,6 +12,10 @@ authentication.disabled = false
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.csv.include.subdir = false
 
+# set file name to run single csv file
+api.testCaseFile = ""
+api.testCase = ""
+
 api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"
 api.templateDataFile = "../apiTestData/templates/data/"
@@ -32,12 +36,9 @@ service.timeout.validation.delay.between.attempt.seconds = 3
 service.retry.count = 0
 service.retry.after.seconds = 0
 
-# set file name to run single csv file
-api.testCaseFile = ""
-api.testCase = ""
-
 # api validation rules
-api.validation.fail.on.escapechars = false
+service.validation.fail.on.escapechars = false
+service.xml.ignore.namespace = false
 
 # api url encoding
 api.encoding.url = true
@@ -49,14 +50,6 @@ db.1.url=jdbc:postgresql://localhost:5432
 db.1.name=testdb
 db.1.username=postgres
 db.1.password=123
-
-# mongoDb
-#db.1.driver = mongodb.jdbc.MongoDriver
-#db.1.url=jdbc:mongo://ds029847.mongolab.com:29847
-# first time set rebuildschema=true
-#db.1.name=tpch?rebuildschema=false
-#db.1.username=
-#db.1.password=
 
 # Rabbit MQ
 rabbitMQ.host = "localhost"

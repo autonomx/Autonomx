@@ -34,6 +34,6 @@ public class RegisterUserTest extends TestBase {
 		app.androidApp.registration.registerUser(user);
 
 		TestLog.Then("I verify registration is complete");
-		Helper.verifyElementIsDisplayed(MainPanel.elements.REGISTER_PANEL);
+		Helper.verifyElementIsDisplayed(MainPanel.REGISTER_PANEL);
 	}
 }

@@ -206,8 +206,8 @@ public class SqlInterfaceTest extends TestBase {
 		Config.putValue("db.1.username", "world");
 		Config.putValue("db.1.password", "world123");
 		
-		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, "false");
-		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_SECONDS, "4");
+		TestObject.getGlobalTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, "false");
+		TestObject.getGlobalTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_SECONDS, "4");
 		Config.putValue(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, "false");
 		Config.putValue(ServiceManager.SERVICE_TIMEOUT_VALIDATION_SECONDS, "4");
 

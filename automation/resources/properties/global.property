@@ -1,3 +1,7 @@
+# note: if test.module.ModuleBase exists, needs to be update with project name.
+	# eg. project.name = "demo" .Then ModuleBase will reference demoManager instead of ModuleManager
+project.name = "autonomx"
+
 # global configuration
 global.timeoutSeconds = 60
 global.timeout.implicit.Seconds = 5
@@ -12,6 +16,7 @@ global.retryCount = 0
 global.isSingleSignIn = false
 
 # use either json file or csv for localization
+localize.path = resources/localization/
 localize.file = localization.json
 
 # api keywords

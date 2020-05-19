@@ -74,7 +74,7 @@ public class XmlTemplateTest extends TestBase {
 		String tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 1);
 		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
 
-		Helper.assertEquals("equip_"+ time.toString().substring(0, 22), tagValue);
+		Helper.assertTrue("", ("equip_"+ time.toString()).contains(tagValue));
 		
 	    tagValue = XmlHelper.getXmlTagValue(xmlString, tag, 2);
 		Helper.assertEquals("equip_313", tagValue);
@@ -148,6 +148,28 @@ public class XmlTemplateTest extends TestBase {
 		
 		String errors = JsonHelper.validateByJsonBody(jsonExpected, json);
 		Helper.assertTrue("errors occured: " +  errors, errors.isEmpty());
+	}
+	
+	@Test()
+	public void getRequestBodyFromXMLTemplate_data_file() {
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Defects.xml")
+				.withRequestBody("DataFile:Defects:equipmentSet1");
+		
+		String updatedJson = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+
+		String tag = "soi:EquipmentID";
+		
+		TestLog.Then("I verify tag values have been updated");		
+		String tagValue = XmlHelper.getXmlTagValue(updatedJson, tag, 1);
+
+		Helper.assertEquals("toyota", tagValue);
+		
+	    tagValue = XmlHelper.getXmlTagValue(updatedJson, tag, 2);
+		Helper.assertEquals("2011", tagValue);
+		
+	    tagValue = XmlHelper.getXmlTagValue(updatedJson, tag, 3);
+		Helper.assertEquals("R5578", tagValue);
 	}
 	
 

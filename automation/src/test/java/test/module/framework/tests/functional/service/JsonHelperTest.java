@@ -265,21 +265,22 @@ public class JsonHelperTest extends TestBase {
 		Helper.assertEquals("Authenticated", name);
 	}
 	
-	@Test(expectedExceptions = { AssertionError.class } )
+	@Test()
 	public void getJsonValue_with_invalid_path() {
 		
-		TestLog.Then("I verify getting json value from path");
-		JsonHelper.getJsonValue(jsonString, "role[0].name");
+		String error = JsonHelper.getJsonValue(jsonString, "role[0].name");
+		Helper.assertEquals(null, error);
 	}
 	
-	@Test(expectedExceptions = { AssertionError.class } )
+	@Test()
 	public void getJsonValue_with_jsonArray_invalidpath() {
 		
 		String jsonValue = "[{\"id\":1,\"username\":\"autoAdmin1\",\"email\":\"aut@email\","
 				+ "\"provider\":\"local\",\"confirmed\":true,\"blocked\":null,\"role\":1}]";
 		
 		TestLog.Then("I verify getting json value from path");
-		JsonHelper.getJsonValue(jsonValue, "id");
+		String error = JsonHelper.getJsonValue(jsonValue, "id");
+		Helper.assertEquals(null, error);
 	}
 	
 	@Test()
@@ -292,11 +293,12 @@ public class JsonHelperTest extends TestBase {
 		Helper.assertEquals("1", id);
 	}
 	
-	@Test(expectedExceptions = { AssertionError.class } )
+	@Test()
 	public void getJsonValue_with_invalid_unavailable_path() {
 		
 		TestLog.Then("I verify getting json value from path");
-		JsonHelper.getJsonValue(jsonString, "role.name2");
+		String error = JsonHelper.getJsonValue(jsonString, "role.name2");
+		Helper.assertEquals(null, error);
 	}
 	
 	@Test()

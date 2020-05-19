@@ -22,29 +22,27 @@ public class MainPanel {
 	
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
-	public static class elements {
 	
-		// using wildcard to find element
-		public static EnhancedBy ADMIN_LOGO = Element.byCss("[class*='adminprojectName__admin']", "admin logo");
-		public static EnhancedBy USERINFO_DROPDOWN = Element.byCss(".fa-caret-down", "userinfo dropdown");
-		public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
-		public static EnhancedBy EDIT_BUTTON = Element.byCss(".fa-pencil", "signout option");
+	// using wildcard to find element
+	public static EnhancedBy ADMIN_LOGO = Element.byCss("[class*='adminprojectName__admin']", "admin logo");
+	public static EnhancedBy USERINFO_DROPDOWN = Element.byCss(".fa-caret-down", "userinfo dropdown");
+	public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
+	public static EnhancedBy EDIT_BUTTON = Element.byCss(".fa-pencil", "signout option");
 
-		public static EnhancedBy SUBMIT_BUTTON = Element.byCss("[type='submit']", "submit button");
+	public static EnhancedBy SUBMIT_BUTTON = Element.byCss("[type='submit']", "submit button");
 
-		
-		// Users panel
-		public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
-	}
+	
+	// Users panel
+	public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
 	
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void logout() {
-		Helper.selectDropDown(elements.USERINFO_DROPDOWN, elements.SIGNOUT_OPTION);
-		Helper.waitForElementToLoad(LoginPanel.elements.USER_NAME_FIELD);
+		Helper.selectDropDown(USERINFO_DROPDOWN, SIGNOUT_OPTION);
+		Helper.waitForElementToLoad(LoginPanel.USER_NAME_FIELD);
 	}
 	
 	public void selectEditUser(User user) {
-		Helper.selectElementContainedInList(elements.USER_ROWS, user.getUsername(), elements.EDIT_BUTTON);
+		Helper.selectElementContainedInList(USER_ROWS, user.getUsername(), EDIT_BUTTON);
 	}
 }

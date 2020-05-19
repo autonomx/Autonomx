@@ -38,7 +38,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		TestObject.getGlobalTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
 		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
 		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");
@@ -50,7 +50,8 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 				.withContentType("application/x-www-form-urlencoded")
 				.withMethod("POST")
 				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
-				.withRespCodeExp("600");
+				.withRespCodeExp("401")
+				.withExpectedResponse("_VERIFY_JSON_PART_ results[0].entityUUID:contains(invalid)");
 			
 		RestApiInterface.RestfullApiInterface(userAPI);		 
 	}
@@ -73,7 +74,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		TestObject.getGlobalTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
 		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
 		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");
@@ -111,7 +112,7 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		passedTimeInSeconds = 0;
 		watch = null;
 		
-		TestObject.getDefaultTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
+		TestObject.getGlobalTestInfo().config.put(ServiceManager.SERVICE_TIMEOUT_VALIDATION_ENABLED, true);
 		ConfigVariable.serviceTimeoutValidationIsEnabled().setValue(true);
 		ConfigVariable.serviceTimeoutValidationSeconds().setValue(2);
 		ConfigVariable.setValue("accessTokenAdmin", "invalid");

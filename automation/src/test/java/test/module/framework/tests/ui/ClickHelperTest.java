@@ -35,9 +35,9 @@ public class ClickHelperTest extends TestBase {
 		app.framework.side.selectPanel(Panels.USERS);
 				
 		TestLog.Then("I click a point");
-		Point position = Helper.getElementPosition(UserPanel.elements.NEW_USER_BUTTON, 0);
-		//Helper.clickPointsAndExpect(1039, 92, UserPanel.elements.SAVE_BUTTON);
+		Point position = Helper.getElementPosition(UserPanel.NEW_USER_BUTTON, 0);
+		//Helper.clickPointsAndExpect(1039, 92, UserPanel.SAVE_BUTTON);
 
-		Helper.clickPointsAndExpect(position.getX(), position.getY(), UserPanel.elements.SAVE_BUTTON);
+		Helper.clickPointsAndExpect(position.getX(), position.getY(), UserPanel.SAVE_BUTTON);
 	}
 }

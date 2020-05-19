@@ -19,7 +19,6 @@ public class UserPanel{
 	
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
-	public static class elements {
 		public static EnhancedBy NEW_USER_BUTTON = Element.byCss("[label*='addAnEntry']", "add new user");
 		
 		// add/edit user panel
@@ -44,8 +43,6 @@ public class UserPanel{
 		public static EnhancedBy FILTER_SUBMIT_BUTTON = Element.byCss("[type='submit']", "filter submit button");		
 		public static EnhancedBy FILTER_REMOVE_BUTTON = Element.byCss("[class*='remove__admin']", "filter remove button");		
 
-	}
-
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	/**
@@ -54,34 +51,34 @@ public class UserPanel{
 	 * @param user
 	 */
 	public void addUser(CommonUser user) {
-		Helper.clickAndExpect(elements.NEW_USER_BUTTON, elements.SAVE_BUTTON);
+		Helper.clickAndExpect(NEW_USER_BUTTON, SAVE_BUTTON);
 		setUserFields(user);
-		Helper.form.formSubmit(elements.SAVE_BUTTON, MainPanel.elements.ADMIN_LOGO);
+		Helper.form.formSubmit(SAVE_BUTTON, MainPanel.ADMIN_LOGO);
 	}
 	
 	public void editUser(CommonUser user, CommonUser editUser) {
 		
-		Helper.selectListItemContainsByName(elements.USER_ROWS, user.username);
+		Helper.selectListItemContainsByName(USER_ROWS, user.username);
 		setUserFields(editUser);
-		Helper.form.formSubmit(elements.SAVE_BUTTON, MainPanel.elements.ADMIN_LOGO);
+		Helper.form.formSubmit(SAVE_BUTTON, MainPanel.ADMIN_LOGO);
 	}
 
 	public void setUserFields(CommonUser user) {
-		Helper.form.clearAndSetField(elements.USER_NAME_FILED, user.username);
-		Helper.form.clearAndSetField(elements.EMAIL_FIELD, user.email);
-		Helper.form.clearAndSetField(elements.PASSWORD_FIELD, user.password);
+		Helper.form.clearAndSetField(USER_NAME_FILED, user.username);
+		Helper.form.clearAndSetField(EMAIL_FIELD, user.email);
+		Helper.form.clearAndSetField(PASSWORD_FIELD, user.password);
 		
-		Helper.form.selectToggle(elements.CONFIRMED_ON, elements.CONFIRMED_OFF, user.confirmed);
-		Helper.form.selectToggle(elements.BLOCKED_ON, elements.BLOCKED_OFF, user.blocked);
+		Helper.form.selectToggle(CONFIRMED_ON, CONFIRMED_OFF, user.confirmed);
+		Helper.form.selectToggle(BLOCKED_ON, BLOCKED_OFF, user.blocked);
 	}
 	
 	public void filterUsers(CommonUser user) {
-		Helper.clickAndExpect(elements.FILTER_BUTTON, elements.FILTER_SUBMIT_BUTTON);
-		Helper.setField(elements.FILTER_TEXT_FIELD, user.username);
-		Helper.formSubmit(elements.FILTER_SUBMIT_BUTTON, elements.USER_ROWS);
+		Helper.clickAndExpect(FILTER_BUTTON, FILTER_SUBMIT_BUTTON);
+		Helper.setField(FILTER_TEXT_FIELD, user.username);
+		Helper.formSubmit(FILTER_SUBMIT_BUTTON, USER_ROWS);
 	}
 	
 	public void removeFilter() {
-		Helper.clickAndExpect(elements.FILTER_REMOVE_BUTTON, elements.USER_ROWS);
+		Helper.clickAndExpect(FILTER_REMOVE_BUTTON, USER_ROWS);
 	}
 }
