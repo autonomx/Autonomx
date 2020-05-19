@@ -15,14 +15,9 @@ web.capabilities.takesScreenshot = true
 chrome.options.start-fullscreen = false
 firefox.options.start-fullscreen = false
 
-
 # to add additional chrome preferences, add options after the prefix: "chrome.pref."
 #chrome.pref.intl.accept_languages = fr
-chrome.pref.download.default_directory = C:\\Temp\\downloads
-
 #firefox.pref.intl.accept_languages = fr
-
-
 
 # highlights click and send key fields. duration is time in seconds to pause during highlight 
 web.element.highlight.enable = false
