@@ -1,5 +1,7 @@
 package module.services.method;
 
+import java.util.List;
+
 import core.helpers.Helper;
 import core.support.configReader.Config;
 
@@ -35,6 +37,14 @@ public class External {
 		
 		Object objectkey = Config.getObjectValue("key4");
 		Helper.assertTrue("objects did not match", objectkey.equals(param3));
+	}
+	
+	public static void testMethod(String param1, List<String> param2) {
+		Config.putValue("key1",param1);	
+	}
+	
+	public static void testMethod(String param1, String param3) {
+		Config.putValue("key1",param1);	
 	}
 	
 	public static void testMethod() {

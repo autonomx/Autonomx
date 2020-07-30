@@ -1,16 +1,9 @@
-# properties/conf file location. add additional locations by prefixing with "config". eg. config.api = "../apiTestData/"
+# properties/conf file location. add additional locations by prefixing with "config".
 # location from root directory ( where pom.xml file is located at )
-# note: to have config properties generated for new directory, add location to ant.xml file ( root directory, where pom.xml is )
-# at checkforCsvAndConfigchanges section. eg. <srcfiles dir="resources" includes="**/*.property"/>
+# eg. directory: config.api = "../apiTestData/" or single file: config.environment = ./resources/properties/environment/qa
 
-# main properties
-profile.group.root = main
+# config root
+config.root = "./resources/properties/"
 
 # environment
-profile.environment = dev
-
-# single config files. prefix: 'config.profile.'. select profile from inside the path
-config.profile.environment = "./resources/properties/environment/"
-
-# read all config files in . prefix: config.group.
-config.group.root.main = "./resources/properties/"
+config.environment = ./resources/properties/environment/qa

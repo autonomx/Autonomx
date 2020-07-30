@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import org.apache.commons.lang.StringUtils;
 
+import core.apiCore.helpers.JsonHelper;
 import core.helpers.Helper;
 import core.support.logger.TestLog;
 
@@ -26,6 +27,10 @@ public class Command {
 	public static String isAllNumbersGreaterThanSumOf(String response, ArrayList<String> values) {
 	
 		int targetValue = Integer.valueOf(values.get(0)) + Integer.valueOf(values.get(1));
+		
+		if(response.equals("null") || StringUtils.isBlank(response))
+			return "response is empty";
+		
 		String[] responses = response.split(",");
 		
 		TestLog.ConsoleLog("validating all values in: " + response + " are greater than: " + targetValue);	
@@ -34,6 +39,7 @@ public class Command {
 			if(Helper.getDoubleFromString(responseString) <=  targetValue)
 				return "value: " + responseString + " is less than or equal to: " + targetValue;
 		}
+		
 		return StringUtils.EMPTY;
 	}
 	
@@ -44,7 +50,7 @@ public class Command {
 	 * @param jsonpathResponse
 	 * @return
 	 */
-	public static String isAllDifferent(String response) {
+	public static String isAllDifferent(String response, ArrayList<String> values) {
 		String[] responses = response.split(",");
 		HashSet<String> set = new HashSet<>();
 		for (String s : responses) {
@@ -70,6 +76,17 @@ public class Command {
 			return "response does not contain value: " + value;
 		
 		return StringUtils.EMPTY;
+	}
+	
+	/**
+	 * command for getting a json response value from output parameter
+	 * @param response
+	 * @param values
+	 * @return
+	 */
+	public static String getRoleNameValue(String response, ArrayList<String> values) {
+		String key = JsonHelper.getJsonValue(response, "role.name");
+		return key;
 	}
 
 }

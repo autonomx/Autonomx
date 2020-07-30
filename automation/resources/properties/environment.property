@@ -6,15 +6,16 @@ android.javaHome = ""
 environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 # maven home (path to maven root path). set value if not found automatically
-# eg. windows: "c:\\apache-maven-3.6.2"
+# note: maven needs be the "binary" version
+# eg. windows: "c:\\apache-maven-3.6.3"
 maven.home = ""
 
 # url to download maven if not found on the system. can find versions at: https://archive.apache.org/dist/maven/maven-3/
 maven.url = "https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip"
 
 # proxy settings:
-# proxy auto detect, detects if proxy is required. overwrites proxy.enabled value. requires host and port values to be set.
-proxy.auto.detect = false; 
+# proxy.enabled options: true, false, auto. auto, detects if proxy is required. requires host and port values to be set.
+proxy.auto.detect = false
 proxy.enabled = false
 proxy.host = ""
 proxy.port = ""

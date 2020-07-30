@@ -197,7 +197,27 @@ public class JsonHelperTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 		
 		TestLog.Then("I verify role name is stored in a variable");
-		JsonHelper.configMapJsonKeyValues(response, "role.name:<$name>; provider:1:<$local>");
+		JsonHelper.saveOutboundJsonParameters(response, "role.name:<$name>; provider:1:<$local>");
+		Helper.assertEquals("Authenticated", Config.getValue("name"));
+		Helper.assertEquals("local", Config.getValue("local"));
+	}
+	
+	@Test()
+	public void configMapJsonKeyValues_command() {
+		
+		CommonUser user = Data.common.commonuser().withAdminLogin();
+		
+		TestLog.When("I create a user through rest api");
+	    user = Data.common.commonuser().withDefaultUser();
+		TestLog.And("I create user '" + user.username + "'");
+		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
+		
+		TestLog.Then("I verify role name is stored in a variable");
+		JsonHelper.saveOutboundJsonParameters(response, "command(Command.getRoleNameValue):<$name>;  provider:1:<$local>");
+		Helper.assertEquals("Authenticated", Config.getValue("name"));
+		Helper.assertEquals("local", Config.getValue("local"));
+		
+		JsonHelper.saveOutboundJsonParameters(response, "command(Command.getRoleNameValue,param1,param2):<$name>;  provider:1:<$local>");
 		Helper.assertEquals("Authenticated", Config.getValue("name"));
 		Helper.assertEquals("local", Config.getValue("local"));
 	}
@@ -212,7 +232,7 @@ public class JsonHelperTest extends TestBase {
 		Response response = app.serviceUiIntegration.user.createUserUsingServiceObject(user);
 		
 		TestLog.Then("I verify invalid variable format throws assertion error");
-		JsonHelper.configMapJsonKeyValues(response, "role.name:1:<$name>; provider:1:<@local>");
+		JsonHelper.saveOutboundJsonParameters(response, "role.name:1:<$name>; provider:1:<@local>");
 		Helper.assertEquals("Authenticated", Config.getValue("name"));
 		Helper.assertEquals("local", Config.getValue("local"));
 	}
@@ -255,6 +275,141 @@ public class JsonHelperTest extends TestBase {
 		
 		String error = JsonHelper.validateByJsonBody(expectedResult, result);
 		Helper.assertTrue("errors not caught: " + error, error.isEmpty());
+	}
+	
+	@Test()
+	public void getJsonValue_jsonString_array() {
+		TestLog.Then("I verify getting json value from path");
+		
+		String jsonpath = "$..[?(@.workOrder=~ /.*50b3c835-d2cf-4739-ae3e-4e4285106174/i)].plannedStartDateTime";
+		
+		String json = "{\n" + 
+				"   \"appointments\":[\n" + 
+				"      {\n" + 
+				"         \"appointmentUUID\":\"428f0df1-40f1-497f-b9ad-bec9b5e8ceff\",\n" + 
+				"         \"appointmentId\":\"WO_SCHAPI_001\",\n" + 
+				"         \"appointmentName\":\"Create WorkOrder WO_SCHAPI_001\",\n" + 
+				"         \"appointmentDescription\":\"Auto Scheduled\",\n" + 
+				"         \"plannedStartDateTime\":\"2020-06-25T09:08:16Z\",\n" + 
+				"         \"plannedEndDateTime\":\"2020-06-25T09:38:16Z\",\n" + 
+				"         \"workOrder\":\"50b3c835-d2cf-4739-ae3e-4e4285106174\",\n" + 
+				"         \"assignedTo\":[\n" + 
+				"            \"c06bed88-8698-4674-b3f5-9a1e3d80543c\"\n" + 
+				"         ],\n" + 
+				"         \"status\":\"Deleted\",\n" + 
+				"         \n" + 
+				"               \"group\":\"scheduling\"\n" + 
+				"            }\n" + 
+				"         ],\n" + 
+				"         \"createdTimestamp\":\"2020-06-20T03:35:17.011Z\",\n" + 
+				"         \"lastModifiedTimestamp\":\"2020-06-23T01:40:55.32Z\",\n" + 
+				"         \"attachments\":[\n" + 
+				"         ]\n" + 
+				"      }\n" + 
+				"   ]\n" + 
+				"}";
+		
+		String uuid = JsonHelper.getJsonValue(json, jsonpath);
+		Helper.assertEquals("2020-06-25T09:08:16Z", uuid);
+	}
+	
+	@Test()
+	public void getJsonValue_jsonString_array_keyValue() {
+		TestLog.Then("I verify getting json value from path");
+		
+		String jsonpath = "$..[?(@.workOrder=~ /.*50b3c835-d2cf-4739-ae3e-4e4285106174/i)].plannedStartDateTime";
+		
+		String json = "{\n" + 
+				"   \"appointments\":[\n" + 
+				"      {\n" + 
+				"         \"appointmentUUID\":\"428f0df1-40f1-497f-b9ad-bec9b5e8ceff\",\n" + 
+				"         \"appointmentId\":\"WO_SCHAPI_001\",\n" + 
+				"         \"appointmentName\":\"Create WorkOrder WO_SCHAPI_001\",\n" + 
+				"         \"appointmentDescription\":\"Auto Scheduled\",\n" + 
+				"         \"plannedStartDateTime\":\"2020-06-25T09:0816Z\",\n" + 
+				"         \"plannedEndDateTime\":\"2020-06-25T09:38:16Z\",\n" + 
+				"         \"workOrder\":\"50b3c835-d2cf-4739-ae3e-4e4285106174\",\n" + 
+				"         \"assignedTo\":[\n" + 
+				"            \"c06bed88-8698-4674-b3f5-9a1e3d80543c\"\n" + 
+				"         ],\n" + 
+				"         \"status\":\"Deleted\",\n" + 
+				"         \n" + 
+				"               \"group\":\"scheduling\"\n" + 
+				"            }\n" + 
+				"         ],\n" + 
+				"         \"createdTimestamp\":\"2020-06-20T03:35:17.011Z\",\n" + 
+				"         \"lastModifiedTimestamp\":\"2020-06-23T01:40:55.32Z\",\n" + 
+				"         \"attachments\":[\n" + 
+				"         ]\n" + 
+				"      }\n" + 
+				"   ]\n" + 
+				"}";
+		
+		String uuid = JsonHelper.getJsonValue(json, jsonpath);
+		Helper.assertEquals("2020-06-25T09:0816Z", uuid);
+	}
+	
+	@Test()
+	public void getJsonValue_jsonString_multiValueArray() {
+		TestLog.Then("I verify getting json value from path");
+		
+		String jsonPath = ".category";
+		String json = "[\n" + 
+				"   {\n" + 
+				"      \"category\" : \"reference\",\n" + 
+				"      \"author\" : \"Nigel Rees\",\n" + 
+				"      \"title\" : \"\",\n" + 
+				"      \"price\" : 8.95\n" + 
+				"   },\n" + 
+				"   {\n" + 
+				"      \"category\" : \"fiction\",\n" + 
+				"      \"author\" : \"Herman Melville\",\n" + 
+				"      \"title\" : \"Moby Dick\",\n" + 
+				"      \"isbn\" : \"H/APPR\",\n" + 
+				"      \"price\" : 8.99\n" + 
+				"   }\n" + 
+				"]";
+		
+		String expectedResponse = "reference,fiction";
+		String categories = JsonHelper.getJsonValue(json, jsonPath);
+		Helper.assertEquals(expectedResponse, categories);
+	}
+	
+	@Test()
+	public void getJsonValue_jsonString_array_response() {
+		TestLog.Then("I verify getting json value from path");
+		
+		String jsonpath = "$..[?(@.workOrder=~ /.*50b3c835-d2cf-4739-ae3e-4e4285106174/i)]";
+		
+		String json = "{\n" + 
+				"   \"appointments\":[\n" + 
+				"      {\n" + 
+				"         \"appointmentUUID\":\"428f0df1-40f1-497f-b9ad-bec9b5e8ceff\",\n" + 
+				"         \"appointmentId\":\"WO_SCHAPI_001\",\n" + 
+				"         \"appointmentName\":\"Create WorkOrder WO_SCHAPI_001\",\n" + 
+				"         \"appointmentDescription\":\"Auto Scheduled\",\n" + 
+				"         \"plannedStartDateTime\":\"2020-06-25T09:08:16Z\",\n" + 
+				"         \"plannedEndDateTime\":\"2020-06-25T09:38:16Z\",\n" + 
+				"         \"workOrder\":\"50b3c835-d2cf-4739-ae3e-4e4285106174\",\n" + 
+				"         \"assignedTo\":[\n" + 
+				"            \"c06bed88-8698-4674-b3f5-9a1e3d80543c\"\n" + 
+				"         ],\n" + 
+				"         \"status\":\"Deleted\",\n" + 
+				"         \n" + 
+				"               \"group\":\"scheduling\"\n" + 
+				"            }\n" + 
+				"         ],\n" + 
+				"         \"createdTimestamp\":\"2020-06-20T03:35:17.011Z\",\n" + 
+				"         \"lastModifiedTimestamp\":\"2020-06-23T01:40:55.32Z\",\n" + 
+				"         \"attachments\":[\n" + 
+				"         ]\n" + 
+				"      }\n" + 
+				"   ]\n" + 
+				"}";
+		
+		String expectedResponse = "[{\"appointmentUUID\":\"428f0df1-40f1-497f-b9ad-bec9b5e8ceff\",\"appointmentId\":\"WO_SCHAPI_001\",\"appointmentName\":\"Create WorkOrder WO_SCHAPI_001\",\"appointmentDescription\":\"Auto Scheduled\",\"plannedStartDateTime\":\"2020-06-25T09:08:16Z\",\"plannedEndDateTime\":\"2020-06-25T09:38:16Z\",\"workOrder\":\"50b3c835-d2cf-4739-ae3e-4e4285106174\",\"assignedTo\":[\"c06bed88-8698-4674-b3f5-9a1e3d80543c\"],\"status\":\"Deleted\",\"group\":\"scheduling\"}]";
+		String uuid = JsonHelper.getJsonValue(json, jsonpath);
+		Helper.assertEquals(expectedResponse, uuid);
 	}
 	
 	
@@ -1336,10 +1491,34 @@ public class JsonHelperTest extends TestBase {
 		criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllNumbersGreaterThanSumOf,10,1)";
 		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
+	@Test()
+	public void validateByKeywords_custom_command_no_parameter() {	
 		
-		criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllDifferent)";
-		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		String criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllDifferent)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
+	}
+	
+	@Test(expectedExceptions = { AssertionError.class } )
+	public void validateByKeywords_custom_command_wrong_parameters() {
+		String criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllNumbersGreaterThanSumOf)";
+		JsonHelper.validateByKeywords(criteria, jsonBookStore);
+	}
+	
+	@Test()
+	public void validateByKeywords_custom_command_empty_jsonpath() {
+		String criteria = "_VERIFY_JSON_PART_ .price2:command(Command.isAllNumbersGreaterThanSumOf,3,5)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.get(0).equals("response is empty"));
+	}
+	
+	@Test()
+	public void validateByKeywords_custom_command_empty_jsonpath_null() {
+		String criteria = "_VERIFY_JSON_PART_ store.book[?(@.price < 10)].author:command(Command.isAllNumbersGreaterThanSumOf,3,5)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, "[]");
+		Helper.assertTrue("errors caught", error.get(0).equals("response is empty"));
 	}
 	
 	@Test()
@@ -1798,6 +1977,111 @@ public class JsonHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void validateByKeywords_dateAfter() {
+		String dateJson = "{\"dates\":[\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-05T12:08:56\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-10T12:08:56\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"date\":\"2001-05-15T12:08:56\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .date:isDateAfter(2001-05-03T12:08:56)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateAfter(2001-05-09T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateAfter(2001-05-16T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateAfter(2001-05-05T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isDateAfter(2001-05-09T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+	}
+	
+	@Test()
+	public void validateByKeywords_dateBefore() {
+		String dateJson = "{\"dates\":[\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-05T12:08:56\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-10T12:08:56\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"date\":\"2001-05-15T12:08:56\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .date:isDateBefore(2001-05-16T12:08:56)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateBefore(2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateBefore(2001-05-09T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateBefore(2001-05-05T12:08:57)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:isDateBefore(2001-05-05T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isDateBefore(2001-05-15T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+	}
+	
+	@Test()
+	public void validateByKeywords_dateEqual() {
+		String dateJson = "{\"dates\":[\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-05T12:08:56\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-10T12:08:56\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"date\":\"2001-05-15T12:08:56\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .date:1:isDateEqual(2001-05-05T12:08:56)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:2:isDateEqual(2001-05-09T12:08:57)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:1:isDateNotEqual(2001-05-05T12:08:56)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", !error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .date:3:isDateNotEqual(2001-05-15T12:08:57)";
+		error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors caught", error.isEmpty());
+	}
+	
+	@Test()
 	public void validateByKeywords_allValuesEqualTo() {
 		String json = "{\"sameVals\":[\n" + 
 				"            {\n" + 
@@ -1991,6 +2275,10 @@ public class JsonHelperTest extends TestBase {
 
 		String criteria = "_VERIFY.JSON.PART_ .book[?(@.author =~ /.*REES/i)].title:isEmpty";
 		List<String> error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
+		Helper.assertTrue("errors caught", error.isEmpty());
+		
+		criteria = "_VERIFY_JSON_PART_ .book[?(@.author =~ /.*REES/i)].author2:isEmpty";
+		error = JsonHelper.validateByKeywords(criteria, jsonBookStore);
 		Helper.assertTrue("errors caught", error.isEmpty());
 		
 		criteria = "_VERIFY.JSON.PART_ .book[?(@.author =~ /.*REES/i)].author:isEmpty";

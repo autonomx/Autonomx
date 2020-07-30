@@ -38,7 +38,7 @@ public class LocalizationTest extends TestBase {
 		Helper.assertEquals("Nom d'utilisateur", usernameLabel);
 		Helper.assertEquals("Mot de Passe", password);
 		
-		Helper.assertEquals("Nom d'utilisateur", Helper.localize("Username"));
-		Helper.assertEquals("Mot de Passe", Helper.localize("Password"));
+		Helper.assertEquals(usernameLabel, Helper.localize("Username"));
+		Helper.assertEquals(password, Helper.localize("Password"));
 	}
 }

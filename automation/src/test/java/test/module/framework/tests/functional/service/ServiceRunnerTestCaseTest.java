@@ -25,7 +25,7 @@ public class ServiceRunnerTestCaseTest extends TestBase {
 	@BeforeClass
 	public void beforeClass()  {
 		ConfigVariable.apiTestCaseFile().setValue("TestCases_UserValidation.csv");
-		ConfigVariable.apiTestCase().setValue("createUserNoToken");
+		ConfigVariable.apiTestCase().setValue("createUser-createUserNoToken, createUserInvalidToken");
 	}
 	
 	// verifying test retry on api runner
@@ -41,6 +41,6 @@ public class ServiceRunnerTestCaseTest extends TestBase {
 	
 	@AfterClass
 	public void afterClass()  {	
-		Helper.assertEquals(1, testCount.get());
+		Helper.assertEquals(3, testCount.get());
 	}	
 }

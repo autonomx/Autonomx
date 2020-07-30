@@ -22,7 +22,25 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationSingleAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
 		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(5, csvTests.size());	
+	}
+	
+	@Test(description = "update csv list with action tests")
+	public void getTestCasesFromCsvFile_action_valid_singleAction_selectTestId() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
+		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationSingleActionSelectTestId.csv");
+		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
+		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();	
 		Helper.assertEquals(4, csvTests.size());	
+	}
+	
+	@Test(description = "update csv list with action tests")
+	public void getTestCasesFromCsvFile_action_valid_AsOption() throws Exception {
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/actionTest/");
+		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationActionAsOption.csv");
+		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
+		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();	
+		Helper.assertEquals(5, csvTests.size());	
 	}
 	
 	@Test(description = "update csv list with 2 action tests")
@@ -31,7 +49,7 @@ public class CsvReaderTest extends TestBase {
 		Config.putValue(TestDataProvider.TEST_CASE_FILE, "TestCases_UserValidationMultipleAction.csv");
 		Config.putValue(TestDataProvider.TEST_DATA_ACTION_PATH, "../apiTestData/testCases/frameworkTests/actionTest/action");
 		List<Object> csvTests = CsvReader.getTestCasesFromCsvFile();		
-		Helper.assertEquals(7, csvTests.size());	
+		Helper.assertEquals(6, csvTests.size());	
 	}
 
 	@Test(description = "update csv list with action tests", expectedExceptions = { AssertionError.class })

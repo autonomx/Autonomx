@@ -6,6 +6,7 @@
 	<test name="framework tests">
 
 		<classes>
+			<class name="test.module.framework.tests.ui.ScreenRecorderHelperTest" />			
 			<class name="test.module.framework.tests.ui.ElementActionTest" />	
 			<class name="test.module.framework.tests.ui.CrossProjectTest" />			
 			<class name="test.module.framework.tests.ui.LocalizationTest" />					
@@ -14,6 +15,7 @@
 			<class name="test.module.framework.tests.ui.JavascriptTest" />
 			<class name="test.module.framework.tests.ui.ListHelperTest" />
 			<class name="test.module.framework.tests.ui.SingleSignInTest" />
+			<class name="test.module.framework.tests.ui.WebPropertiesTest" />
 		</classes>
 	</test>
 </suite>

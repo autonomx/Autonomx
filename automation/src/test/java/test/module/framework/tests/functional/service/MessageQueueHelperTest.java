@@ -327,4 +327,54 @@ public class MessageQueueHelperTest extends TestBase {
 		Helper.assertTrue("messages filtered are empty", !filteredMessages.isEmpty());
 		Helper.assertEquals("test"+ random2 + " value" + random3, filteredMessages.get(0).message);
 	}
+	
+	@Test(description = "")
+	public void receiveAndValidateMessages_output() throws Exception {	
+		String random = Helper.generateRandomString(10);
+		String random2 = Helper.generateRandomString(11);
+
+		MessageObject message = new MessageObject().withMessageId("message" + random);
+		message.withMessage("test"+ random);
+		
+		MessageObject message2 = new MessageObject().withMessageId("message" + random2);
+		message2.withMessage("test"+ random2);
+
+		MessageObject.outboundMessages.put(message, true);
+		MessageObject.outboundMessages.put(message2, true);
+
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:1;"
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")")
+				.withOutputParams("<$value1>");
+		
+		MessageQueueHelper.receiveAndValidateMessages(serviceObject, "message" + random,  messageType.TEST);
+		String value = Config.getValue("value1");
+		Helper.assertTrue("value is empty", !value.isEmpty());
+		Helper.assertEquals("test"+ random, value);
+	}
+	
+	@Test(description = "")
+	public void receiveAndValidateMessages_output_multiple() throws Exception {	
+		String random = Helper.generateRandomString(10);
+
+		MessageObject message = new MessageObject().withMessageId("message" + random);
+		message.withMessage("test"+ random);
+		
+		MessageObject message2 = new MessageObject().withMessageId("message2" + random);
+		message2.withMessage("test2"+ random);
+
+		MessageObject.outboundMessages.put(message, true);
+		MessageObject.outboundMessages.put(message2, true);
+
+		ServiceObject serviceObject = new ServiceObject()
+				.withExpectedResponse("EXPECTED_MESSAGE_COUNT:2;"
+						+ " && _VERIFY_RESPONSE_BODY_ contains("+ random + ")")
+				.withOutputParams("<$value1>");
+		
+		MessageQueueHelper.receiveAndValidateMessages(serviceObject, random,  messageType.TEST);
+		String value = Config.getValue("value1");
+		Helper.assertTrue("value is empty", !value.isEmpty());
+		Helper.assertContains(value, "test"+ random);
+		Helper.assertContains(value, "test2"+ random);
+	}
 }

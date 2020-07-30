@@ -16,6 +16,10 @@ api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"
 api.templateDataFile = "../apiTestData/templates/data/"
 
+# set file name to run single csv file
+api.testCaseFile = ""
+api.testCase = ""
+
 api.base.path = "../apiTestData/keywords/testBase/"
 api.base.before.testfile = "TestCases_RunBefore.csv"
 api.base.after.testfile = "TestCases_RunAfter.csv"
@@ -29,12 +33,9 @@ service.response.timeout.seconds = 60
 service.timeout.validation.isEnabled = true
 service.timeout.validation.seconds = 2
 service.timeout.validation.delay.between.attempt.seconds = 3
+service.timeout.validation.delay.between.attempt.multiplier = 2
 service.retry.count = 0
 service.retry.after.seconds = 0
-
-# set file name to run single csv file
-api.testCaseFile = ""
-api.testCase = ""
 
 # api validation rules
 api.validation.fail.on.escapechars = false
@@ -42,6 +43,8 @@ api.validation.fail.on.escapechars = false
 # api url encoding
 api.encoding.url = true
 api.encoding.parameter = false
+
+api.useRelaxedHTTPSValidation = true
 
 # Database Server
 db.1.driver = org.postgresql.Driver

@@ -1,4 +1,4 @@
 #!/bin/bash
  cd "$(dirname ${BASH_SOURCE[0]})"
- cd automation/library
- java -jar mavenRunner.jar clean install -U -DskipTests 
+ cd automation
+ mvn clean install -U -DskipTests 

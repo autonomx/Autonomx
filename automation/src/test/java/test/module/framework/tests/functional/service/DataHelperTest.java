@@ -113,6 +113,16 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void getValidationMap_keyValue3() {
+		
+		TestLog.Then("I verify key, value combination");
+		List<KeyValue> keywords = DataHelper.getValidationMap("$..[?(@.priority && !@.responsibleOrg)].workOrderUUID:isEmpty");
+		Helper.assertEquals("$..[?(@.priority && !@.responsibleOrg)].workOrderUUID", keywords.get(0).key);
+		Helper.assertEquals("", keywords.get(0).position);
+		Helper.assertEquals("isEmpty", keywords.get(0).value.toString());
+	}
+	
+	@Test()
 	public void getValidationMap_json_string() {
 		
 		TestLog.Then("I verify json string value");
@@ -161,9 +171,25 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
-	public void replaceParameters_time() {
+	public void replaceParameters_time_initialTime() {
 		
 		TestLog.Then("I verify date replacement");
+		String result = DataHelper.replaceParameters("<@_TIME;setInitialDate:1526796552>");
+		Helper.assertEquals("2018-05-20T06:09:12Z", result.toString());
+		
+		Config.putValue("epochTime", "1526796552");
+		result = DataHelper.replaceParameters("<@_TIME;setInitialDate:{@epochTime}>");
+		Helper.assertEquals("2018-05-20T06:09:12Z", result.toString());
+		
+		result = DataHelper.replaceParameters("<@_TIME;setInitialDate:{@epochTime};FORMAT:yyyyMMddHHmmssSSS>");
+		Helper.assertEquals("20180520060912000", result.toString());
+	}
+	
+	@Test()
+	public void replaceParameters_time_format() {
+		
+		TestLog.Then("I verify date replacement");
+		
 		String result = DataHelper.replaceParameters("user:<@_TIME17>");
 		Helper.assertEquals(22, result.length());
 		
@@ -283,6 +309,24 @@ public class DataHelperTest extends TestBase {
 		timeString = time.toString();
 		timeString = timeString.replace("Z", "");
 		Helper.assertEquals(timeString, result);
+	}
+	
+	@Test()
+	public void replaceParameters_uuid() {
+		
+		// values should be different
+		String result = DataHelper.replaceParameters("<@_RANDUUID>");
+		String result2 = DataHelper.replaceParameters("<@_RANDUUID>");
+		Helper.assertTrue("values should be differnet", !result.equals(result2));
+		
+		Helper.assertTrue("should be uuid", Helper.isUUID(result));
+		
+		// values should be the same
+		result = DataHelper.replaceParameters("<@_UUID_STATIC>");
+		result2 = DataHelper.replaceParameters("<@_UUID_STATIC>");
+		Helper.assertTrue("values should be differnet", result.equals(result2));
+		
+		Helper.assertTrue("should be uuid", Helper.isUUID(result));
 	}
 	
 	@Test()
@@ -496,7 +540,7 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
-	public void replaceParameters_time_ms_modify() {
+	public void replaceParameters_time_epoch_modify() {
 		TestLog.Then("I verify date replacement");
 		
 		String result = DataHelper.replaceParameters("user:<@_TIME_MS_13+72h>");
@@ -519,6 +563,11 @@ public class DataHelperTest extends TestBase {
 		newTime = time.minus(72, ChronoUnit.MINUTES);
 		value = String.valueOf(newTime.toEpochMilli());
 		Helper.assertEquals("user:" + value, result);
+		
+		result = DataHelper.replaceParameters("<@_TIME_S_13-72m>");
+		newTime = time.minus(72, ChronoUnit.MINUTES);
+		value = String.valueOf(newTime.getEpochSecond());
+		Helper.assertEquals(value, result);
 	}
 	
 	
@@ -694,16 +743,16 @@ public class DataHelperTest extends TestBase {
 		
 		String result = DataHelper.replaceParameters("<@_TIME10+24h_>T11:00:00.000Z");
 
-		String errors = DataHelper.validateCommand("equalTo", result, result, "1");
+		String errors = DataHelper.validateCommand("equalTo", result, result, "1", false);
 		Helper.assertTrue("errors caught: " + errors, errors.isEmpty());
 		
 		String dateString  = ZonedDateTime.now( ZoneOffset.UTC ).format( DateTimeFormatter.ISO_INSTANT );	
-		errors = DataHelper.validateCommand("equalTo", dateString, dateString, "1");
+		errors = DataHelper.validateCommand("equalTo", dateString, dateString, "1", false);
 		Helper.assertTrue("errors caught: " + errors, errors.isEmpty());
 		
 		Config.putValue("date", dateString);
 		result = DataHelper.replaceParameters("<@date>");
-		errors = DataHelper.validateCommand("equalTo", result, dateString, "1");
+		errors = DataHelper.validateCommand("equalTo", result, dateString, "1", false);
 		Helper.assertTrue("errors caught: " + errors, errors.isEmpty());
 	}
 	
@@ -837,7 +886,7 @@ public class DataHelperTest extends TestBase {
 		String updatedValue = JsonHelper.getJsonValue(jsonString, "quiz.sport.q1.options");
 		String result = DataHelper.replaceParameters("value_<@_TIME_ISO_35>");
 
-		Helper.assertEquals("[\"" + result + "\"]", updatedValue);
+		Helper.assertEquals(result, updatedValue);
 	}
 	
 	@Test()
@@ -910,6 +959,51 @@ public class DataHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void validateExpectedValues_multiple_and() throws Exception {
+
+		TestLog.When("I receive empty expected");
+		
+		String jsonResponse = "{\n" + 
+				"  \"total\": 36,\n" + 
+				"  \"results\": [\n" + 
+				"    {\n" + 
+				"      \"parentWorkOrder\": {\n" + 
+				"        \"workOrderUUID\": \"cfd96554-1e1b-40bc-8a9d-dc1f9e2de56f\"\n" + 
+				"      },\n" + 
+				"      \"userStatus\": \"Pending\",\n" + 
+				"      \"assetWork\": false,\n" + 
+				"      \"createdTimestamp\": \"2020-06-15T17:41:40.393Z\",\n" + 
+				"      \"description\": \"Create WorkOrder SG TEST 1\",\n" + 
+				"      \"workOrderUUID\": \"45870867-9bf2-436e-b0c2-16135523168d\",\n" + 
+				"      \"priority\": 50,\n" + 
+				"      \"raisedDateTime\": \"2019-10-19T17:01:43Z\"\n" + 
+				"    }\n" + 
+				"  ]\n" + 
+				"}";
+
+		 List<String> responses = new ArrayList<String>();
+		 responses.add(jsonResponse);
+
+		 TestLog.Then("then error should be returned");
+
+		 List<String> errors =  DataHelper.validateExpectedValues(responses, "_VERIFY_JSON_PART_ $..[?(@.priority && !@.responsibleOrg)].workOrderUUID:isEmpty");
+		 Helper.assertTrue("errors was returned", !errors.isEmpty());
+		 Helper.assertTrue("errors was returned", errors.get(0).equals("value is not empty"));
+		 
+		 errors =  DataHelper.validateExpectedValues(responses, "_VERIFY_JSON_PART_ $..[?(@.priority && !@.responsibleOrg)].workOrderUUID:isEmpty && _VERIFY_JSON_PART_ .workOrderUUID:isEmpty");
+		 Helper.assertTrue("errors was returned", !errors.isEmpty());
+		 Helper.assertTrue("errors was returned", errors.get(0).equals("value is not empty"));
+		 
+		 errors =  DataHelper.validateExpectedValues(responses, "_VERIFY_JSON_PART_ $..[?(@.priority || !@.responsibleOrg && !@.responsibleOrg)].workOrderUUID:isEmpty && _VERIFY_JSON_PART_ .workOrderUUID:isEmpty");
+		 Helper.assertTrue("errors was returned", !errors.isEmpty());
+		 Helper.assertTrue("errors was returned", errors.get(0).equals("value is not empty"));
+		 
+		 errors =  DataHelper.validateExpectedValues(responses, "_VERIFY_JSON_PART_ $..[?(@.priority || @.responsibleOrg && !@.responsibleOrg)].workOrderUUID:isEmpty && _VERIFY_JSON_PART_ .workOrderUUID:isEmpty");
+		 Helper.assertTrue("errors was returned", !errors.isEmpty());
+		 Helper.assertTrue("errors was returned", errors.get(0).equals("value is not empty"));
+	}
+	
+	@Test()
 	public void validateExpectedValues_multiple_expectations() throws Exception {
 		
 		TestLog.When("I have multiple expectations, with expection 1 having an error: zzz_updatetoknzjjl0708karbinvalid");
@@ -951,6 +1045,10 @@ public class DataHelperTest extends TestBase {
 		
 		DataHelper.saveDataToConfig("testvalue1:<@value3>");
 		Helper.assertEquals("", Config.getValue("value3"));
+		
+		DataHelper.saveDataToConfig("<@_RAND13>:<$value4>");
+		String random = Config.getValue(TestObject.RANDOM_STRING).substring(0, 13);
+		Helper.assertEquals(random, Config.getValue("value4"));
 	}
 	
 	@Test()

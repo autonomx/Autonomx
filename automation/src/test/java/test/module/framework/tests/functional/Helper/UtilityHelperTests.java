@@ -1,6 +1,7 @@
 package test.module.framework.tests.functional.Helper;
 
 
+import java.io.File;
 import java.net.URL;
 
 import org.testng.annotations.Test;
@@ -46,5 +47,19 @@ public class UtilityHelperTests extends TestBase {
                 + "/index.html?name=networking&address=home");
 	}
 	
-	
+	@Test()
+	public void isFileContainsStringTest() {
+		File file = new File(Helper.getRootDir() + "src/main/java/module/common/data/CommonUser.java");
+		boolean isExist = Helper.isFileContainsString("@Panel", file);
+		Helper.assertTrue("", !isExist);
+		
+		isExist = Helper.isFileContainsString("@Data", file);
+		Helper.assertTrue("", isExist);
+		
+		isExist = Helper.isFileContainsString("//@Data", file);
+		Helper.assertTrue("", !isExist);
+		
+		isExist = Helper.isFileContainsString("@Data //", file);
+		Helper.assertTrue("", !isExist);
+	}
 }

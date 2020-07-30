@@ -210,5 +210,54 @@ public class ConfigTest extends TestBase {
 		TestObject.getTestInfo().configKeys.putAll(multimap);
 		List<String> duplicates = Config.checkForDuplicateKeys();
 		Helper.assertEquals(2, duplicates.size());
+	}
+	@Test
+	public void getConfigValueFromMavenCommand_valid() {
+		
+		// wrong value set
+		System.setProperty("value1NotInProperties2", "value1");
+		String value1 = Config.getValue("value1NotInProperties");
+		Helper.assertEquals("", value1);
+		
+		// black value set
+		System.setProperty("value1NotInProperties", "");
+		value1 = Config.getValue("value1NotInProperties");
+		Helper.assertEquals("", value1);
+		
+		// correct value set
+		System.setProperty("value1NotInProperties", "value1");
+		value1 = Config.getValue("value1NotInProperties");	
+		Helper.assertEquals("value1", value1);
+	}
+	
+	@Test
+	public void getConfigValueList() {
+		String labels = "functional,      login";
+		Config.putValue("labels.value", labels);
+		ArrayList<String> labelList = Config.getValueList("labels.value");
+		Helper.assertEquals("functional,login", Helper.convertListToString(labelList));
+		
+		String issues = "DE-15115,  DE-5931";
+		Config.putValue("issues.value", issues);
+		ArrayList<String> issuelist = Config.getValueList("issues.value");
+		Helper.assertEquals("DE-15115,DE-5931", Helper.convertListToString(issuelist));
 	}	
+	
+	@Test
+	public void getSystemConfigValue() {
+		System.setProperty("maven.value1", "value1");
+		String value = Config.getValue("maven.value1");
+		Helper.assertEquals("value1", value);
+		
+		value = Config.getGlobalValue("maven.value1");
+		Helper.assertEquals("value1", value);
+		
+		System.setProperty("maven.value1", "12");
+		int intvalue = Config.getIntValue("maven.value1");
+		Helper.assertEquals(12, intvalue);
+		
+		System.setProperty("maven.value1", "true");
+		boolean boolvalue = Config.getBooleanValue("maven.value1");
+		Helper.assertEquals(true, boolvalue);
+	}
 }

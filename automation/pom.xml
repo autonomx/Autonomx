@@ -4,8 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.autonomx</groupId>
-	<artifactId>client</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<artifactId>autonomx</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -13,14 +15,16 @@
 	</properties>
 
 	<build>
-		<!-- <directory>mvn-target</directory> -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+
 		<testResources>
 			<testResource>
 				<directory>${project.basedir}/resources</directory>
 			</testResource>
 		</testResources>
 
-	<plugins>
+		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
@@ -30,7 +34,7 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<includes>
-								<include>**/module/ModuleBase.java</include>		
+								<include>**/module/ModuleBase.java</include>
 							</includes>
 							<compilerArgument>-proc:only</compilerArgument>
 							<outputDirectory>target/generated-sources/annotations</outputDirectory>
@@ -52,28 +56,32 @@
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<properties>
-						<property>
-							<name>listener</name>
-							<value>core.support.rules.JunitTestListener</value>
-						</property>
-					</properties>
-				</configuration>
-			</plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<!--skip source code. remove attached-source <configuration> <skipSource>true</skipSource> 
+							</configuration> -->
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>		
 		</plugins>
 
 	</build>
+
 
 	<dependencies>
 		<dependency>
 		  <groupId>io.autonomx</groupId>
 		  <artifactId>autonomx-core</artifactId>
-		  <version>1.1.2</version>
+		  <version>1.1.4</version>
 		<exclusions>
 				<exclusion>
 					<groupId>io.github.bonigarcia</groupId>

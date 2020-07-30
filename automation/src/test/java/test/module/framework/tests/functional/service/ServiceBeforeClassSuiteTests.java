@@ -109,4 +109,47 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		Helper.assertTrue("before class was not suppose to run", beforeClass == null);
 		Helper.assertTrue("after class was not suppose to run", afterClass == null);
 	}
+	
+	@Test(priority=2, description ="overriding before and after class and setting test case id list")
+	public void verifyTestbaseTest_override_set_testCaseId() throws Exception {
+		
+		// setting test base location
+		Helper.assertEquals("../apiTestData/testCases/frameworkTests/testBase/", Config.getValue("api.base.path"));
+		
+		TestLog.When("I verify api runner test");
+        String requestBody = "{\n" + 
+        		"\"identifier\": \"<@adminUserName>\",\n" + 
+        		"\"password\": \"<@adminUserPassword>\"\n" + 
+        		"}";
+        String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
+        		"user.id:<$userId>";
+        
+        Object[] objects = {"suite1", "testBaseOverride", "Y", "", ServiceManager.EXTERNAL_INTERFACE, "", "","beforeCsvFile:TestCases_RunBefore.csv:createUserBeforeClass; afterCsvFile:TestCases_RunAfter.csv:getAdminTokenAfterClass;",
+				"", "", "", "", "", "", "",
+				"", "TestCases_UserValidation.csv", "0:2", "service", ""};
+        
+		ServiceRunner.TestRunner(objects);
+		
+		Helper.assertEquals("TestCases_RunBefore.csv:createUserBeforeClass", Config.getValue(ServiceManager.TEST_BASE_BEFORE_CLASS));
+		Helper.assertEquals("TestCases_RunAfter.csv:getAdminTokenAfterClass", Config.getValue(ServiceManager.TEST_BASE_AFTER_CLASS));
+
+		Object[] objects2 = {"suite1", "verifyTestbaseTest", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+				"", "", "", requestBody, OutputParams, "200", "_VERIFY.JSON.PART_" + 
+						"user.username:1: notEqualTo(<@rolesBeforeClass>);",
+				"", "TestCases_UserValidation.csv", "1:2", "service", ""};
+		
+		ServiceRunner.TestRunner(objects2);
+		
+		TestLog.Then("I verify before class and after class did not run");
+		TestObject beforeClass_getAdminTokenBeforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
+		TestObject beforeClass_createUserBeforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-createUserBeforeClass");
+
+		TestObject afterClass = TestObject.testInfo.get("UserValidation-AfterTestFile-RunAfter-getAdminTokenAfterClass");
+
+		// ensure's correct tests ran
+		Helper.assertTrue("before class was not suppose to run", beforeClass_getAdminTokenBeforeClass == null);
+		Helper.assertTrue("before class was suppose to run", beforeClass_createUserBeforeClass != null);
+
+		Helper.assertTrue("after class was suppose to run", afterClass != null);
+	}
 }

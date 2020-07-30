@@ -2,7 +2,7 @@
 # report options
 # report types: html (single html page) or klov (server using mongodb)
 report.reporterType = html
-report.launchReportAfterTest = true
+report.launchReportAfterTest = false
 report.enableDetailedReport = true
 
 # Options: MARY
@@ -24,6 +24,7 @@ log.max.limit.char = 2000
 log.steps.with.stacktrace = false
 
 # debug
+console.pageSource.onFail = true
 console.debug.enable = false
 console.annotation.debug = false
 console.printLogoOnSuccess = true

@@ -24,11 +24,18 @@ web.element.highlight.enable = false
 web.element.highlight.waitDurationInSeconds = 0.1
 
 # Options: LATEST or version number. eg. 56.4
+# For chrome drivers, please check https://chromedriver.chromium.org/downloads
 web.driver.manager.version = LATEST
 
 # web driver manager proxy info
 web.driver.manager.proxy.forceCache = false
 web.driver.manager.timeoutSeconds = 5
+
+# set path to webdriver. if set, this driver will be used instead of webDriverManager. 
+# use in case webdriverManager is not able to download the correct driver
+# path relative to root directory (where pom.xml file is)
+# driver must match the browser type set at: web.browserType
+web.driver.manual.path = ""
 
 web.maximizeBrowser = false
 

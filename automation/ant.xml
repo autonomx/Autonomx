@@ -1,71 +1,246 @@
- <project name="autonomx" basedir="." default="mvn-clean-generate"  xmlns:artifact="antlib:org.apache.maven.artifact.ant"> 
+<project name="autonomx" basedir="." default="mvn-clean-generate" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+    <property name="property.file.updated.path" value="target/generated-sources/updated-properties.properties/" />
+    <property name="property.file.marker.path" value="target/generated-sources/marker.txt" />
+    <property name="source.change.detector.marker.path" value="target/generated-sources/annotations/marker/marker.java" />
+    <property name="source.change.detector.class.path" value="target/generated-sources/annotations/marker/SourceChangeDetector.java" />
 
- <property name="dir.generated" value="target/generated-sources/annotations"/>
- <property name="dir.mvnstatus" value="target/maven-status"/>
- <property name="file.marker" value="target/generated-sources/annotations/marker/marker.java"/>
- <property name="file.markerDir" value="target/generated-sources/annotations/marker"/>
+	<property name="maven.home.value" value="../runner/utils/maven/apache-maven/" />
+    <property name="maven.dir" location="../runner/utils/maven" />
+    <!-- Ant file will download maven to ../runner/utils/maven directory 
+		and run  generate-sources or clean commands
+	 -->
+    <!--  set to run this at most once every 5 seconds. to avoid multiple consecutive calls-->
+    <target name="check-maven-already-call">
+        <delete file="${property.file.updated.path}" />
+        <tstamp>
+            <format property="few.seconds.ago" offset="-0" unit="second" pattern="MMddyyyyHHmmssz" />
+        </tstamp>
+    	
+    	<echo>time: ${few.seconds.ago}</echo>
 
-
-	<target name="install-maven" description="Install maven">
-	    <mkdir dir="${user.home}/.ant/lib"/>
-	    <get dest="${user.home}/.ant/lib/ivy.jar" src="http://search.maven.org/remotecontent?filepath=org/apache/ivy/ivy/2.3.0/ivy-2.3.0.jar"/>
-	    <fail message="Ivy has been installed. Run the build again"/>
+        <touch file="${property.file.marker.path}" datetime="${few.seconds.ago}"  pattern="MMddyyyyHHmmssz" mkdirs="true" />
+        <uptodate property="target-file-modified-in-few-seconds" targetfile="target/generated-sources/target-file.txt">
+            <srcfiles file="${property.file.marker.path}"/>
+        </uptodate>
+        <echo>is-target-file-modified-last-few-seconds: ${target-file-modified-in-few-seconds}</echo>
+    </target>
+	
+	 <target name="enable-console-log">
+	 	<copy file=".externalToolBuilders/annotation_generator_enableLog.launch" tofile=".externalToolBuilders/annotation_generator.launch" overwrite="true" />
+	 </target>
+	
+	<target name="check-class-source-change">
+	   <condition property="source.class.present">
+	         	 <available file="${source.change.detector.class.path}"/>
+	   </condition>
+       <echo message="is source class present: ${source.class.present}" />
 	</target>
 	
-	<!-- when add, delete, rename file detected, marker.java is deleted. upon deletion, mvn-compile task will run 
-	- if change detected at main or keywords
-			- compile
-			- delete generated folder
-	- if change detected in csv files in main
-		- run mvn generate source
-	-->
-	
-	<target name="dirChangeDetector" description="detect changes in main and keyword directory, delete file.maker on detection">
-	 	  <java classname="mavenRunner.dirChangeDetector">
-	 	    <classpath>
-	 	      <pathelement location="library/mavenRunner.jar"/>
-	 	    </classpath>
-	 	  </java>
-	 	</target>
-	
-	<target name="checkDirChanges" depends="dirChangeDetector" description="check for changes in src dir">
-	      <uptodate property="noDirchanges" targetfile="${file.marker}">
-	      	 <srcfiles dir="${file.markerDir}" includes="**/*.java"/>
+	<!--  if source (src/main) dir changes, delete annotations/maker/marker.java file to indicated the need for code generation -->
+    <target name="detect-source-changes" depends="check-class-source-change" if="source.class.present">
+    	
+    	<java classname="marker.SourceChangeDetector"
+    	     classpath="target/classes/">          
+    	 </java>
+    </target>
 
-	      </uptodate>
-	   </target>
-	
-	<target name="mvn-compile" depends="checkDirChanges" unless="noDirchanges" description="compile to check for errors and delete generated folder if no errors">
-		 	
-		 	 <delete dir="${dir.generated}"/>   <!-- delete generated folder -->
-	 		 <delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
+	<target name="check-source-marker" depends="check-maven-already-call,detect-source-changes" unless="target-file-modified-in-few-seconds">
+	   <condition property="source.marker.present">
+	         <not>
+	         	 <available file="${source.change.detector.marker.path}"/>
+       		 </not>
+	   </condition>
+       <echo message="is source marker present: ${source.marker.present}" />
+	</target>
 
-		</target>
+    <!--  getting maven url from property environment.property -->
+    <target name="get-maven-url">
+        <property name="maven.url.default" value="https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip" />
+        <first id="environment.property.id">
+            <fileset dir="resources/properties">
+                <include name="**/environment.property" />
+            </fileset>
+        </first>
+        <property file="${toString:environment.property.id}" />
+        <property name="maven.url.property" value="${maven.url}" />
+        <!--  if maven url is not set in environment.property then use default -->
+        <condition property="maven.url.property" value="${maven.url}" else="${maven.url.default}">
+            <isset property="maven.url" />
+        </condition>
+        <property name="property.value" value="${maven.url.property}" />
+        <echo message="maven.url: ${maven.url.property}" />
+        <antcall target="normalize-property">
+            <param name="property.name" value="maven.url.updated" />
+            <param name="property.value" value="${maven.url.property}" />
+        </antcall>
+    </target>
 	
- <target name="checkforCsvAndConfigchanges" depends="mvn-compile" description="check for changes in csv, property and conf files">
-      <uptodate property="nochanges" targetfile="${file.marker}">
-      	 <srcfiles dir="src" includes="**/data/*.csv"/>
-      	 <srcfiles dir="resources" includes="**/*.property"/>
-      	 <srcfiles dir="resources" includes="**/*.conf"/>
-      </uptodate>
-   </target>
+    <!-- set proxy  -->
+    <target name="probe-proxy">
+        <!--  remove the quotes from the url string -->
+        <antcall target="normalize-property">
+            <param name="property.name" value="proxy.enabled.updated" />
+            <param name="property.value" value="${proxy.enabled}" />
+        </antcall>
+        <antcall target="normalize-property">
+            <param name="property.name" value="proxy.host.updated" />
+            <param name="property.value" value="${proxy.host}" />
+        </antcall>
+        <antcall target="normalize-property">
+            <param name="property.name" value="proxy.port.updated" />
+            <param name="property.value" value="${proxy.port}" />
+        </antcall>
+        <antcall target="normalize-property">
+            <param name="property.name" value="proxy.username.updated" />
+            <param name="property.value" value="${proxy.username}" />
+        </antcall>
+        <antcall target="normalize-property">
+            <param name="property.name" value="proxy.password.updated" />
+            <param name="property.value" value="${proxy.password}" />
+        </antcall>
+        <property file="${property.file.updated.path}" />
+        <echo message="is proxy enabled: ${proxy.enabled.updated} " />
+        <condition property="is.proxy.enabled">
+            <equals arg1="${proxy.enabled.updated}" arg2="true" />
+        </condition>
+        <condition property="proxy.evaluated">
+            <and>
+                <isset property="is.proxy.enabled" />
+                <isset property="proxy.host.updated" />
+                <isreachable host="${proxy.host.updated}" />
+            </and>
+        </condition>
+    </target>
 	
+    <!--  set proxy value. checks if proxy is reachable -->
+    <target name="set-proxy" depends="probe-proxy" if="proxy.evaluated">
+        <echo message="proxy is enabled and reachable" />
+        <property file="${property.file.updated.path}" />
+        <condition property="proxy.host.updated" value="${proxy.host.updated}" else="">
+            <isset property="proxy.host.updated" />
+        </condition>
+        <condition property="proxy.port.updated" value="${proxy.port.updated}" else="">
+            <isset property="proxy.port.updated" />
+        </condition>
+        <condition property="proxy.username.updated" value="${proxy.username.updated}" else="">
+            <isset property="proxy.username.updated" />
+        </condition>
+        <condition property="proxy.password.updated" value="${proxy.password.updated}" else="">
+            <isset property="proxy.password.updated" />
+        </condition>
+        <echo message="proxy set: proxy.host: ${proxy.host.updated}; proxy.port: ${proxy.port.updated};        proxy.user: ${proxy.username.updated}; proxy.pass: ${proxy.password.updated}" />
+        <setproxy proxyhost="${proxy.host.updated}" proxyport="${proxy.port.updated}" proxyuser="${proxy.username.updated}" proxypassword="${proxy.password.updated}" />
+    </target>
+	
+    <!-- get maven url section is complete -->
+    <!-- download maven if not exist at path ../runner/utils/maven/	
+ 				
+ 	-->
+    <target name="check-maven">
+        <available file="${maven.dir}/apache-maven" property="maven.present" />
+        <echo message="is maven directory already exist: ${maven.present}" />
+    </target>
+	
+    <!--  download maven and place in utils/maven/apache-maven/ directory -->
+    <target name="download-maven" depends="check-maven,get-maven-url,set-proxy" unless="maven.present">
+        <property file="${property.file.updated.path}" />
+        <basename property="mavenZipFile" file="${maven.url.updated}" />
+        <basename property="mavenDirName" file="${maven.url.updated}" suffix="-bin.zip" />
+        <echo message="maven.home: ${maven.home.value}" />
+        <echo message="maven.dir: ${maven.dir}" />
+        <echo message="mavenZipFile: ${mavenZipFile}" />
+        <echo message="mavenDirName: ${mavenDirName}" />
+        
+    	<mkdir dir="${maven.dir}" />
+        <get src="${maven.url.updated}" dest="${maven.dir}" />
+        <unzip src="${maven.dir}/${mavenZipFile}" dest="${maven.dir}" overwrite="true"></unzip>
+        <move todir="${maven.dir}/apache-maven">
+            <fileset dir="${maven.dir}/${mavenDirName}" />
+        </move>
+        <delete file="${maven.dir}/${mavenZipFile}" />
+    </target>
+    <!-- run maven commands: generate-sources and clean
+ 		
+ 	 -->
 
-<!-- will run when checkforCsvchanges or dirChangeDetector detect changes in main,keyword dir or changes in csv files in main dir -->
- <target name="mvn-clean-generate" depends="checkforCsvAndConfigchanges" unless="nochanges">
-   
- 	<delete dir="${dir.mvnstatus}"/> <!-- delete maven status folder to indicate the files have changed -->
-	 <java jar="library/mavenRunner.jar" fork='true'>
-	 			<arg value="generate-sources"/>
-	 </java>
-</target>
- 	
-	<target name="mvn-clean">
- 	   
- 	 	<delete dir="${dir.mvnstatus}"/> <!-- clean target dir -->
- 		 <java jar="library/mavenRunner.jar" fork='true'>
- 		 			<arg value="clean"/>
- 		 </java>
- 	</target>
+    <target name="mvn-clean" depends="download-maven" unless="target-file-modified-in-few-seconds">
+    	<echo message="calling: maven clean" />
+    	<antcall target="enable-console-log"></antcall>
+    	<antcall target="mvn-command">
+                <param name="goal" value="clean" />
+         </antcall>
+    	
+    	<antcall target="mvn-command">
+        	      <param name="goal" value="generate-sources" />
+       	</antcall>
+    	<echo>maven clean generate passs successfully </echo>   	
+    </target>
 	
+    <target name="mvn-clean-generate" depends="check-source-marker,download-maven" if="source.marker.present">    	
+    	<echo message="calling: maven generate sources" />
+    	<antcall target="enable-console-log"></antcall>
+    	<touch file="target/generated-sources/target-file.txt" datetime="now" />
+       
+    	<antcall target="mvn-command">
+    	      <param name="goal" value="generate-sources" />
+    	</antcall>
+
+    </target>
+	
+    <!-- run maven commands -->
+    <target name="mvn-command">
+        <antcall target="normalize-property">
+            <param name="property.name" value="maven.home.updated" />
+            <param name="property.value" value="${maven.home}" />
+        </antcall>
+        <property file="${property.file.updated.path}" />
+        <condition property="maven.home.path" value="${maven.home.updated}" else="${maven.home.value}">
+            <isset property="maven.home.updated" />
+        </condition>
+        <echo>maven.home.value: ${maven.home.value}</echo>
+        <echo>maven.home.updated: ${maven.home.updated}</echo>
+        <echo>maven.home: ${maven.home.path}</echo>
+        <property environment="env" />
+        <path id="classpath">
+            <fileset dir="${maven.home.value}/boot">
+                <include name="plexus-classworlds-*.jar" />
+            </fileset>
+        </path>
+        <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
+        <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true" >
+            <jvmarg value="-Dmaven.multiModuleProjectDirectory=${maven.home.path}" />
+            <jvmarg value="-Dclassworlds.conf=${maven.home.path}/bin/m2.conf" />
+            <jvmarg value="-Dmaven.home=${maven.home.path}" />
+            <arg value="${goal}" />
+        </java>
+    	<eclipse.refreshLocal resource="/" depth="infinite"/>
+    </target>
+
+    <!-- remove quotes, trim and write to proeprty file updated-properties.properties -->
+    <target name="normalize-property" if="property.name">
+        <property name="propB_" value="${property.value}" />
+        <loadresource property="prop.nomarlized">
+            <propertyresource name="propB_" />
+            <filterchain>
+                <tokenfilter>
+                    <trim />
+                    <filetokenizer />
+                    <replacestring from="&quot;" to="" />
+                </tokenfilter>
+            </filterchain>
+        </loadresource>
+        <antcall target="write-property-file">
+            <param name="property.name" value="${property.name}" />
+            <param name="property.value" value="${prop.nomarlized}" />
+        </antcall>
+    </target>
+	
+    <!-- write to property file target/generated-sources/updated-properties.properties -->
+    <target name="write-property-file" if="prop.nomarlized">
+        <echo message="normalize property -&gt; ${property.name}: ${property.value}" />
+    	<touch file="${property.file.updated.path}" mkdirs="true" />
+        <propertyfile file="${property.file.updated.path}">
+            <entry key="${property.name}" value="${property.value}" />
+        </propertyfile>
+    </target>
 </project>

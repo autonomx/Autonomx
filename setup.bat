@@ -1,2 +1,2 @@
-cd automation/library
-java -jar mavenRunner.jar clean install -U -DskipTests 
+cd automation
+mvn clean install -U -DskipTests 

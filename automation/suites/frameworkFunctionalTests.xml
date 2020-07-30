@@ -29,13 +29,17 @@
 			<class name="test.module.framework.tests.functional.service.XmlTemplateTest" />
 			<class name="test.module.framework.tests.functional.service.XmlHelperTest" />
 			
-			<class name="test.module.framework.tests.functional.ConfigTest" />		
+			<class name="test.module.framework.tests.functional.ConfigTest" />
+			<class name="test.module.framework.tests.functional.PropertiesReaderTest" />			
 			<class name="test.module.framework.tests.functional.DataFileTest" />
 			<class name="test.module.framework.tests.functional.DefaultTestObjectTest" />
-			<class name="test.module.framework.tests.functional.MavenRunnerTest" />
+			<class name="test.module.framework.tests.functional.AntBuilderTest" />
+			
 			<class name="test.module.framework.tests.functional.RetryTest" />
 			
 			<class name="test.module.framework.tests.functional.Helper.UtilityHelperTests" />
+			<class name="test.module.framework.tests.functional.Helper.AssertHelperTest" />
+			
 		</classes>
 	</test>
 
