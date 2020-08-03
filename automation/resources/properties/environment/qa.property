@@ -33,7 +33,7 @@ service.response.timeout.seconds = 60
 service.timeout.validation.isEnabled = true
 service.timeout.validation.seconds = 2
 service.timeout.validation.delay.between.attempt.seconds = 3
-service.timeout.validation.delay.between.attempt.multiplier = 2
+service.timeout.validation.delay.between.attempt.multiplier = 1
 service.retry.count = 0
 service.retry.after.seconds = 0
 

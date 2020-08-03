@@ -523,7 +523,7 @@ public class RestApiInterfaceTest extends TestBase {
 		long passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
 		Helper.assertTrue("timout did not wait long enough: " + passedTimeInSeconds + " seconds",
 				passedTimeInSeconds >= 2);
-		Helper.assertTrue("timout waited too long: " + passedTimeInSeconds + " seconds", passedTimeInSeconds < 15);
+		Helper.assertTrue("timout waited too long: " + passedTimeInSeconds + " seconds", passedTimeInSeconds < 30);
 	}
 
 	@Test(expectedExceptions = { AssertionError.class }, description = "invalid criteria path")
@@ -684,7 +684,7 @@ public class RestApiInterfaceTest extends TestBase {
 		} catch (AssertionError e) {
 			passedTimeInSeconds = watch.time(TimeUnit.SECONDS);
 			Helper.assertTrue("timeout was less than 2 seconds: " + passedTimeInSeconds, passedTimeInSeconds >= 0);
-			Helper.assertTrue("timeout was more than 10 seconds: " + passedTimeInSeconds, passedTimeInSeconds <= 10);
+			Helper.assertTrue("timeout was more than 10 seconds: " + passedTimeInSeconds, passedTimeInSeconds <= 25);
 		}
 	}
 	

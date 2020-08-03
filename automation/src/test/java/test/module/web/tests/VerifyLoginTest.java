@@ -31,10 +31,10 @@ public class VerifyLoginTest extends TestBase {
 		User user = Data.webApp.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.webApp.login.loginWithCsvData(user);
-				
+		
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
-		
+				
 		TestLog.When("I logout");
 		app.webApp.main.logout();
 
