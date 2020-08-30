@@ -1,6 +1,9 @@
 # Android
 android.home = ""
-android.javaHome = ""
+
+# path of java jdk install directory. eg. C:\Program Files\Java\jdk1.8.0
+# jdk url: https://jdk.java.net/
+java.home.path = ""
 
 # Path
 environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -11,7 +14,8 @@ environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 maven.home = ""
 
 # url to download maven if not found on the system. can find versions at: https://archive.apache.org/dist/maven/maven-3/
-maven.url = "https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip"
+# eg. "https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip"
+maven.url = ""
 
 # proxy settings:
 # proxy.enabled options: true, false, auto. auto, detects if proxy is required. requires host and port values to be set.

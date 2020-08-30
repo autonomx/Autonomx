@@ -38,10 +38,11 @@ public class calculatePanel {
 	 * 
 	 */
 	public void calculate() {
-		Helper.click.clickAndExpect(elements.ONE, elements.TWO);
-		Helper.click.clickAndExpect(elements.PLUS, elements.TWO);
-		Helper.click.clickAndExpect(elements.TWO, elements.EQUALS);
-		Helper.click.clickAndExpect(elements.EQUALS, elements.RESULTS);
+		
+		Helper.clickAndWait(elements.ONE, 0);
+		Helper.clickAndWait(elements.PLUS, 0);
+		Helper.clickAndWait(elements.TWO, 0);
+		Helper.clickAndWait(elements.EQUALS, 0);
 		verifyResults("3");
 	}
 	

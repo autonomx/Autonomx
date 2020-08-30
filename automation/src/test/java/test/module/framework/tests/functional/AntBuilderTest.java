@@ -15,15 +15,16 @@ public class AntBuilderTest extends TestBase {
 	@Test(priority=1)
 	public void verifyMavenDownload() throws Exception {
 		   File marker = new File("target/generated-sources/annotations/marker/marker.java");
-		   File mavenDir = new File("../runner/utils/maven/apache-maven");
+		   File mavenDir = new File(".maven");
 		   Helper.deleteFile(mavenDir.getAbsolutePath());
 		   Helper.assertTrue("maven did not get deleted", !mavenDir.exists());
 
 		   runAnt();
 		   
 		   Helper.assertTrue("maven did not download", mavenDir.exists());
-		   File mavenBinDir = new File("../runner/utils/maven/apache-maven/bin");
-		   Helper.assertTrue("maven did not download", mavenBinDir.exists());
+		   File mavenJar = new File(".maven/maven.jar");
+		   
+		   Helper.assertTrue("maven did not download", mavenJar.exists());
 		   
 		   Helper.assertTrue("marker does not exist", marker.exists());
 	}

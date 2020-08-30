@@ -7,25 +7,27 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
+import core.apiCore.helpers.CsvReader;
 import core.helpers.Helper;
+import core.support.configReader.Config;
 import core.support.logger.TestLog;
-import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
 
 /**
  * @author ehsan matean
  * Test to verify running single test case
  */
-public class ServiceRunnerTestCaseTest extends TestBase {
+public class ServiceRunnerTestRangeTest extends TestBase {
 	
 	AtomicInteger testCount = new AtomicInteger(0);
 
 	@BeforeClass
 	public void beforeClass()  {
-		ConfigVariable.apiTestCaseFile().setValue("TestCases_UserValidation.csv");
-		ConfigVariable.apiTestCase().setValue("createUser-createUserNoToken, createUserInvalidToken");
+		Config.putValue(TestDataProvider.TEST_DATA_PARALLEL_PATH,  "../apiTestData/testCases/frameworkTests/testRange/");
+
+		Config.putValue(CsvReader.SERVICE_INCLUDE_LIST, "TestCases_UserValidation.csv:createUser-createUserNoToken, createUserInvalidToken;");
+		Config.putValue(CsvReader.SERVICE_EXCLUDE_LIST, "");
 	}
 	
 	// verifying test retry on api runner
@@ -35,7 +37,6 @@ public class ServiceRunnerTestCaseTest extends TestBase {
 		
 		TestLog.When("I verify api runner with specified csv file");
  
-    	ServiceRunner.TestRunner(objects);
     	testCount.incrementAndGet(); 	
 	}
 	

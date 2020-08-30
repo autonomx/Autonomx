@@ -92,7 +92,7 @@ public class XmlTemplateTest extends TestBase {
 		Helper.assertTrue("xml string is empty", !xmlString.isEmpty());
 
 		String tag = "soi:EquipmentID";
-		xmlString = XmlHelper.replaceRequestTagValues(serviceObject);
+		xmlString = XmlHelper.replaceRequestTagValues("", xmlString);
 		
 		TestLog.Then("I verify tag values have been updated");		
 		

@@ -1,12 +1,15 @@
-<project name="autonomx" basedir="." default="mvn-clean-generate" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="autonomx" basedir="." default="mvn-clean-generate">
     <property name="property.file.updated.path" value="target/generated-sources/updated-properties.properties/" />
     <property name="property.file.marker.path" value="target/generated-sources/marker.txt" />
     <property name="source.change.detector.marker.path" value="target/generated-sources/annotations/marker/marker.java" />
     <property name="source.change.detector.class.path" value="target/generated-sources/annotations/marker/SourceChangeDetector.java" />
-
-	<property name="maven.home.value" value="../runner/utils/maven/apache-maven/" />
-    <property name="maven.dir" location="../runner/utils/maven" />
-    <!-- Ant file will download maven to ../runner/utils/maven directory 
+		
+    <property name="maven.dir" location="./.maven" />
+	<property name="maven.url" value="https://github.com/autonomx/mavenRunner/releases/latest/download/maven.jar" />
+	
+	
+	
+    <!-- Ant file will download maven to ./.maven directory 
 		and run  generate-sources or clean commands
 	 -->
     <!--  set to run this at most once every 5 seconds. to avoid multiple consecutive calls-->
@@ -36,6 +39,7 @@
        <echo message="is source class present: ${source.class.present}" />
 	</target>
 	
+	
 	<!--  if source (src/main) dir changes, delete annotations/maker/marker.java file to indicated the need for code generation -->
     <target name="detect-source-changes" depends="check-class-source-change" if="source.class.present">
     	
@@ -53,27 +57,6 @@
        <echo message="is source marker present: ${source.marker.present}" />
 	</target>
 
-    <!--  getting maven url from property environment.property -->
-    <target name="get-maven-url">
-        <property name="maven.url.default" value="https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip" />
-        <first id="environment.property.id">
-            <fileset dir="resources/properties">
-                <include name="**/environment.property" />
-            </fileset>
-        </first>
-        <property file="${toString:environment.property.id}" />
-        <property name="maven.url.property" value="${maven.url}" />
-        <!--  if maven url is not set in environment.property then use default -->
-        <condition property="maven.url.property" value="${maven.url}" else="${maven.url.default}">
-            <isset property="maven.url" />
-        </condition>
-        <property name="property.value" value="${maven.url.property}" />
-        <echo message="maven.url: ${maven.url.property}" />
-        <antcall target="normalize-property">
-            <param name="property.name" value="maven.url.updated" />
-            <param name="property.value" value="${maven.url.property}" />
-        </antcall>
-    </target>
 	
     <!-- set proxy  -->
     <target name="probe-proxy">
@@ -137,27 +120,17 @@
  				
  	-->
     <target name="check-maven">
-        <available file="${maven.dir}/apache-maven" property="maven.present" />
-        <echo message="is maven directory already exist: ${maven.present}" />
+        <available file="${maven.dir}/maven.jar" property="maven.present" />
+        <echo message="is maven jar already exist: ${maven.present}" />
     </target>
 	
-    <!--  download maven and place in utils/maven/apache-maven/ directory -->
-    <target name="download-maven" depends="check-maven,get-maven-url,set-proxy" unless="maven.present">
-        <property file="${property.file.updated.path}" />
-        <basename property="mavenZipFile" file="${maven.url.updated}" />
-        <basename property="mavenDirName" file="${maven.url.updated}" suffix="-bin.zip" />
-        <echo message="maven.home: ${maven.home.value}" />
-        <echo message="maven.dir: ${maven.dir}" />
-        <echo message="mavenZipFile: ${mavenZipFile}" />
-        <echo message="mavenDirName: ${mavenDirName}" />
+    <!--  download maven and place in ./.mvn/ directory -->
+    <target name="download-maven" depends="check-maven,set-proxy" unless="maven.present">
+        <echo message="maven.url: ${maven.url}" />
+
         
     	<mkdir dir="${maven.dir}" />
-        <get src="${maven.url.updated}" dest="${maven.dir}" />
-        <unzip src="${maven.dir}/${mavenZipFile}" dest="${maven.dir}" overwrite="true"></unzip>
-        <move todir="${maven.dir}/apache-maven">
-            <fileset dir="${maven.dir}/${mavenDirName}" />
-        </move>
-        <delete file="${maven.dir}/${mavenZipFile}" />
+        <get src="${maven.url}" dest="${maven.dir}" />
     </target>
     <!-- run maven commands: generate-sources and clean
  		
@@ -166,56 +139,24 @@
     <target name="mvn-clean" depends="download-maven" unless="target-file-modified-in-few-seconds">
     	<echo message="calling: maven clean" />
     	<antcall target="enable-console-log"></antcall>
-    	<antcall target="mvn-command">
-                <param name="goal" value="clean" />
-         </antcall>
     	
-    	<antcall target="mvn-command">
-        	      <param name="goal" value="generate-sources" />
-       	</antcall>
-    	<echo>maven clean generate passs successfully </echo>   	
+    	<java jar="./maven/maven.jar" fork="true" failonerror="true">
+    		 	<arg value="clean generate-sources"/>
+    	</java>
+    	<echo>if your seeing this, compilation has potentially failed. Please see errors</echo>   	
     </target>
 	
-    <target name="mvn-clean-generate" depends="check-source-marker,download-maven" if="source.marker.present">    	
+    <target name="mvn-clean-generate" depends="check-source-marker,download-maven">    	
     	<echo message="calling: maven generate sources" />
     	<antcall target="enable-console-log"></antcall>
     	<touch file="target/generated-sources/target-file.txt" datetime="now" />
        
-    	<antcall target="mvn-command">
-    	      <param name="goal" value="generate-sources" />
-    	</antcall>
-
+    	<java jar="./.maven/maven.jar" fork="true" failonerror="true">
+        		<arg value="generate-sources"/>
+        </java>
+    	<echo>if your seeing this, compilation has potentially failed. Please see errors</echo>   	
     </target>
 	
-    <!-- run maven commands -->
-    <target name="mvn-command">
-        <antcall target="normalize-property">
-            <param name="property.name" value="maven.home.updated" />
-            <param name="property.value" value="${maven.home}" />
-        </antcall>
-        <property file="${property.file.updated.path}" />
-        <condition property="maven.home.path" value="${maven.home.updated}" else="${maven.home.value}">
-            <isset property="maven.home.updated" />
-        </condition>
-        <echo>maven.home.value: ${maven.home.value}</echo>
-        <echo>maven.home.updated: ${maven.home.updated}</echo>
-        <echo>maven.home: ${maven.home.path}</echo>
-        <property environment="env" />
-        <path id="classpath">
-            <fileset dir="${maven.home.value}/boot">
-                <include name="plexus-classworlds-*.jar" />
-            </fileset>
-        </path>
-        <property name="mvn.mainclass" value="org.codehaus.plexus.classworlds.launcher.Launcher" />
-        <java classname="${mvn.mainclass}" classpathref="classpath" fork="true" failonerror="true" >
-            <jvmarg value="-Dmaven.multiModuleProjectDirectory=${maven.home.path}" />
-            <jvmarg value="-Dclassworlds.conf=${maven.home.path}/bin/m2.conf" />
-            <jvmarg value="-Dmaven.home=${maven.home.path}" />
-            <arg value="${goal}" />
-        </java>
-    	<eclipse.refreshLocal resource="/" depth="infinite"/>
-    </target>
-
     <!-- remove quotes, trim and write to proeprty file updated-properties.properties -->
     <target name="normalize-property" if="property.name">
         <property name="propB_" value="${property.value}" />

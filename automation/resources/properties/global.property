@@ -9,8 +9,12 @@ global.parallelTestType = METHODS
 
 global.retryCount = 0
 
+# UI only skip tests. format: "class-testname, class2-testname2"
+global.skipTests = ""
+
 # single signin (not quitting driver after each test) works in conjunction with Helper.loginbuilder
 global.isSingleSignIn = false
+singleSignIn.refresh.on.start = false
 
 # use either json file or csv for localization
 localize.path = resources/localization/

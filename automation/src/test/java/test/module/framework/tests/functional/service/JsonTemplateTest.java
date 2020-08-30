@@ -33,6 +33,21 @@ public class JsonTemplateTest extends TestBase {
 	}
 	
 	@Test()
+	public void getRequestBodyFromJsonTemplate_requestbody_update() {
+		Config.putValue("quizItem", "quiz2");
+		ServiceObject serviceObject = new ServiceObject()
+				.withTemplateFile("Quiz.json")
+				.withRequestBody("_UPDATE_REQUEST_ quiz.sport.q1.options:2:value_<@quizItem>");
+		
+		String updatedJson = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+
+
+		String updatedValue = JsonHelper.getJsonValue(updatedJson, "quiz.sport.q1.options");
+		
+		Helper.assertEquals("value_quiz2", updatedValue);
+	}
+	
+	@Test()
 	public void getRequestBodyFromJsonTemplate_valid_no_body() {
 		Config.putValue("quizItem", "quiz2");
 		ServiceObject serviceObject = new ServiceObject()

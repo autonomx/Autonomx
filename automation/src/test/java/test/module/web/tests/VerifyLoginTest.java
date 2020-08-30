@@ -2,6 +2,7 @@ package test.module.web.tests;
 
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import core.helpers.Helper;
@@ -42,6 +43,23 @@ public class VerifyLoginTest extends TestBase {
 		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);
 	}
 	
+	@Test()
+	public void verifyAdminUserWithCsvData2() {
+		
+		User user = Data.webApp.user().admin();
+		TestLog.When("I login with user " + user.getUsername());
+		app.webApp.login.loginWithCsvData(user);
+		
+		TestLog.Then("I verify admin logo is displayed");
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
+				
+		TestLog.When("I logout");
+		app.webApp.main.logout();
+
+		TestLog.Then("I should see the login panel");
+		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);
+	}
+	
 	/**
 	 * uses data from UserInvalid.csv at webApp.data
 	 * reruns the test per row of csv file
@@ -49,6 +67,7 @@ public class VerifyLoginTest extends TestBase {
 	 * @param password
 	 */
 	@Test(dataProvider = "DataRunner", dataProviderClass = UserInvalid.class)
+	@Ignore
 	public void invalidUserLogin(String username, String password) {
 		TestLog.ConsoleLog("username "  + username);
 		TestLog.ConsoleLog("password "  + password);

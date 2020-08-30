@@ -3,6 +3,7 @@ package test.module.framework.tests.ui;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -42,6 +43,10 @@ public class ListHelperTest extends TestBase {
 		// last column data is empty, is not added to map
 		int columnCount = Helper.getListCount(UserPanel.USER_COLUMN_HEADERS) - 1;
 		Helper.assertEquals(columnCount, table.size());	
+		
+		for (Map.Entry<String, List<String>> entry : table.entrySet()) {
+		    System.out.println(entry.getKey() + ":" + entry.getValue().toString());
+		}
 		
 		Helper.assertEquals(table.get("Username").get(0), "autoAdmin1");
 		Helper.assertEquals(table.get("Email").get(0), "autouser313@gmail.com");

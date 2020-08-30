@@ -925,6 +925,73 @@ public class DataHelperTest extends TestBase {
 		
 		 DataHelper.getRequestBodyIncludingTemplate(serviceObject);
 	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_update_request_json() throws Exception {
+		
+		String expectedResponse = "[{\"category1\":\"action\",\"author1\":\"Nigel Rees\",\"title1\":\"title1\",\"price1\":8.95},{\"category2\":\"scifi\",\"author2\":\"Herman Melville\",\"title2\":\"Moby Dick\",\"isbn2\":\"H/APPR\",\"price2\":8.99}]";
+		
+		String json = "[\n" + 
+				"   {\n" + 
+				"      \"category1\" : \"reference\",\n" + 
+				"      \"author1\" : \"Nigel Rees\",\n" + 
+				"      \"title1\" : \"title1\",\n" + 
+				"      \"price1\" : 8.95\n" + 
+				"   },\n" + 
+				"   {\n" + 
+				"      \"category2\" : \"fiction\",\n" + 
+				"      \"author2\" : \"Herman Melville\",\n" + 
+				"      \"title2\" : \"Moby Dick\",\n" + 
+				"      \"isbn2\" : \"H/APPR\",\n" + 
+				"      \"price2\" : 8.99\n" + 
+				"   }\n" + 
+				"]";
+		
+		Config.putValue("variable", json);
+		ServiceObject serviceObject = new ServiceObject()
+				.withRequestBody("<@variable>\n" + 
+						"&&\n" + 
+						"_UPDATE_REQUEST_\n" + 
+						".category1:action;\n" + 
+						".category2:scifi");
+		
+		String textString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("text string is empty", !textString.isEmpty());
+		
+		Helper.assertEquals(expectedResponse, textString);
+	}
+	
+	@Test()
+	public void getRequestBodyIncludingTemplate_update_request_xml() throws Exception {
+	
+		String expectedResponse = "<note>\n" + 
+				"       <to>dave</to>\n" + 
+				"       <from>Jani</from>\n" + 
+				"       <heading>Reminder</heading>\n" + 
+				"       <body>you forgot</body>\n" + 
+				"   </note>";
+		
+		String xml = "<note>\n" + 
+				"       <to>Tove</to>\n" + 
+				"       <from>Jani</from>\n" + 
+				"       <heading>Reminder</heading>\n" + 
+				"       <body>Don't forget me this weekend!</body>\n" + 
+				"   </note>";
+		
+		Config.putValue("variable", xml);
+		ServiceObject serviceObject = new ServiceObject()
+				.withRequestBody("<@variable>\n" + 
+						"&&\n" + 
+						"_UPDATE_REQUEST_\n" + 
+						"to:dave;\n" + 
+						"body:you forgot");
+		
+		String textString = DataHelper.getRequestBodyIncludingTemplate(serviceObject);
+		Helper.assertTrue("text string is empty", !textString.isEmpty());
+		
+		Helper.assertEquals(expectedResponse, textString);
+	}
+	
 	@Test()
 	public void validateExpectedValues_empty_response() throws Exception {
 		

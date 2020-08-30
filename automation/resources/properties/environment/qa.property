@@ -17,8 +17,12 @@ api.templatePath = "../apiTestData/templates/"
 api.templateDataFile = "../apiTestData/templates/data/"
 
 # set file name to run single csv file
-api.testCaseFile = ""
 api.testCase = ""
+api.testCaseFile = ""
+
+# include or exclude tests. format: testFile.csv:test1-test3,test4; testFil2.csv;
+api.includeTests = ""
+api.excludeTests = ""
 
 api.base.path = "../apiTestData/keywords/testBase/"
 api.base.before.testfile = "TestCases_RunBefore.csv"

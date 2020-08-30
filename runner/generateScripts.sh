@@ -19,7 +19,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf 'cd %%~dp0\n cd ../../automation\n mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./win/$fileName.bat
+   printf ' cd %%~dp0\n cd ../../automation\n if not exist .maven/maven.jar ( \n  call %%~dp0../../setup.bat \n ) \n java -jar .maven/maven.jar clean compile test -DsuiteXmlFile=suites/%s.xml \n cmd /k' $fileName > ./win/$fileName.bat
    echo "generate win batch file: " $fileName
 done
 
@@ -28,7 +28,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./mac/$fileName.sh
+   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation \n if [ ! -f .maven/maven.jar ]; then \n   bash ../setup.sh \n fi \n java -jar ./.maven/maven.jar clean compile test -DsuiteXmlFile=suites/%s.xml \n $SHELL' $fileName > ./mac/$fileName.sh
    chmod 777 ./mac/$fileName.sh
    echo "generate mac bash file: " $fileName
 done
@@ -38,7 +38,7 @@ for eachfile in $yourfilenames
 do
 	
    fileName=$(basename $eachfile .xml)
-   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation\n mvn clean compile test -DsuiteXmlFile=suites/%s.xml' $fileName > ./linux/$fileName.sh
+   printf '#!/bin/bash\n cd "$(dirname ${BASH_SOURCE[0]})"\n cd ../../automation \n if [ ! -f .maven/maven.jar ]; then \n   bash ../setup.sh \n fi \n java -jar ./.maven/maven.jar clean compile test -DsuiteXmlFile=suites/%s.xml \n $SHELL' $fileName > ./mac/$fileName.sh
    chmod 777 ./mac/$fileName.sh
    echo "generate linux bash file: " $fileName
 done

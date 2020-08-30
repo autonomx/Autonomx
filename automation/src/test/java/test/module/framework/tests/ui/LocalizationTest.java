@@ -18,6 +18,7 @@ public class LocalizationTest extends TestBase {
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {
+		
 		ConfigVariable.localizeFile().setValue("local.csv");
 		Helper.localizationSetupCsv("French");
 		ConfigVariable.setValue("chrome.pref.intl.accept_languages" , "fr");

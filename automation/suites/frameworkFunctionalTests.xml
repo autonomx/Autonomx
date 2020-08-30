@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
 <suite name="Framework Test" preserve-order="true">
 
@@ -13,7 +13,7 @@
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerMultipleTestCsv" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerColumnPositionTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTest" />
-			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestCaseTest" />
+			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestRangeTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestFileTest" />
 			
 			
@@ -36,7 +36,8 @@
 			<class name="test.module.framework.tests.functional.AntBuilderTest" />
 			
 			<class name="test.module.framework.tests.functional.RetryTest" />
-			
+			<class name="test.module.framework.tests.functional.SkipTest" />
+						
 			<class name="test.module.framework.tests.functional.Helper.UtilityHelperTests" />
 			<class name="test.module.framework.tests.functional.Helper.AssertHelperTest" />
 			

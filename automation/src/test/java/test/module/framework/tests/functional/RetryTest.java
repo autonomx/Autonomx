@@ -49,6 +49,102 @@ public class RetryTest extends TestBase {
 		}
 	}
 	
+	@Test(description = "verify test retry")
+	public void verifyRetryFunction_screenRecorder_onFailOnly() {
+			
+		// scope of retry value is test level. RetryTest class will use the same scope to get the retry count
+		ConfigVariable.globalRetryCount().setValue(1);
+		ConfigVariable.recorderEnableRecording().setValue(true);
+		ConfigVariable.recorderOnFailedTestsOnly().setValue(true);
+		
+		int runCount = TestObject.getTestInfo().runCount;
+		if(runCount == 1) {
+			TestLog.When("I fail on first retry");
+			Helper.assertTrue("screen recorder initiated", !TestObject.getTestInfo().isScreenRecorderInitiated);
+			
+			Helper.assertFalse("failed on first run");
+			
+		}else if(runCount == 2) {
+			TestLog.Then("I pass on second retry");
+			int retryCountUpdated = ConfigVariable.globalRetryCount().toInt();
+			Helper.assertEquals(1, retryCountUpdated);
+			Helper.assertTrue("should pass", true);
+			Helper.assertTrue("screen recorder initiated", TestObject.getTestInfo().isScreenRecorderInitiated);
+		}
+	}
+	
+	@Test(description = "verify test retry")
+	public void verifyRetryFunction_screenRecorder() {
+			
+		// scope of retry value is test level. RetryTest class will use the same scope to get the retry count
+		ConfigVariable.globalRetryCount().setValue(1);
+		ConfigVariable.recorderEnableRecording().setValue(true);
+		ConfigVariable.recorderOnFailedTestsOnly().setValue(false);
+		
+		int runCount = TestObject.getTestInfo().runCount;
+		if(runCount == 1) {
+			TestLog.When("I fail on first retry");
+			Helper.assertTrue("screen recorder initiated", TestObject.getTestInfo().isScreenRecorderInitiated);
+			
+			Helper.assertFalse("failed on first run");
+			
+		}else if(runCount == 2) {
+			TestLog.Then("I pass on second retry");
+			int retryCountUpdated = ConfigVariable.globalRetryCount().toInt();
+			Helper.assertEquals(1, retryCountUpdated);
+			Helper.assertTrue("should pass", true);
+			Helper.assertTrue("screen recorder initiated", TestObject.getTestInfo().isScreenRecorderInitiated);
+		}
+	}
+	
+	@Test(description = "verify test retry")
+	public void verifyRetryFunction_screenRecorder_retry_zero() {
+			
+		// scope of retry value is test level. RetryTest class will use the same scope to get the retry count
+		ConfigVariable.globalRetryCount().setValue(0);
+		ConfigVariable.recorderEnableRecording().setValue(true);
+		ConfigVariable.recorderOnFailedTestsOnly().setValue(true);
+		
+		int runCount = TestObject.getTestInfo().runCount;
+		if(runCount == 1) {
+			TestLog.When("I fail on first retry");
+			Helper.assertTrue("screen recorder initiated", !TestObject.getTestInfo().isScreenRecorderInitiated);
+			
+			Helper.assertFalse("failed on first run");
+			
+		}else if(runCount == 2) {
+			TestLog.Then("I pass on second retry");
+			int retryCountUpdated = ConfigVariable.globalRetryCount().toInt();
+			Helper.assertEquals(0, retryCountUpdated);
+			Helper.assertTrue("should pass", true);
+			Helper.assertTrue("screen recorder initiated", TestObject.getTestInfo().isScreenRecorderInitiated);
+		}
+	}
+	
+	@Test(description = "verify test retry")
+	public void verifyRetryFunction_screenRecorder_disabled() {
+			
+		// scope of retry value is test level. RetryTest class will use the same scope to get the retry count
+		ConfigVariable.globalRetryCount().setValue(1);
+		ConfigVariable.recorderEnableRecording().setValue(false);
+		ConfigVariable.recorderOnFailedTestsOnly().setValue(false);
+		
+		int runCount = TestObject.getTestInfo().runCount;
+		if(runCount == 1) {
+			TestLog.When("I fail on first retry");
+			Helper.assertTrue("screen recorder initiated", !TestObject.getTestInfo().isScreenRecorderInitiated);
+			
+			Helper.assertFalse("failed on first run");
+			
+		}else if(runCount == 2) {
+			TestLog.Then("I pass on second retry");
+			int retryCountUpdated = ConfigVariable.globalRetryCount().toInt();
+			Helper.assertEquals(1, retryCountUpdated);
+			Helper.assertTrue("should pass", true);
+			Helper.assertTrue("screen recorder initiated", !TestObject.getTestInfo().isScreenRecorderInitiated);
+		}
+	}
+	
 	// note: config value is not passed in test rerun
 	@Test(description = "verify extra retry when certain exceptions are thrown")
 	public void verifyExceptionRetryHandling() throws LoginException {

@@ -33,6 +33,19 @@ public class XmlHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void getXmlTagValue_all() {
+		String xml = "<note>\n" + 
+				"       <to>Tove</to>\n" + 
+				"       <from>Jani</from>\n" + 
+				"       <heading>Reminder</heading>\n" + 
+				"       <body>Don't forget me this weekend!</body>\n" + 
+				"   </note>";
+		
+		String value = XmlHelper.getXmlTagValue(xml, ".");
+		Helper.assertEquals(xml, value);
+	}
+	
+	@Test()
 	public void getXmlTagValue_valid_array() {
 		String xml = "<book>\n" + 
 				"<note>\n" + 

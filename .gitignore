@@ -14,6 +14,7 @@ automation/.annotations/
 automation/.apt_generated_tests/
 automation/.settings/
 automation/.idea/
+automation/.maven/
 runner/utils/maven/
 runner/utils/script-server/
 *.DS_Store

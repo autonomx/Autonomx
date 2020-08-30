@@ -376,6 +376,31 @@ public class JsonHelperTest extends TestBase {
 	}
 	
 	@Test()
+	public void getJsonValue_allValue() {
+		TestLog.Then("I verify getting json value from path");
+		
+		String jsonPath = ".";
+		String json = "[\n" + 
+				"   {\n" + 
+				"      \"category\" : \"reference\",\n" + 
+				"      \"author\" : \"Nigel Rees\",\n" + 
+				"      \"title\" : \"\",\n" + 
+				"      \"price\" : 8.95\n" + 
+				"   },\n" + 
+				"   {\n" + 
+				"      \"category\" : \"fiction\",\n" + 
+				"      \"author\" : \"Herman Melville\",\n" + 
+				"      \"title\" : \"Moby Dick\",\n" + 
+				"      \"isbn\" : \"H/APPR\",\n" + 
+				"      \"price\" : 8.99\n" + 
+				"   }\n" + 
+				"]";
+		
+		String categories = JsonHelper.getJsonValue(json, jsonPath);
+		Helper.assertEquals(json, categories);
+	}
+	
+	@Test()
 	public void getJsonValue_jsonString_array_response() {
 		TestLog.Then("I verify getting json value from path");
 		

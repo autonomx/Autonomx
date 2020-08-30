@@ -17,7 +17,6 @@ import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
 import core.helpers.Helper;
 import core.support.configReader.Config;
-import core.support.configReader.PropertiesReader;
 import core.support.logger.TestLog;
 import core.support.objects.TestObject;
 import serviceManager.ServiceRunner;
@@ -35,11 +34,9 @@ public class ServiceRunnerMultipleTestCsv extends TestBase {
 	@BeforeClass
 	public void beforeClass() throws IOException  {		
 
-		String csvTestPath = PropertiesReader.getLocalRootPath()
-				+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) +  "TestCases_UserValidation.csv";
+		String csvTestPath = Helper.getFullPath(Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) +  "TestCases_UserValidation.csv");
 
-		csvTestPath_destination = PropertiesReader.getLocalRootPath()
-				+ Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) + "TestCases_UserValidation2.csv";
+		csvTestPath_destination = Helper.getFullPath(Config.getValue(TestDataProvider.TEST_DATA_PARALLEL_PATH) + "TestCases_UserValidation2.csv");
 		
 		TestLog.When("I create additional csv test file");
 		TestDataProvider.csvFileIndex.set(0);
