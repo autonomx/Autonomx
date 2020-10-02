@@ -30,8 +30,8 @@ public class AssertHelperTest extends TestBase {
 		 Helper.softAssertAll();
 		}catch(AssertionError error) {
 			Helper.assertEquals("The following asserts failed:\n" + 
-					"	expected [value3] but found [value2],\n" + 
-					"	expected [value3] but found [value4]", error.getMessage());
+					"	expected [value2] but found [value3],\n" + 
+					"	expected [value4] but found [value3]", error.getMessage());
 		}
 	}
 	

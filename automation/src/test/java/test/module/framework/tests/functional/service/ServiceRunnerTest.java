@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import configManager.ConfigVariable;
 import core.apiCore.TestDataProvider;
 import core.apiCore.driver.ApiTestDriver;
 import core.helpers.Helper;
@@ -15,6 +16,7 @@ import core.support.configReader.Config;
 import core.support.logger.TestLog;
 import core.support.objects.ServiceObject;
 import core.support.objects.TestObject;
+import core.uiCore.driverProperties.globalProperties.CrossPlatformProperties;
 import core.uiCore.drivers.AbstractDriverTestNG;
 import serviceManager.ServiceRunner;
 import test.module.framework.TestBase;
@@ -29,6 +31,9 @@ public class ServiceRunnerTest extends TestBase {
 	@BeforeMethod()
 	public void beforeMethod(Method method) {
 		TestDataProvider.csvFileIndex.set(0);
+		
+		// set global.retry to 3, for service tests, it should not take effect and remain 0
+		ConfigVariable.globalRetryCount().setValue(3);
 	}
 	
 	@Test()
@@ -84,6 +89,9 @@ public class ServiceRunnerTest extends TestBase {
 		Helper.assertEquals(testClass + "-" + serviceObject.getTestCaseID(), testname);
 
 		ServiceRunner.TestRunner(objects);
+		
+		// validate global retry count does not affect service tests
+		Helper.assertEquals(0, CrossPlatformProperties.getRetryCount());
 	}
 	
 	 @Test()

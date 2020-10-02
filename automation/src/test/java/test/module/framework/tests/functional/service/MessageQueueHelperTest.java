@@ -374,7 +374,7 @@ public class MessageQueueHelperTest extends TestBase {
 		MessageQueueHelper.receiveAndValidateMessages(serviceObject, random,  messageType.TEST);
 		String value = Config.getValue("value1");
 		Helper.assertTrue("value is empty", !value.isEmpty());
-		Helper.assertContains(value, "test"+ random);
-		Helper.assertContains(value, "test2"+ random);
+		Helper.assertContains("test"+ random, value);
+		Helper.assertContains("test2"+ random, value);
 	}
 }

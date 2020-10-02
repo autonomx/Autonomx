@@ -7,6 +7,8 @@ import org.apache.tools.ant.ProjectHelper;
 import org.testng.annotations.Test;
 
 import core.helpers.Helper;
+import core.support.configReader.Config;
+import core.support.logger.TestLog;
 import marker.SourceChangeDetector;
 import test.module.framework.TestBase;
 
@@ -70,5 +72,11 @@ public class AntBuilderTest extends TestBase {
 		   }
 	}
 	
-	
+	@Test(priority=3)
+	public void verifyAutonomxVersion() throws Exception {
+		Config.putValue("console.checkLatestAutonomx", true);
+		
+		boolean isNewVersion = TestLog.checkLatestAutonomxMavenVersion();
+		Helper.assertTrue("new version not detected", isNewVersion);
+	}
 }

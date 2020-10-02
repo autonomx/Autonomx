@@ -1,7 +1,9 @@
 package module.services.method;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -43,6 +45,16 @@ public class Command {
 		return StringUtils.EMPTY;
 	}
 	
+	public static String isDateBetween(String response, ArrayList<String> values) {
+		List<String> dates = new ArrayList<String>(Arrays.asList(response.split(",")));
+		
+		boolean isBetween = Helper.date.isBetweenDates(dates, values.get(0), values.get(1));
+		if(!isBetween)
+			return "values not in between";
+		
+		return StringUtils.EMPTY;	
+	}
+	
 	
 	/**
 	 * command for checking if values in array are unique
@@ -79,12 +91,14 @@ public class Command {
 	}
 	
 	/**
+	 * command(Command.getRoleNameValue,param1,param3):<$name>;
 	 * command for getting a json response value from output parameter
 	 * @param response
 	 * @param values
 	 * @return
 	 */
 	public static String getRoleNameValue(String response, ArrayList<String> values) {
+		if(response.isEmpty()) return  StringUtils.EMPTY;
 		String key = JsonHelper.getJsonValue(response, "role.name");
 		return key;
 	}

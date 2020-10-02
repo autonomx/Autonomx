@@ -19,7 +19,7 @@ import test.module.framework.TestBase;
 
 /**
  * @author ehsan matean
- *
+ * Depricated - global.retry is now UI only 
  */
 public class ServiceRunnerRetryTest extends TestBase {
 	

@@ -7,7 +7,11 @@ global.parallelTestCount = 1
 # parallel run strategy. Options: METHODS, CLASSES
 global.parallelTestType = METHODS
 
+# applicable to UI tests only. Service tests have separate retry options at qa.property or dev.property: service.response.timeout.seconds, service.retry.count
 global.retryCount = 0
+
+# rerun failed tests after suite is complete
+global.ui.rerun.failed.after.suite = false
 
 # UI only skip tests. format: "class-testname, class2-testname2"
 global.skipTests = ""

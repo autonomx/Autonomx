@@ -15,13 +15,15 @@ import test.module.framework.TestBase;
  *
  */
 public class SkipTest extends TestBase {
+	
+	int testStatus = 0;
 
 	@BeforeMethod
 	public void beforeMethod() throws Exception {
 		ConfigVariable.globalSkipTests().setValue("SkipTest-verifySkipTest");
 	}
 	
-	@Test(description = "verify skip test")
+	@Test(description = "skip test", priority = 1)
 	public void verifySkipTest() {
 			
 	}
@@ -30,6 +32,12 @@ public class SkipTest extends TestBase {
 	public void afterMethod(ITestResult iTestResult)  {
 		
 		// status 3 is skip
-		Helper.assertEquals(3, iTestResult.getStatus() );
+		testStatus = iTestResult.getStatus();		
+	}
+	
+	@Test(description = "verify skip test", priority = 2)
+	public void verifySkipTestValidation() {
+		
+		Helper.assertEquals(3, testStatus);	
 	}
 }

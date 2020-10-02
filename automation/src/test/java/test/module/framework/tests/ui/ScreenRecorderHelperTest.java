@@ -47,7 +47,14 @@ public class ScreenRecorderHelperTest extends TestBase {
 	@AfterClass
 	public void afterClass()  {
 		
-		ArrayList<File> videos = Helper.getFileList( ExtentManager.getReportRootFullPath());
-		Helper.assertEquals("media", videos.get(0).getName());
+		ArrayList<File> videos = Helper.getFileList( ExtentManager.getReportRootFullPath(), true);
+		Helper.assertTrue("no video files created",!videos.isEmpty());
+		
+		boolean isFound = false;
+		for(File file:videos){
+			if(file.getName().contains("verifyClickPoint"))
+				isFound = true;
+		}
+		Helper.assertTrue("correct video not found", isFound);
 	}
 }

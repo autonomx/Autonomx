@@ -10,6 +10,7 @@
   
     <classes>
        <class name="test.module.service.tests.ServiceTestRunner"/>
+       <class name="test.module.service.generated.UserValidation"/>      
     </classes>
   </test>
 </suite>

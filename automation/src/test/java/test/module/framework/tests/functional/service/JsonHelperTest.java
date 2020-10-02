@@ -8,9 +8,11 @@ import org.testng.annotations.Test;
 
 import core.apiCore.helpers.DataHelper;
 import core.apiCore.helpers.JsonHelper;
+import core.apiCore.interfaces.ExternalInterface;
 import core.helpers.Helper;
 import core.support.configReader.Config;
 import core.support.logger.TestLog;
+import core.support.objects.ServiceObject;
 import data.Data;
 import io.restassured.response.Response;
 import module.common.data.CommonUser;
@@ -203,7 +205,7 @@ public class JsonHelperTest extends TestBase {
 	}
 	
 	@Test()
-	public void configMapJsonKeyValues_command() {
+	public void configMapJsonKeyValues_command() throws Exception {
 		
 		CommonUser user = Data.common.commonuser().withAdminLogin();
 		
@@ -220,6 +222,13 @@ public class JsonHelperTest extends TestBase {
 		JsonHelper.saveOutboundJsonParameters(response, "command(Command.getRoleNameValue,param1,param2):<$name>;  provider:1:<$local>");
 		Helper.assertEquals("Authenticated", Config.getValue("name"));
 		Helper.assertEquals("local", Config.getValue("local"));
+		
+		// with empty response
+		ServiceObject service = new ServiceObject();
+		service.withRequestBody("response: ;values:parameter1")
+		.withMethod("METHOD:Command.getRoleNameValue");
+		Object value = ExternalInterface.evaluateTestMethod(service);
+		Helper.assertTrue("value should be empty", value.toString().isEmpty());
 	}
 	
 	@Test(expectedExceptions = { AssertionError.class } )
@@ -568,6 +577,47 @@ public class JsonHelperTest extends TestBase {
 		
 		Helper.assertEquals(newVal, updatedValue);
 	}
+	
+	@Test()
+	public void replaceJsonPathValue_add_new_node_boolean() {
+		
+		String originalJson = "{\n"
+		        + "\"session\":\n"
+		        + "    {\n"
+		        + "        \"name\":\"JSESSIONID\",\n"
+		        + "        \"value\":\"5864FD56A1F84D5B0233E641B5D63B52\"\n"
+		        + "    },\n"
+		        + "\"loginInfo\":\n"
+		        + "    {\n"
+		        + "        \"loginCount\":77,\n"
+		        + "        \"previousLoginTime\":\"2014-12-02T11:11:58.561+0530\"\n"
+		        + "    }\n"
+		        + "}";
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, "additionalProperties", "false");
+		String updatedValue = JsonHelper.getJsonValue(updatedJson, "additionalProperties");
+		Helper.assertEquals("false", updatedValue);
+	}
+	
+	@Test()
+	public void replaceJsonPathValue_add_new_node_string() {
+		
+		String originalJson = "{\n"
+		        + "\"session\":\n"
+		        + "    {\n"
+		        + "        \"name\":\"JSESSIONID\",\n"
+		        + "        \"value\":\"5864FD56A1F84D5B0233E641B5D63B52\"\n"
+		        + "    },\n"
+		        + "\"loginInfo\":\n"
+		        + "    {\n"
+		        + "        \"loginCount\":77,\n"
+		        + "        \"previousLoginTime\":\"2014-12-02T11:11:58.561+0530\"\n"
+		        + "    }\n"
+		        + "}";
+		String updatedJson = JsonHelper.replaceJsonPathValue(originalJson, "additionalProperties", "value1");
+		String updatedValue = JsonHelper.getJsonValue(updatedJson, "additionalProperties");
+		Helper.assertEquals("value1", updatedValue);
+	}
+	
 	
 	@Test()
 	public void replaceJsonPathValue_jsonArray() {
@@ -1530,6 +1580,26 @@ public class JsonHelperTest extends TestBase {
 	public void validateByKeywords_custom_command_wrong_parameters() {
 		String criteria = "_VERIFY_JSON_PART_ .price:command(Command.isAllNumbersGreaterThanSumOf)";
 		JsonHelper.validateByKeywords(criteria, jsonBookStore);
+	}
+	
+	@Test( )
+	public void validateByKeywords_command_date() {
+		
+		String dateJson = "{\"dates\":[\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-05T12:08:56\"\n" + 
+				"            },\n" + 
+				"            {\n" + 
+				"               \"date\":\"2001-05-10T12:08:56\"\n" + 
+				"            },\n" + 
+				"           {\n" + 
+				"               \"date\":\"2001-05-15T12:08:56\"\n" + 
+				"            }\n" + 
+				"]}";
+		
+		String criteria = "_VERIFY_JSON_PART_ .date:command(Command.isDateBetween,2001-05-04T12:08:56,2001-05-16T12:08:56)";
+		List<String> error = JsonHelper.validateByKeywords(criteria, dateJson);
+		Helper.assertTrue("errors not caught", error.isEmpty());
 	}
 	
 	@Test()

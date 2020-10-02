@@ -32,6 +32,7 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 	@BeforeMethod()
 	public void beforeMethod(Method method) {
 		TestDataProvider.csvFileIndex.set(0);
+		
 	}
 	
 	@Test(priority=1)
@@ -56,7 +57,7 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner(objects);
 		
 		TestLog.Then("I verify before class values are accessible in test");
-		String roles = TestObject.getTestInfo("UserValidation-test-verifyTestbaseTest").config.get("rolesBeforeClass").toString();
+		String roles = TestObject.getTestInfo("UserValidationReference-test-verifyTestbaseTest").config.get("rolesBeforeClass").toString();
 		Helper.assertEquals(roles, "1");
 		
 		// after class
@@ -66,8 +67,8 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		roles = Config.getValue("roles");
 		Helper.assertEquals(roles, "1");
 		
-		TestObject.testInfo.remove("UserValidation-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
-		TestObject.testInfo.remove("UserValidation-AfterTestFile-RunAfter-getAdminTokenAfterClass");
+		TestObject.testInfo.remove("UserValidationReference-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
+		TestObject.testInfo.remove("UserValidationReference-AfterTestFile-RunAfter-getAdminTokenAfterClass");
 
 	}
 	
@@ -103,8 +104,8 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner(objects2);
 		
 		TestLog.Then("I verify before class and after class did not run");
-		TestObject beforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
-		TestObject afterClass = TestObject.testInfo.get("UserValidation-AfterTestFile-RunAfter-getAdminTokenAfterClass");
+		TestObject beforeClass = TestObject.testInfo.get("UserValidationReference-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
+		TestObject afterClass = TestObject.testInfo.get("UserValidationReference-AfterTestFile-RunAfter-getAdminTokenAfterClass");
 
 		Helper.assertTrue("before class was not suppose to run", beforeClass == null);
 		Helper.assertTrue("after class was not suppose to run", afterClass == null);
@@ -141,10 +142,10 @@ public class ServiceBeforeClassSuiteTests extends TestBase {
 		ServiceRunner.TestRunner(objects2);
 		
 		TestLog.Then("I verify before class and after class did not run");
-		TestObject beforeClass_getAdminTokenBeforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
-		TestObject beforeClass_createUserBeforeClass = TestObject.testInfo.get("UserValidation-BeforeTestFile-RunBefore-createUserBeforeClass");
+		TestObject beforeClass_getAdminTokenBeforeClass = TestObject.testInfo.get("UserValidationReference-BeforeTestFile-RunBefore-getAdminTokenBeforeClass");
+		TestObject beforeClass_createUserBeforeClass = TestObject.testInfo.get("UserValidationReference-BeforeTestFile-RunBefore-createUserBeforeClass");
 
-		TestObject afterClass = TestObject.testInfo.get("UserValidation-AfterTestFile-RunAfter-getAdminTokenAfterClass");
+		TestObject afterClass = TestObject.testInfo.get("UserValidationReference-AfterTestFile-RunAfter-getAdminTokenAfterClass");
 
 		// ensure's correct tests ran
 		Helper.assertTrue("before class was not suppose to run", beforeClass_getAdminTokenBeforeClass == null);

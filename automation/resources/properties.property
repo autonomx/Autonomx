@@ -5,5 +5,5 @@
 # config root
 config.root = "./resources/properties/"
 
-# environment
+# environment (single file)
 config.environment = ./resources/properties/environment/qa

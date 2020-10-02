@@ -5,8 +5,7 @@
 
 	<test name="framework tests" preserve-order="true" group-by-instances="true">
 
-		<classes>
-			<class name="test.module.framework.tests.functional.service.ServiceRunnerRetryTest" />	
+		<classes>		
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestStepsTest" />	
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerConfigTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerMultiRunTest" />	
@@ -15,8 +14,9 @@
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestRangeTest" />
 			<class name="test.module.framework.tests.functional.service.ServiceRunnerTestFileTest" />
-			
-			
+			<class name="test.module.framework.tests.functional.service.ServiceClassGenerationTest" />
+			<class name="test.module.service.generated.UserValidation"/>      
+					
 			<class name="test.module.framework.tests.functional.service.AuthenticationInterfaceTest" />	
 			<class name="test.module.framework.tests.functional.service.ExternalInterfaceTest" />		
 			<class name="test.module.framework.tests.functional.service.MessageQueueHelperTest" />		
@@ -35,8 +35,8 @@
 			<class name="test.module.framework.tests.functional.DefaultTestObjectTest" />
 			<class name="test.module.framework.tests.functional.AntBuilderTest" />
 			
-			<class name="test.module.framework.tests.functional.RetryTest" />
 			<class name="test.module.framework.tests.functional.SkipTest" />
+			<class name="test.module.framework.tests.functional.RetryTest" />
 						
 			<class name="test.module.framework.tests.functional.Helper.UtilityHelperTests" />
 			<class name="test.module.framework.tests.functional.Helper.AssertHelperTest" />

@@ -11,6 +11,7 @@ authentication.disabled = false
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.csv.include.subdir = false
+service.generate.class = true
 
 # set file name to run single csv file
 api.testCaseFile = ""
@@ -46,6 +47,11 @@ api.encoding.url = true
 api.encoding.parameter = false
 
 api.useRelaxedHTTPSValidation = true
+
+# date keyword defaults
+date.format.default = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+date.zone.input.default = "UTC"
+date.zone.output.default = "UTC"
 
 # Database Server
 db.1.driver = org.postgresql.Driver
