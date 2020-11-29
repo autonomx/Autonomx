@@ -35,7 +35,7 @@ public class SkipTest extends TestBase {
 		testStatus = iTestResult.getStatus();		
 	}
 	
-	@Test(description = "verify skip test", priority = 2)
+	@Test(description = "verify skip test",dependsOnMethods={"verifySkipTest"}, priority = 2)
 	public void verifySkipTestValidation() {
 		
 		Helper.assertEquals(3, testStatus);	

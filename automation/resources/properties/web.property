@@ -9,11 +9,11 @@ web.browserType = CHROME
 # to add additional web capabilities, add capability after the prefix: "web.capabilities."
 web.capabilities.takesScreenshot = true
 
-# to add additional chrome options, add options after the prefix: "chrome.options."
-# eg. chrome.options.headless, which equals chrome option argument: --headless
+# to add additional chrome options, add options after the prefix: "chrome.options" separated by ";"
+# eg. chrome.options = "--headless;--start-fullscreen;user-agent=test-user-agent"
 # for more arguments: https://peter.sh/experiments/chromium-command-line-switches/
-chrome.options.start-fullscreen = false
-firefox.options.start-fullscreen = false
+chrome.options = ""
+firefox.options = ""
 
 # to add additional chrome preferences, add options after the prefix: "chrome.pref."
 #chrome.pref.intl.accept_languages = fr
