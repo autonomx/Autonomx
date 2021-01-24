@@ -30,13 +30,12 @@ public class LocalizationTest extends TestBase {
 	public void verifyCrossProjectManager() {
 		
 		TestLog.Then("I verify username and password localized labels: Username = Nom d'utilisateur");
-		Helper.verifyTextDisplayed("utilisateur");
 		Helper.verifyTextDisplayed("Mot de Passe");
 		
 		String usernameLabel = Helper.getTextValue(LoginPanel.USERNAME_LABEL);
 		String password = Helper.getTextValue(LoginPanel.PASSWORD_LABEL);
 		
-		Helper.assertEquals("Nom d'utilisateur", usernameLabel);
+		Helper.assertEquals("Email", usernameLabel);
 		Helper.assertEquals("Mot de Passe", password);
 		
 		Helper.assertEquals(usernameLabel, Helper.localize("Username"));

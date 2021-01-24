@@ -5,13 +5,13 @@ service.csv.separator = ","
 service.csv.dataprovider.count = 20
 
 api.uriPath = http://demo.autonomx.io
-adminUserName = "autoAdmin1"
+adminUserName = "autouser313@gmail.com"
 adminUserPassword = "autoPass1"
 authentication.disabled = false 
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.csv.include.subdir = false
-service.generate.class = true
+service.generate.class = false
 
 api.actionTestcasePath = "../apiTestData/keywords/action/"
 api.templatePath = "../apiTestData/templates/"

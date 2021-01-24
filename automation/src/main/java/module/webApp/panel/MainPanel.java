@@ -23,15 +23,17 @@ public class MainPanel {
 	//--------------------------------------------------------------------------------------------------------	
 
 	// using wildcard to find element
-	public static EnhancedBy ADMIN_LOGO = Element.byCss("[class*='adminprojectName__admin']", "admin logo");
+	public static EnhancedBy ADMIN_LOGO = Element.byCss(".projectName", "admin logo");
 	public static EnhancedBy USERINFO_DROPDOWN = Element.byCss(".fa-caret-down", "userinfo dropdown");
+	public static EnhancedBy USERINFO_DROPDOWN_OPTIONS = Element.byCss("[role='menuitem']", "userinfo dropdown options");
+
 	public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
 		
 	
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void logout() {
-		Helper.selectDropDown(USERINFO_DROPDOWN, SIGNOUT_OPTION);
-		Helper.waitForElementToLoad(LoginPanel.USER_NAME_FIELD);
+		Helper.selectDropDown(USERINFO_DROPDOWN, USERINFO_DROPDOWN_OPTIONS, "Logout");
+		Helper.waitForElementToLoad(LoginPanel.EMAIL_FIELD);
 	}
 }

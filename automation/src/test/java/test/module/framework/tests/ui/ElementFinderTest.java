@@ -2,6 +2,7 @@ package test.module.framework.tests.ui;
 
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import core.helpers.Helper;
@@ -26,6 +27,7 @@ public class ElementFinderTest extends TestBase {
 	}
 	
 	@Test
+	@Ignore //TODO: need to add user before test
 	public void verifyElementInList() {
 		
 		User user = Data.framework.user().admin();
@@ -53,6 +55,7 @@ public class ElementFinderTest extends TestBase {
 	}
 	
 	@Test
+	@Ignore // need to update for updated site
 	public void verifyElementIsVisible() {
 		
 		User user = Data.framework.user().admin();

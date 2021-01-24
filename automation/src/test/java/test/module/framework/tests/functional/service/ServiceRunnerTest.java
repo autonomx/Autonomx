@@ -179,31 +179,28 @@ public class ServiceRunnerTest extends TestBase {
 		
 		// pattern: ((A) && (b || c || d)
 		TestLog.When("I verify api runner test");
-        String requestBody = "{\n" + 
-        		"\"identifier\": \"<@adminUserName>\",\n" + 
-        		"\"password\": \"<@adminUserPassword>\"\n" + 
-        		"}";
+        String requestBody = "{\"email\": \"<@adminUserName>\","
+        		+ "\"password\": \"<@adminUserPassword>\"}";
         // 3rd condition will fail
         String expectedResponse = "((_VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;)\n" + 
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;)\n" + 
         		"&&\n" + 
         		"(_VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;\n" + 
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;\n" + 
         		"||\n" + 
         		" _VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator2);\n" + 
-        		"user.provider:1: isNotEmpty;\n" + 
+        		".user.roles..name:1: contains(Administrator2);\n" + 
+        		".user.id:1: isNotEmpty;\n" + 
         		"||\n" + 
         		" _VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;))";
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;))";
         
-        String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
-        		"user.id:<$userId>";
+        String OutputParams = ".user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userId>";
         
-        Object[] objects = {"TsUser", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"TsUser", "test1valid", "Y", "", "RESTfulAPI", "/admin/login", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", expectedResponse,
 				"", "TestCases_UserValidation.csv", "1:1", "service", ""};
         
@@ -217,32 +214,30 @@ public class ServiceRunnerTest extends TestBase {
 	public void verifyApiRunner_OR_CONDITION2() throws Exception {
 		
 		TestLog.When("I verify api runner test");
-        String requestBody = "{\n" + 
-        		"\"identifier\": \"<@adminUserName>\",\n" + 
-        		"\"password\": \"<@adminUserPassword>\"\n" + 
-        		"}";
+		 String requestBody = "{\"email\": \"<@adminUserName>\","
+	        		+ "\"password\": \"<@adminUserPassword>\"}";
         
         // first condition will fail
         String expectedResponse = "_VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator1);\n" + 
-        		"user.provider:1: isNotEmpty;\n" + 
+        		".user.roles..name:1: contains(Administrator1);\n" + 
+        		".user.id:1: isNotEmpty;\n" + 
         		"&&\n" + 
         		" (_VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;\n" + 
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;\n" + 
         		"||\n" + 
         		" _VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;)\n" + 
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;)\n" + 
         		"||\n" + 
         		" _VERIFY.JSON.PART_\n" + 
-        		"user.role.name:1: contains(Administrator);\n" + 
-        		"user.provider:1: isNotEmpty;";
+        		".user.roles..name:1: contains(Super Admin);\n" + 
+        		".user.id:1: isNotEmpty;";
         
-        String OutputParams = "user.role.id:<$roles>; jwt:<$accessTokenAdmin>;\n" + 
-        		"user.id:<$userId>";
+        String OutputParams = ".user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userId>";
+
         
-        Object[] objects = {"TsUser", "test1valid", "Y", "", "RESTfulAPI", "/auth/local", "application/json", "POST",
+        Object[] objects = {"TsUser", "test1valid", "Y", "", "RESTfulAPI", "/admin/login", "application/json", "POST",
 				"", "", "", requestBody, OutputParams, "200", expectedResponse,
 				"", "TestCases_UserValidation.csv", "1:1", "service", ""};
         

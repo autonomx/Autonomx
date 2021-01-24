@@ -21,8 +21,8 @@ public class JavascriptTest extends TestBase {
 	
 	@Test
 	public void setAttributeTest() {
-		Helper.setAttribute(LoginPanel.USER_NAME_FIELD, "value", "sample name");
-		String value = Helper.getAttribute(LoginPanel.USER_NAME_FIELD, "value");
+		Helper.setAttribute(LoginPanel.EMAIL_FIELD, "value", "sample name");
+		String value = Helper.getAttribute(LoginPanel.EMAIL_FIELD, "value");
 		
 		Helper.assertEquals("sample name", value);
 	}

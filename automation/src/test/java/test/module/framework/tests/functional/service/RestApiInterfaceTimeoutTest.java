@@ -46,8 +46,8 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		watch = StopWatchHelper.start();
 		
 		ServiceObject userAPI = Service.create()
-				.withUriPath("/content-manager/explorer/user/?source=users-permissions")
-				.withContentType("application/x-www-form-urlencoded")
+				.withUriPath("/content-manager/collection-types/plugins::users-permissions.user")
+				.withContentType("application/json")
 				.withMethod("POST")
 				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
 				.withRespCodeExp("401")
@@ -82,8 +82,8 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		watch = StopWatchHelper.start();
 		
 		ServiceObject userAPI = Service.create()
-				.withUriPath("/content-manager/explorer/user/?source=users-permissions")
-				.withContentType("application/x-www-form-urlencoded")
+				.withUriPath("/content-manager/collection-types/plugins::users-permissions.user")
+				.withContentType("application/json")
 				.withMethod("POST")
 				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
 				.withRespCodeExp("600")
@@ -120,8 +120,8 @@ public class RestApiInterfaceTimeoutTest extends TestBase {
 		watch = StopWatchHelper.start();
 		
 		ServiceObject userAPI = Service.create()
-				.withUriPath("/content-manager/explorer/user/?source=users-permissions")
-				.withContentType("application/x-www-form-urlencoded")
+				.withUriPath("/content-manager/collection-types/plugins::users-permissions.user")
+				.withContentType("application/json")
 				.withMethod("POST")
 				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
 				.withRespCodeExp("600")

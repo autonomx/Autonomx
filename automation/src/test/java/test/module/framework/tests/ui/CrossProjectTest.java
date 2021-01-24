@@ -8,7 +8,6 @@ import core.helpers.Helper;
 import core.support.logger.TestLog;
 import data.autonomxData;
 import data.webApp.User;
-import module.webApp.panel.LoginPanel;
 import module.webApp.panel.MainPanel;
 import moduleManager.autonomxManager;
 import test.module.framework.TestBase;
@@ -32,12 +31,6 @@ public class CrossProjectTest extends TestBase {
 		sch.webApp.login.loginWithCsvData(user);
 					
 		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
-		
-		TestLog.When("I logout");
-		app.webApp.main.logout();
-
-		TestLog.Then("I should see the login panel");
-		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);				
+		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);			
 	}
 }

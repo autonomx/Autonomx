@@ -1,6 +1,5 @@
 TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Method,Option,RequestHeaders,TemplateFile,RequestBody,OutputParams,RespCodeExp,ExpectedResponse,TcComments
-TsUser,getToken,Y,Retrieve a token from Token Generator,RESTfulAPI,/auth/local,application/json,POST,,,,"{""identifier"": ""<@username>"",""password"": ""<@password>""}","user.role.id:<$roles>; jwt:<$accessTokenAdmin>;
-user.id:<$userLoginId>",200,,
-TsUser,getUsers,Y,get users,RESTfulAPI,/content-manager/explorer/user?source=users-permissions,,GET,,Authorization: Bearer <@accessTokenAdmin>,,,".id:<$peopleIds>;.username:<$peopleNames>",200,,
-TsUser,createUser,Y,create user,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,Authorization: Bearer <@accessTokenAdmin>,,"username:<@personUsername>;email:<@personEmail>;password:<@personPassword>;confirmed:<@personConfirmed>",id:<$userLoginId>,201,,
-TsUser,deleteUser,Y,delete user,RESTfulAPI,/content-manager/explorer/user/<@userLoginId>?source=users-permissions,,DELETE,,Authorization: Bearer <@accessTokenAdmin>,,,,200,,
+TsUser,getToken,Y,Retrieve a token from Token Generator,RESTfulAPI,/admin/login,application/json,POST,,,,"{""email"": ""<@userName>"",""password"": ""<@password>""}", .user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userLoginId>,200,,
+TsUser,getUsers,Y,get users,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,,GET,,Authorization: Bearer <@accessTokenAdmin>,,,$.results.*.id:<$peopleIds>;.$.results.*.username:<$peopleNames>,200,,
+TsUser,createUser,Y,create user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,,Authorization: Bearer <@accessTokenAdmin>,," {""confirmed"":<@personConfirmed>,""blocked"":false,""username"":""<@personUsername>"",""email"":""<@personEmail>"",""password"":""<@personPassword>""}",id:<$userLoginId>,201,,
+TsUser,deleteUser,Y,delete user,RESTfulAPI, /content-manager/collection-types/plugins::users-permissions.user/<@userLoginId>,,DELETE,,Authorization: Bearer <@accessTokenAdmin>,,,,200,,

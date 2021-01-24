@@ -26,12 +26,12 @@ public class SidePanel{
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
 	// side panel options
-	public static EnhancedBy USERS = Element.byCss("[href*='user?source=users-permissions']", "users content type");
+	public static EnhancedBy USERS = Element.byCss(".fa-circle", "users content type");
 	public static EnhancedBy CONENT_MANAGER = Element.byCss("[href*='ctm-configurations']", "content manager");
 	public static EnhancedBy CONTENT_TYPE_BUILDER = Element.byCss("[href*='content-type-builder']", "content type builder");
 	public static EnhancedBy UPLOAD = Element.byCss("[href*='upload']", "upload");
 	public static EnhancedBy ROlES_PERMISSIONS = Element.byCss("[href*='plugins/users-permissions']", "roles And permissions");
-	
+
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void selectPanel(Panels options) {

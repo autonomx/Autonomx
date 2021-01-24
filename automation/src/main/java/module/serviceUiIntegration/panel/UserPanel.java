@@ -58,14 +58,11 @@ public class UserPanel {
 		ConfigVariable.setValue("personConfirmed", Boolean.toString(user.confirmed));
 		
 		ServiceObject userAPI = Service.create()
-		.withUriPath("/content-manager/explorer/user/?source=users-permissions")
-		.withContentType("application/x-www-form-urlencoded")
+		.withUriPath("/content-manager/collection-types/plugins::users-permissions.user")
+		.withContentType("application/json")
 		.withMethod("POST")
 		.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
-		.withRequestBody("username:<@personUsername>," + 
-				"email:<@personEmail>," + 
-				"password:<@personPassword>," + 
-				"confirmed:<@personConfirmed>");
+		.withRequestBody("{\"confirmed\":<@personConfirmed>,\"blocked\":false,\"username\":\"<@personUsername>\",\"email\":\"<@personEmail>\",\"password\":\"<@personPassword>\"}");
 		
 		return RestApiInterface.RestfullApiInterface(userAPI);
 	}
@@ -86,7 +83,7 @@ public class UserPanel {
 	 * @throws JSONException
 	 */
 	public void deleteAllUsers(String prefix) throws JSONException {
-		Helper.runApiContaining(".username", prefix, "getUsers", ".id", "userLoginId", "deleteUser");
+		Helper.runApiContaining("$.results.*.username", prefix, "getUsers", "$.results.*.id", "userLoginId", "deleteUser");
 	}
 
 	/**

@@ -1,38 +1,36 @@
 TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Method,Option,RequestHeaders,TemplateFile,RequestBody,OutputParams,RespCodeExp,ExpectedResponse,TcComments
-TsUser,getAdminToken,N,Retrieve a token from Token Generator,RESTfulAPI,/auth/local,application/json,POST,,,,"{""identifier"": ""<@adminUserName>"",""password"": ""<@adminUserPassword>""}","user.role.id:<$roles>; jwt:<$accessTokenAdmin>;user.id:<$userId>",200,"{       ""user"": {        ""username"":  ""<@adminUserName>"",        ""email"": ""autouser313@gmail.com"",        ""provider"": ""local"",        ""confirmed"": true,        ""blocked"": null    }}&&_VERIFY.JSON.PART_user.username:1: hasItems(<@adminUserName>);user.email:1: equalTo(autouser313@gmail.com);user.provider:1: isNotEmpty;user.role.name:1: contains(Administrator)&& _NOT_EMPTY_",
-TsUser,createUser_step1,Y,create user,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,Authorization: Bearer <@accessTokenAdmin>,,"username:zzz_test<@_TIME16>,email:testuser+<@_TIME16>@gmail.com,password:password<@_TIME16>,confirmed:true",id:<$userId>,201,"{    ""provider"": ""local"",    ""blocked"": null}&&_VERIFY.JSON.PART_""id"": isNotEmpty",
-TsUser,createUser_step2,Y,create user  no token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,NO_TOKEN,,"username:zzz_test<@_TIME16>,
-email:testuser+<@_TIME16>@gmail.com,
-password:password<@_TIME16>,
-confirmed:true
-",,403,"{""statusCode"":403,""error"":""Forbidden"",""message"":""Forbidden""}",
-TsUser,createUser_step3,Y,create user invalid token,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,INVALID_TOKEN,,"username:zzz_test<@_TIME16>,email:testuser+<@_TIME16>@gmail.com,password:password<@_TIME16>,confirmed:true",,401,"{""statusCode"":401,""error"":""Unauthorized""}",
-TsUser,createUser_step4,Y,create user,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,Authorization: Bearer <@accessTokenAdmin>,,"username:zzz_test3<@_TIME16>,
-email:testuser3+<@_TIME16>@gmail.com,
-password:password<@_TIME16>,
-confirmed:true
-",id:<$userId3>,201,"{    ""provider"": ""local"",    ""blocked"": null}&&_VERIFY.JSON.PART_""id"": isNotEmpty",
-TsUser,update,Y,update user,RESTfulAPI,/content-manager/explorer/user/<@userId>?source=users-permissions,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update<@_TIME16>"",""email"":""testUpdate+<@_TIME16>@gmail.com"",""password"":""password<@_TIME16>"",""confirmed"":true}",,200,"{""id"":<@userId>,""username"":""zzz_update<@_TIME16>"",""email"":""testUpdate+<@_TIME16>@gmail.com"",""provider"":""local"",""confirmed"":true,""blocked"":null,""role"":      {       ""id"":2,       ""name"":""Authenticated"",        ""description"":""Default role given to authenticated user."",        ""type"":""authenticated""      }}",
-TsUser,updateUser_step1,Y,update user,RESTfulAPI,/content-manager/explorer/user/<@userId3>?source=users-permissions,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update3<@_TIME16>"",
-""email"":""testUpdate3+<@_TIME16>@gmail.com"",
-""password"":""password<@_TIME16>"",
-""confirmed"":true}",,200,"{""id"":<@userId3>,
-""username"":""zzz_update3<@_TIME16>"",
-""email"":""testUpdate3+<@_TIME16>@gmail.com"",
-""provider"":""local"",
-""confirmed"":true,
-""blocked"":null,
-""role"":
-      {
-       ""id"":2,
-       ""name"":""Authenticated"",
-        ""description"":""Default role given to authenticated user."",
-        ""type"":""authenticated""
-      }
+TsUser,getAdminToken,N,Retrieve a token from Token Generator,RESTfulAPI,/admin/login,application/json,POST,,,,"{""email"": ""<@adminUserName>"",""password"": ""<@adminUserPassword>""}",.user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userId>,200,"{
+  ""data"": {
+    ""user"": {
+      ""id"": 1,
+      ""firstname"": ""auto "",
+      ""lastname"": ""user"",
+      ""username"": ""autoAdmin1"",
+      ""email"": ""autouser313@gmail.com"",
+      ""registrationToken"": null,
+      ""isActive"": true,
+      ""blocked"": null,
+
+    }
+  }
 }",
-TsUser,updateUser_step2,Y,update user,RESTfulAPI,/content-manager/explorer/user/<@userId>?source=users-permissions,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update<@_TIME16>"",""email"":""testUpdate+<@_TIME16>@gmail.com"",""password"":""password<@_TIME16>"",""confirmed"":true}",,200,"{""id"":<@userId>,""username"":""zzz_update<@_TIME16>"",""email"":""testUpdate+<@_TIME16>@gmail.com"",""provider"":""local"",""confirmed"":true,""blocked"":null,""role"":      {       ""id"":2,       ""name"":""Authenticated"",        ""description"":""Default role given to authenticated user."",        ""type"":""authenticated""      }}",
-TsUser,createAdditionalUser,Y,create user,RESTfulAPI,/content-manager/explorer/user/?source=users-permissions,application/x-www-form-urlencoded,POST,,Authorization: Bearer <@accessTokenAdmin>,,"username:zzz_test2<@_TIME16>,
-email:testuser2+<@_TIME16>@gmail.com,
-password:password<@_TIME16>,
-confirmed:true
-",id:<$userId>,201,"{    ""provider"": ""local"",    ""blocked"": null}&&_VERIFY.JSON.PART_""id"": isNotEmpty",
+TsUser,createUser_step1,Y,create user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,DEPENDS_ON_TEST:getAdminToken,Authorization: Bearer <@accessTokenAdmin>,,"{""confirmed"":false,""blocked"":false,""username"":""zzz_test<@_RAND16>"",""email"":""testuser+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_24>""}",id:<$userId>,201,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_test<@_RAND16>);
+email:1:equalTo(testuser+<@_TIME_MS_24>@gmail.com);",
+TsUser,createUser_step2,Y,create user  no token,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,,NO_TOKEN,,"{""confirmed"":false,""blocked"":false,""username"":""zzz_test<@_RAND16>"",""email"":""testuser+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_25>""}",,403,"{""statusCode"":403,""error"":""Forbidden"",""message"":""Forbidden""}",
+TsUser,createUser_step3,Y,create user invalid token,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,WAIT_FOR_RESPONSE:60,INVALID_TOKEN,,"{""confirmed"":false,""blocked"":false,""username"":""zzz_test<@_RAND16>"",""email"":""testuser+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_26>""}",,401,"{""statusCode"":401,""error"":""Unauthorized""}",
+TsUser,createUser_step4,Y,create user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,DEPENDS_ON_TEST:getAdminToken,Authorization: Bearer <@accessTokenAdmin>,,"{""confirmed"":false,""blocked"":false,""username"":""zzz_test3<@_RAND16>"",""email"":""testuser3+<@_TIME_MS_24>@gmail.com"",""password"":""password3<@_TIME_MS_24>""}",id:<$userId3>,201,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_test3<@_RAND16>);
+email:1:equalTo(testuser3+<@_TIME_MS_24>@gmail.com);",
+TsUser,update,Y,update user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user/<@userId>,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update<@_RAND16>"",""email"":""testupdate+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_24>"",""confirmed"":true}",,200,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_update<@_RAND16>);
+email:1:equalTo(testupdate+<@_TIME_MS_24>@gmail.com);",
+TsUser,updateUser_step1,Y,update user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user/<@userId3>,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update3<@_RAND16>"",""email"":""testupdate3+<@_TIME_MS_24>@gmail.com"",""password"":""password3<@_TIME_MS_24>"",""confirmed"":true}",,200,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_update3<@_RAND16>);
+email:1:equalTo(testupdate3+<@_TIME_MS_24>@gmail.com);",
+TsUser,updateUser_step2,Y,update user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user/<@userId>,application/json,PUT,,Authorization: Bearer <@accessTokenAdmin>,,"{""username"":""zzz_update2<@_RAND16>"",""email"":""testupdate2+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_24>"",""confirmed"":true}",,200,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_update2<@_RAND16>);
+email:1:equalTo(testupdate2+<@_TIME_MS_24>@gmail.com);",
+TsUser,createAdditionalUser,Y,create user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user,application/json,POST,DEPENDS_ON_TEST:getAdminToken,Authorization: Bearer <@accessTokenAdmin>,,"{""confirmed"":false,""blocked"":false,""username"":""zzz_test4<@_RAND16>"",""email"":""testuser4+<@_TIME_MS_24>@gmail.com"",""password"":""password<@_TIME_MS_24>""}",id:<$userId>,201,"_VERIFY.JSON.PART_
+username:1:equalTo(zzz_test4<@_RAND16>);
+email:1:equalTo(testuser4+<@_TIME_MS_24>@gmail.com);",

@@ -29,25 +29,20 @@ public class LoginPanel {
 	 */
 	public void login(CommonUser user) {
 		Service.getToken
-				.withUsername(user.username)
-				.withPassword(user.password)
-				.build();
+		.withUserName(user.username)
+		.withPassword(user.password)
+		.build();
 	}
 	
 	public Response loginWithServiceObject(CommonUser user) {
 		
 		ServiceObject loginApi = Service.create()
-				.withUriPath("/auth/local")
+				.withUriPath("/admin/login")
 				.withContentType("application/json")
 				.withMethod("POST")
-				.withRequestBody("{" + 
-						"\"identifier\": \"" + user.username +"\",\r\n" + 
-						"\"password\": \"" + user.password + "\"" + 
-						"}")
+				.withRequestBody("{\"email\": \""+ user.username +"\",\"password\": \""+ user.password+"\"}")
 				.withOutputParams(
-						"user.role.id:<$roles>;"
-						+ "jwt:<$accessTokenAdmin>;"
-						+ "user.id:<$userLoginId>");
+						".user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userLoginId>");
 				
 		return RestApiInterface.RestfullApiInterface(loginApi);
 	}

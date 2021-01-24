@@ -11,7 +11,7 @@ authentication.disabled = false
 
 api.parallelTestcasePath = "../apiTestData/testCases/"
 api.csv.include.subdir = false
-service.generate.class = true
+service.generate.class = false
 
 # set file name to run single csv file
 api.testCaseFile = ""

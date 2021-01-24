@@ -42,23 +42,7 @@ public class VerifyLoginTest extends TestBase {
 		TestLog.Then("I should see the login panel");
 		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);
 	}
-	
-	@Test()
-	public void verifyAdminUserWithCsvData2() {
-		
-		User user = Data.webApp.user().admin();
-		TestLog.When("I login with user " + user.getUsername());
-		app.webApp.login.loginWithCsvData(user);
-		
-		TestLog.Then("I verify admin logo is displayed");
-		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
-				
-		TestLog.When("I logout");
-		app.webApp.main.logout();
 
-		TestLog.Then("I should see the login panel");
-		Helper.verifyElementIsDisplayed(LoginPanel.LOGIN_SUBMIT);
-	}
 	
 	/**
 	 * uses data from UserInvalid.csv at webApp.data

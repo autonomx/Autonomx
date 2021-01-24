@@ -44,7 +44,7 @@ public class RestApiInterfaceTest extends TestBase {
 	@Test()
 	public void verifyJsonValidator() {
 		ServiceObject serviceObject = new ServiceObject().withExpectedResponse("{\n" + "	\"provider\": \"local\",\n"
-				+ "	\"role\": {\n" + "		\"id\": 2,\n" + "		\"name\": \"Authenticated\",\n"
+				+ "	\"role\": {\n" + "		\"id\": 1,\n" + "		\"name\": \"Authenticated\",\n"
 				+ "		\"description\": \"Default role given to authenticated user.\",\n"
 				+ "		\"type\": \"authenticated\"\n" + "	}\n" + "}");
 
@@ -548,35 +548,6 @@ public class RestApiInterfaceTest extends TestBase {
 				.withOption(
 						"PAGINATION_FROM:0;PAGINATION_INCREMENT:1;PAGINATION_MAX_PAGES:3;PAGINATION_STOP_CRITERIA:.*[?(@.id =~ /.*1/i)]")
 				.withExpectedResponse(expected);
-
-		RestApiInterface.RestfullApiInterface(serviceObject);
-	}
-
-	@Test()
-	public void restapi_create_user_update() throws Exception {
-
-		// create user
-		String expected = "_VERIFY.JSON.PART_ .id:isNotEmpty;";
-		ServiceObject serviceObject = new ServiceObject()
-				.withUriPath("http://demo.autonomx.io/content-manager/explorer/user/?source=users-permissions")
-				.withContentType("application/x-www-form-urlencoded").withMethod("POST")
-				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
-				.withRequestBody("username:zzz_test<@_RAND16>,\n" + "email:testuser+<@_TIME_STRING_16>@gmail.com,\n"
-						+ "password:password<@_TIME_STRING_16>,\n" + "confirmed:true")
-				.withRespCodeExp("201").withOutputParams("id:<$userId>").withExpectedResponse(expected);
-
-		RestApiInterface.RestfullApiInterface(serviceObject);
-
-		// update user with template
-		serviceObject = new ServiceObject()
-				.withUriPath("http://demo.autonomx.io/content-manager/explorer/user/<@userId>?source=users-permissions")
-				.withContentType("application/json").withMethod("PUT")
-				.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>")
-				.withRequestBody("{\"username\":\"zzz_update<@_RAND16>\",\n"
-						+ "\"email\":\"testUpdate+<@_TIME_STRING_16>@gmail.com\",\n"
-						+ "\"password\":\"password<@_TIME_STRING_16>\",\n" + "\"confirmed\":true}")
-				.withRespCodeExp("200")
-				.withExpectedResponse("_VERIFY.JSON.PART_ email:1:equalTo(testUpdate+<@_TIME_STRING_16>@gmail.com);");
 
 		RestApiInterface.RestfullApiInterface(serviceObject);
 	}

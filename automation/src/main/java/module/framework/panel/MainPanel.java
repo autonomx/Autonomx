@@ -8,6 +8,7 @@ import core.helpers.Helper;
 import core.support.annotation.Panel;
 import core.uiCore.webElement.EnhancedBy;
 import data.framework.User;
+import module.webApp.panel.LoginPanel;
 import moduleManager.module.framework.PanelManager;
 
 @Panel
@@ -24,13 +25,17 @@ public class MainPanel {
 	//--------------------------------------------------------------------------------------------------------	
 	
 	// using wildcard to find element
-	public static EnhancedBy ADMIN_LOGO = Element.byCss("[class*='adminprojectName__admin']", "admin logo");
-	public static EnhancedBy USERINFO_DROPDOWN = Element.byCss(".fa-caret-down", "userinfo dropdown");
-	public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
 	public static EnhancedBy EDIT_BUTTON = Element.byCss(".fa-pencil", "signout option");
 
 	public static EnhancedBy SUBMIT_BUTTON = Element.byCss("[type='submit']", "submit button");
 
+	
+	public static EnhancedBy ADMIN_LOGO = Element.byCss(".projectName", "admin logo");
+	public static EnhancedBy USERINFO_DROPDOWN = Element.byCss(".fa-caret-down", "userinfo dropdown");
+	public static EnhancedBy USERINFO_DROPDOWN_OPTIONS = Element.byCss("[role='menuitem']", "userinfo dropdown options");
+
+	public static EnhancedBy SIGNOUT_OPTION = Element.byCss(".fa-sign-out", "signout option");
+	
 	
 	// Users panel
 	public static EnhancedBy USER_ROWS = Element.byCss("tr[class*='TableRow']", "user rows");	
@@ -38,8 +43,8 @@ public class MainPanel {
 	// Actions
 	//--------------------------------------------------------------------------------------------------------	
 	public void logout() {
-		Helper.selectDropDown(USERINFO_DROPDOWN, SIGNOUT_OPTION);
-		Helper.waitForElementToLoad(LoginPanel.USER_NAME_FIELD);
+		Helper.selectDropDown(USERINFO_DROPDOWN, USERINFO_DROPDOWN_OPTIONS, "Logout");
+		Helper.waitForElementToLoad(LoginPanel.EMAIL_FIELD);
 	}
 	
 	public void selectEditUser(User user) {

@@ -19,15 +19,16 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("getAdminToken");
     service.withDescription("Retrieve a token from Token Generator");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/auth/local");
+    service.withUriPath("/admin/login");
     service.withContentType("application/json");
     service.withMethod("POST");
     service.withRequestBody(
-        "{ \"identifier\": \"<@adminUserName>\", \"password\": \"<@adminUserPassword>\" }");
-    service.withOutputParams("user.role.id:<$roles>; jwt:<$accessTokenAdmin>; user.id:<$userId>");
+        "{\"email\": \"<@adminUserName>\",\"password\": \"<@adminUserPassword>\"}");
+    service.withOutputParams(
+        ".user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userId>");
     service.withRespCodeExp("200");
     service.withExpectedResponse(
-        "{ \"user\": { \"username\": \"<@adminUserName>\", \"email\": \"autouser313@gmail.com\", \"provider\": \"local\", \"confirmed\": true, \"blocked\": null } } && _VERIFY.JSON.PART_ user.username:1: hasItems(<@adminUserName>); user.email:1: equalTo(autouser313@gmail.com); user.provider:1: isNotEmpty; user.role.name:1: contains(Administrator) && _NOT_EMPTY_");
+        "{ \"data\": { \"user\": { \"id\": 1, \"firstname\": \"auto \", \"lastname\": \"user\", \"username\": \"autoAdmin1\", \"email\": \"autouser313@gmail.com\", \"registrationToken\": null, \"isActive\": true, \"blocked\": null, } } }");
     service.withTcIndex("0:6");
     service.withTcName("UserValidation");
     service.withTcType("service");
@@ -45,16 +46,17 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("createUser");
     service.withDescription("create user");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/content-manager/explorer/user/?source=users-permissions");
-    service.withContentType("application/x-www-form-urlencoded");
+    service.withUriPath("/content-manager/collection-types/plugins::users-permissions.user");
+    service.withContentType("application/json");
     service.withMethod("POST");
+    service.withOption("DEPENDS_ON_TEST:getAdminToken");
     service.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>");
     service.withRequestBody(
-        "username:zzz_test<@_TIME_MS_24>, email:testuser+<@_TIME_MS_24>@gmail.com, password:password<@_TIME_MS_24>, confirmed:true");
+        "{\"confirmed\":false,\"blocked\":false,\"username\":\"zzz_test<@_RAND16>\",\"email\":\"testuser+<@_TIME_MS_24>@gmail.com\",\"password\":\"password<@_TIME_MS_24>\"}");
     service.withOutputParams("id:<$userId>");
     service.withRespCodeExp("201");
     service.withExpectedResponse(
-        "{ \"provider\": \"local\", \"blocked\": null } && _VERIFY.JSON.PART_ \"id\": isNotEmpty");
+        "_VERIFY.JSON.PART_ username:1:equalTo(zzz_test<@_RAND16>); email:1:equalTo(testuser+<@_TIME_MS_24>@gmail.com);");
     service.withTcIndex("1:6");
     service.withTcName("UserValidation");
     service.withTcType("service");
@@ -72,12 +74,12 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("createUserNoToken");
     service.withDescription("create user no token");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/content-manager/explorer/user/?source=users-permissions");
-    service.withContentType("application/x-www-form-urlencoded");
+    service.withUriPath("/content-manager/collection-types/plugins::users-permissions.user");
+    service.withContentType("application/json");
     service.withMethod("POST");
     service.withRequestHeaders("NO_TOKEN");
     service.withRequestBody(
-        "username:zzz_test<@_TIME_MS_24>, email:testuser+<@_TIME_MS_24>@gmail.com, password:password<@_TIME_MS_24>, confirmed:true");
+        "{\"confirmed\":false,\"blocked\":false,\"username\":\"zzz_test<@_RAND16>\",\"email\":\"testuser+<@_TIME_MS_24>@gmail.com\",\"password\":\"password<@_TIME_MS_25>\"}");
     service.withRespCodeExp("403");
     service.withExpectedResponse(
         "{\"statusCode\":403,\"error\":\"Forbidden\",\"message\":\"Forbidden\"}");
@@ -98,12 +100,13 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("createUserInvalidToken");
     service.withDescription("create user invalid token");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/content-manager/explorer/user/?source=users-permissions");
-    service.withContentType("application/x-www-form-urlencoded");
+    service.withUriPath("/content-manager/collection-types/plugins::users-permissions.user");
+    service.withContentType("application/json");
     service.withMethod("POST");
+    service.withOption("WAIT_FOR_RESPONSE:60");
     service.withRequestHeaders("INVALID_TOKEN");
     service.withRequestBody(
-        "username:zzz_test<@_TIME_MS_24>, email:testuser+<@_TIME_MS_24>@gmail.com, password:password<@_TIME_MS_24>, confirmed:true");
+        "{\"confirmed\":false,\"blocked\":false,\"username\":\"zzz_test<@_RAND16>\",\"email\":\"testuser+<@_TIME_MS_24>@gmail.com\",\"password\":\"password<@_TIME_MS_26>\"}");
     service.withRespCodeExp("401");
     service.withExpectedResponse("{\"statusCode\":401,\"error\":\"Unauthorized\"}");
     service.withTcIndex("3:6");
@@ -123,15 +126,16 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("updateUser");
     service.withDescription("update user");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/content-manager/explorer/user/<@userId>?source=users-permissions");
+    service.withUriPath(
+        "/content-manager/collection-types/plugins::users-permissions.user/<@userId>");
     service.withContentType("application/json");
     service.withMethod("PUT");
     service.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>");
     service.withRequestBody(
-        "{\"username\":\"zzz_update<@_TIME_MS_24>\", \"email\":\"testUpdate+<@_TIME_MS_24>@gmail.com\", \"password\":\"password<@_TIME_MS_24>\", \"confirmed\":true}");
+        "{\"username\":\"zzz_update<@_RAND16>\",\"email\":\"testupdate+<@_TIME_MS_24>@gmail.com\",\"password\":\"password<@_TIME_MS_24>\",\"confirmed\":true}");
     service.withRespCodeExp("200");
     service.withExpectedResponse(
-        "{\"id\":<@userId>, \"username\":\"zzz_update<@_TIME_MS_24>\", \"email\":\"testUpdate+<@_TIME_MS_24>@gmail.com\", \"provider\":\"local\", \"confirmed\":true, \"blocked\":null, \"role\": { \"id\":2, \"name\":\"Authenticated\", \"description\":\"Default role given to authenticated user.\", \"type\":\"authenticated\" } }");
+        "_VERIFY.JSON.PART_ username:1:equalTo(zzz_update<@_RAND16>); email:1:equalTo(testupdate+<@_TIME_MS_24>@gmail.com);");
     service.withTcIndex("4:6");
     service.withTcName("UserValidation");
     service.withTcType("service");
@@ -149,7 +153,8 @@ public class UserValidation extends TestBase {
     service.withTestCaseID("deleteUser");
     service.withDescription("delete user");
     service.withInterfaceType("RESTfulAPI");
-    service.withUriPath("/content-manager/explorer/user/<@userId>?source=users-permissions");
+    service.withUriPath(
+        "/content-manager/collection-types/plugins::users-permissions.user/<@userId>");
     service.withMethod("DELETE");
     service.withRequestHeaders("Authorization: Bearer <@accessTokenAdmin>");
     service.withRespCodeExp("200");

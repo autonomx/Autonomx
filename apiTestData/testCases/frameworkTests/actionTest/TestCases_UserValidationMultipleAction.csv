@@ -1,5 +1,19 @@
 TestSuite,TestCaseID,RunFlag,Description,InterfaceType,UriPath,ContentType,Method,Option,RequestHeaders,TemplateFile,RequestBody,OutputParams,RespCodeExp,ExpectedResponse,TcComments
-TsUser,getAdminToken,Y,Retrieve a token from Token Generator,RESTfulAPI,/auth/local,application/json,POST,,,,"{""identifier"": ""<@adminUserName>"",""password"": ""<@adminUserPassword>""}","user.role.id:<$roles>; jwt:<$accessTokenAdmin>;user.id:<$userId>",200,"{       ""user"": {        ""username"":  ""<@adminUserName>"",        ""email"": ""autouser313@gmail.com"",        ""provider"": ""local"",        ""confirmed"": true,        ""blocked"": null    }}&&_VERIFY.JSON.PART_""user.username"":1: hasItems(<@adminUserName>);""user.email"":1: equalTo(autouser313@gmail.com);""user.provider"":1: isNotEmpty;""user.role.name"":1: contains(Administrator)&& _NOT_EMPTY_",
+TsUser,getAdminToken,Y,Retrieve a token from Token Generator,RESTfulAPI,/admin/login,application/json,POST,,,,"{""email"": ""<@adminUserName>"",""password"": ""<@adminUserPassword>""}",.user.roles..id:<$roles>; .token:<$accessTokenAdmin>;.user.id:<$userId>,200,"{
+  ""data"": {
+    ""user"": {
+      ""id"": 1,
+      ""firstname"": ""auto "",
+      ""lastname"": ""user"",
+      ""username"": ""autoAdmin1"",
+      ""email"": ""autouser313@gmail.com"",
+      ""registrationToken"": null,
+      ""isActive"": true,
+      ""blocked"": null,
+
+    }
+  }
+}",
 TsUser,createUser,Y,create user from actions,EXTERNAL,,,"action:createDeleteUser.csv;
 action:createUser.csv:createUser",,,,,,,,
-TsUser,deleteUser,Y,delete user,RESTfulAPI,/content-manager/explorer/user/<@userId>?source=users-permissions,,DELETE,,Authorization: Bearer <@accessTokenAdmin>,,,,200,,
+TsUser,deleteUser,Y,delete user,RESTfulAPI,/content-manager/collection-types/plugins::users-permissions.user/<@userId>,,DELETE,,Authorization: Bearer <@accessTokenAdmin>,,,,200,,

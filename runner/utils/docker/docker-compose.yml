@@ -1,0 +1,13 @@
+# Defines the local environment configuration for our application
+#
+# Usage:
+#   docker-compose build
+#   docker-compose up app
+
+version: '3'
+services:
+  app:
+    container_name: case-testcases
+    build: .
+    ports:
+      - '4000:4000'

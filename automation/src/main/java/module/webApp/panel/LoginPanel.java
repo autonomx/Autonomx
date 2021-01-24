@@ -19,8 +19,7 @@ public class LoginPanel {
 	// Locators
 	//--------------------------------------------------------------------------------------------------------	
 	// uses 2 locators. no limits to # of locators
-	public static EnhancedBy USER_NAME_FIELD = Element.byCss("[placeholder='John Doe2']", "username field")
-			.byCss("[placeholder='John Doe']");
+	public static EnhancedBy EMAIL_FIELD = Element.byCss("#email", "email field");
 	 
 	public static EnhancedBy PASSWORD_FIELD = Element.byCss("#password", "password field");
 	public static EnhancedBy LOGIN_SUBMIT = Element.byCss("[type='submit']", "submit button");
@@ -35,7 +34,7 @@ public class LoginPanel {
 		
 		Helper.loginbuilder
 		.builder()
-		.withUsername(USER_NAME_FIELD, user.getUsername())
+		.withUsername(EMAIL_FIELD, user.getUsername())
 		.withPassword(PASSWORD_FIELD, user.getPassword())
 		.withFormSubmit(LOGIN_SUBMIT, MainPanel.ADMIN_LOGO)
 		.build();
@@ -49,7 +48,7 @@ public class LoginPanel {
 	
 		Helper.loginbuilder
 		.builder()
-		.withUsername(USER_NAME_FIELD, user.getUsername())
+		.withUsername(EMAIL_FIELD, user.getUsername())
 		.withPassword(PASSWORD_FIELD, user.getPassword())
 		.withFormSubmit(LOGIN_SUBMIT, ERROR_MESSAGE)
 		.build();

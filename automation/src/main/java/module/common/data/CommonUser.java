@@ -7,7 +7,7 @@ import core.support.annotation.Data;
 @Data
 public class CommonUser {
 
-	private static final String ADMIN_USER = "autoAdmin1";
+	private static final String ADMIN_USER = "autouser313@gmail.com";
 	private static final String ADMIN_PASSWORD = "autoPass1";
 	private static final String USER_PREFIX = "zzz_";
 

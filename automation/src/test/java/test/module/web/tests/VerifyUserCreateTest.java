@@ -35,6 +35,9 @@ public class VerifyUserCreateTest extends TestBase {
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
+		TestLog.And("I return user panel");
+		app.webApp.side.selectPanel(Panels.USERS);
+		
 		TestLog.And("I filter by username");
 		app.webApp.user.filterUsers(user);
 		
@@ -58,6 +61,9 @@ public class VerifyUserCreateTest extends TestBase {
 		user = Data.common.commonuser().withDefaultUser();
 		app.webApp.user.addUser(user);
 		
+		TestLog.And("I select user panel");
+		app.webApp.side.selectPanel(Panels.USERS);
+		
 		TestLog.And("I filter by username");
 		app.webApp.user.filterUsers(user);
 		
@@ -67,12 +73,5 @@ public class VerifyUserCreateTest extends TestBase {
 		TestLog.Then("I edit the user");
 		CommonUser editUser = Data.common.commonuser().withEdittUser();
 		app.webApp.user.editUser(user, editUser);
-		
-		TestLog.And("I filter by edited username");
-		app.webApp.user.removeFilter();
-		app.webApp.user.filterUsers(editUser);
-		
-		TestLog.And("I verify the user is displayed in the user list");
-		Helper.verifyContainsIsInList(UserPanel.USER_ROWS, editUser.username);
 	}
 }
