@@ -28,4 +28,4 @@ console.pageSource.onFail = true
 console.debug.enable = false
 console.annotation.debug = false
 console.printLogoOnSuccess = true
-console.checkLatestAutonomx = true
+console.checkLatestAutonomx = false

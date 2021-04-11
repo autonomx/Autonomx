@@ -340,11 +340,11 @@ public class DataHelperTest extends TestBase {
 	
 	@Test()
 	public void replaceParameters_time_outputZone() throws ParseException {
-		
+		Config.putValue(TestObject.START_TIME_STRING,"2020-09-16T04:37:30.804Z");
+
 		// time should be UTC by default
 		String result = DataHelper.replaceParameters("<@_TIME_55>");
-		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
-		Helper.assertEquals(time.toString(), result);
+		Helper.assertEquals("2020-09-16T04:37:30.804Z", result);
 			
 		Config.putValue(TestObject.START_TIME_STRING,"2020-08-03T12:00:00.000Z");
 		
@@ -442,28 +442,15 @@ public class DataHelperTest extends TestBase {
 	
 	@Test()
 	public void replaceParameters_time_set_day() {
+		Config.putValue(TestObject.START_TIME_STRING,"2020-09-16T04:37:30.804Z");
+
 		// this tuesday test
 		String result = DataHelper.replaceParameters("<@_TIME_ISO_35;setDay:Tuesday>");
-		Instant	timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
-
-		LocalDateTime time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
-		int currentDay = Helper.date.getDayOfWeekIndex(time);
-		int targetDay = Helper.date.getDayOfWeekIndex("Tuesday");
-		int timeDifference = targetDay - currentDay;
-		time = time.plusDays(timeDifference);
-		Helper.assertEquals(time.toString() + "Z", result);
+		Helper.assertEquals("2020-09-15T04:37:30.804Z", result);
 		
 		// next week
 		result = DataHelper.replaceParameters("<@_TIME_ISO_35+2w;setDay:Tuesday>");
-		timeinstance = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
-
-		time = LocalDateTime.ofInstant(timeinstance, ZoneOffset.UTC);	
-		time = time.plusWeeks(2);
-		currentDay = Helper.date.getDayOfWeekIndex(time);
-		targetDay = Helper.date.getDayOfWeekIndex("Tuesday");
-		timeDifference = targetDay - currentDay;
-		time = time.plusDays(timeDifference);
-		Helper.assertEquals(time.toString() + "Z", result);
+		Helper.assertEquals("2020-09-29T04:37:30.804Z", result);
 	}
 	
 	@Test()
@@ -482,49 +469,36 @@ public class DataHelperTest extends TestBase {
 	
 	@Test()
 	public void replaceParameters_time_modify_iso() {
+		Config.putValue(TestObject.START_TIME_STRING,"2020-09-16T04:37:30.804Z");
 
 		TestLog.Then("I verify date replacement");
 		String result = DataHelper.replaceParameters("user:<@_TIME_ISO+72h>");
 		
-		Instant time = Instant.parse(Config.getValue(TestObject.START_TIME_STRING));
-		Instant newTime = time.plus(72, ChronoUnit.HOURS);
-		Helper.assertEquals("user:" +newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-19T04:37:30.804Z" , result);
 		
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35-72h>");
-		newTime = time.minus(72, ChronoUnit.HOURS);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-13T04:37:30.804Z" , result);
 		
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35+72m>");
-		newTime = time.plus(72, ChronoUnit.MINUTES);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-16T05:49:30.804Z", result);
 		
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35-72m>");
-		newTime = time.minus(72, ChronoUnit.MINUTES);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-16T03:25:30.804Z" , result);
 		
-		result = DataHelper.replaceParameters("user:<@_TIME_ISO-2d>");
-		newTime = time.minus(2, ChronoUnit.DAYS);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO-2d>");		
+		Helper.assertEquals("user:2020-09-14T04:37:30.804Z" , result);
 		
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35+2d>");
-		newTime = time.plus(2, ChronoUnit.DAYS);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-18T04:37:30.804Z" , result);
 		
 		result = DataHelper.replaceParameters("user:<@_TIME_ISO+2w>");
-		newTime = time.plus(2 * 7, ChronoUnit.DAYS);
-		Helper.assertEquals("user:" + newTime.toString(), result);
+		Helper.assertEquals("user:2020-09-30T04:37:30.804Z", result);
 		
-		result = DataHelper.replaceParameters("user:<@_TIME_ISO+2mo>");
-		LocalDateTime localTime = LocalDateTime.ofInstant(time, ZoneOffset.UTC);
-		localTime = localTime.plusMonths(2);
-		String dateString = localTime.toInstant(ZoneOffset.UTC).toString();
-		Helper.assertEquals("user:" + dateString, result);
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO+2mo>");	
+		Helper.assertEquals("user:2020-11-16T04:37:30.804Z" , result);
 		
-		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35+2y>");
-		localTime = LocalDateTime.ofInstant(time, ZoneOffset.UTC);
-		localTime = localTime.plusYears(2);
-		dateString = localTime.toInstant(ZoneOffset.UTC).toString();
-		Helper.assertEquals("user:" + dateString, result);
+		result = DataHelper.replaceParameters("user:<@_TIME_ISO_35+2y>");	
+		Helper.assertEquals("user:2022-09-16T04:37:30.804Z" , result);
 	}
 	
 	@Test()

@@ -1906,7 +1906,7 @@ public class JsonHelperTest extends TestBase {
 				"                    \"url\": \"http://1000lifehacks.com/2\"\n" + 
 				"                }\n" + 
 				"            ]}";
-		criteria = "_VERIFY_JSON_PART_ .attachments.length():equalTo(5)";
+		criteria = "_VERIFY_JSON_PART_ $.attachments.length():equalTo(5)";
 		error = JsonHelper.validateByKeywords(criteria, json1);
 		Helper.assertTrue("errors caught", error.isEmpty());
 	}
