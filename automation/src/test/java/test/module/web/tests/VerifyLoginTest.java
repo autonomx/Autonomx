@@ -1,6 +1,8 @@
 package test.module.web.tests;
 
 
+import java.io.IOException;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -27,12 +29,13 @@ public class VerifyLoginTest extends TestBase {
 	}
 	
 	@Test()
-	public void verifyAdminUserWithCsvData() {
+	public void verifyAdminUserWithCsvData() throws IOException {
+
 		
 		User user = Data.webApp.user().admin();
 		TestLog.When("I login with user " + user.getUsername());
 		app.webApp.login.loginWithCsvData(user);
-		
+				
 		TestLog.Then("I verify admin logo is displayed");
 		Helper.verifyElementIsDisplayed(MainPanel.ADMIN_LOGO);
 				

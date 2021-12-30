@@ -5,5 +5,8 @@
 # config root
 config.root = "./resources/properties/"
 
+# config root
+#config.reportPortal = "./resources/reportportal"
+
 # environment (single file)
 config.environment = ./resources/properties/environment/qa

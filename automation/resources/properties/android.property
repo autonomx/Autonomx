@@ -1,8 +1,8 @@
 # Android
 android.app = "selendroid.apk"
 android.appDir = "resources/"
-android.mobile = "Pixel_3_XL_API_28"
-android.tablet = "Pixel_3_XL_API_28"
+android.mobile = "Pixel_5_API_30"
+android.tablet = "Pixel_5_API_30"
 
 # udid for real device
 android.UDID = ""

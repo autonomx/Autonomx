@@ -42,7 +42,7 @@ public class RegistrationPanel {
 		Helper.form.setField(EMAIL_FIELD, user.email);
 		Helper.form.setField(PASSWORD_FIELD, user.password);
 		Helper.form.setField(NAME_FIELD, user.name);
-		Helper.form.selectDropDown( PROGRAMMING_LANGUAGE_FIELD, PROGRAMMING_LANGUAGE_OPTIONS,"Java");
+		//Helper.form.selectDropDown( PROGRAMMING_LANGUAGE_FIELD, PROGRAMMING_LANGUAGE_OPTIONS,"Java");
 		
 		// scroll down if accept ads is not displayed
 		if(!Helper.isPresent(ACCEPT_ADS))

@@ -284,21 +284,12 @@ public class XmlHelperTest extends TestBase {
 	 		"  </soapenv:Body>\n" + 
 	 		"</soapenv:Envelope>";
 	 
-	 String xmlNoNameSpace = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Envelope>\n"
-	 		+ "  <Header action=\"Created\">\n"
-	 		+ "    <RequestHeader>\n"
-	 		+ "      <networkCode>123456</networkCode>\n"
-	 		+ "      <applicationName>DfpApi-Java-2.1.0-dfp_test</applicationName>\n"
-	 		+ "    </RequestHeader>\n"
-	 		+ "  </Header>\n"
-	 		+ "  <Body>\n"
-	 		+ "    <getAdUnitsByStatement>\n"
-	 		+ "      <filterStatement>\n"
-	 		+ "        <query>WHERE parentId IS NULL LIMIT 500</query>\n"
-	 		+ "      </filterStatement>\n"
-	 		+ "    </getAdUnitsByStatement>\n"
-	 		+ "  </Body>\n"
-	 		+ "</Envelope>\n";
+	 String xmlNoNameSpace = "<?xml version=1.0 encoding=UTF-8 standalone=no?> <Envelope> "
+	 		+ "<Header action=Created> <RequestHeader> <networkCode>123456</networkCode>"
+	 		+ " <applicationName>DfpApi-Java-2.1.0-dfp_test</applicationName> </RequestHeader>"
+	 		+ " </Header> <Body> <getAdUnitsByStatement> <filterStatement> "
+	 		+ "<query>WHERE parentId IS NULL LIMIT 500</query> </filterStatement> "
+	 		+ "</getAdUnitsByStatement> </Body> </Envelope>";
 	 
 	 	String xmlStr = XmlHelper.removeXmlNameSpace(xmlString);
 
@@ -321,14 +312,9 @@ public class XmlHelperTest extends TestBase {
 	 		"   </SOAP-ENV:Body>\n" + 
 	 		"</SOAP-ENV:Envelope>";
 	 
-	 String xmlNoNameSpace = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Envelope>\n"
-	 		+ "\n"
-	 		+ "   <Body>\n"
-	 		+ "      <GetQuotationResponse>\n"
-	 		+ "         <Quotation>Here is the quotation</Quotation>\n"
-	 		+ "      </GetQuotationResponse>\n"
-	 		+ "   </Body>\n"
-	 		+ "</Envelope>\n";
+	 String xmlNoNameSpace = "<?xml version=1.0 encoding=UTF-8 standalone=no?> <Envelope> <Body> "
+	 		+ "<GetQuotationResponse> <Quotation>Here is the quotation</Quotation> "
+	 		+ "</GetQuotationResponse> </Body> </Envelope>";
 	 
 	 	String xmlStr = XmlHelper.removeXmlNameSpace(xmlString);
 
@@ -346,11 +332,9 @@ public class XmlHelperTest extends TestBase {
 	 		"   <cont:phone>(011) 123-4567</cont:phone>\n" + 
 	 		"</cont:contact>";
 	 
-	 String xmlNoNameSpace = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><contact>\n"
-	 		+ "   <name>Tanmay Patil</name>\n"
-	 		+ "   <company>TutorialsPoint</company>\n"
-	 		+ "   <phone>(011) 123-4567</phone>\n"
-	 		+ "</contact>";
+	 String xmlNoNameSpace = "<?xml version=1.0 encoding=UTF-8 standalone=no?> <contact> "
+	 		+ "<name>Tanmay Patil</name> <company>TutorialsPoint</company> "
+	 		+ "<phone>(011) 123-4567</phone> </contact> ";
 	 
 	 	String xmlStr = XmlHelper.removeXmlNameSpace(xmlString);
 
@@ -383,40 +367,12 @@ public class XmlHelperTest extends TestBase {
 	 		" </h:body>\n" + 
 	 		"</h:html>";
 	 
-	 String xmlNoNameSpace = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><html>\n"
-	 		+ " <head>\n"
-	 		+ "<title>Book Review</title>\n"
-	 		+ "</head>\n"
-	 		+ " <body>\n"
-	 		+ "  <bookreview>\n"
-	 		+ "   <title>\n"
-	 		+ "     XML: A Primer</title>\n"
-	 		+ "   <table>\n"
-	 		+ "    <tr align=\"center\">\n"
-	 		+ "     <td>Author</td>\n"
-	 		+ "<td>Price</td>\n"
-	 		+ "     <td>Pages</td>\n"
-	 		+ "<td>Date</td>\n"
-	 		+ "</tr>\n"
-	 		+ "    <tr align=\"left\">\n"
-	 		+ "     <td>\n"
-	 		+ "<author>Simon St. Laurent</author>\n"
-	 		+ "</td>\n"
-	 		+ "     <td>\n"
-	 		+ "<price>31.98</price>\n"
-	 		+ "</td>\n"
-	 		+ "     <td>\n"
-	 		+ "<pages>352</pages>\n"
-	 		+ "</td>\n"
-	 		+ "     <td>\n"
-	 		+ "<date>1998/01</date>\n"
-	 		+ "</td>\n"
-	 		+ "    </tr>\n"
-	 		+ "   </table>\n"
-	 		+ "  </bookreview>\n"
-	 		+ " </body>\n"
-	 		+ "</html>\n"
-	 		+ "";
+	 String xmlNoNameSpace = "<?xml version=1.0 encoding=UTF-8 standalone=no?> <html> <head> "
+	 		+ "<title>Book Review</title> </head> <body> <bookreview> <title> XML: A Primer</title> "
+	 		+ "<table> <tr align=center> <td>Author</td> <td>Price</td> <td>Pages</td> <td>Date</td> "
+	 		+ "</tr> <tr align=left> <td> <author>Simon St. Laurent</author> </td> <td> <price>31.98</price> "
+	 		+ "</td> <td> <pages>352</pages> </td> <td> <date>1998/01</date> </td> </tr> </table> </bookreview> "
+	 		+ "</body> </html>";
 	 
 	 	String xmlStr = XmlHelper.removeXmlNameSpace(xmlString);
 

@@ -7,7 +7,7 @@
   
     <classes>
        <class name="test.module.web.tests.VerifyLoginTest"/>
-       <class name="test.module.web.tests.VerifyUserCreateTest"/>
+       <class name="test.module.web.tests.VerifyUserCreateTest"/> 
     </classes>
   </test>
 

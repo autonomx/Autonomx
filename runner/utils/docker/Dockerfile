@@ -46,12 +46,11 @@ RUN apk update && apk add --no-cache bash \
         maven
 
 # copy test files
-COPY ./ ../../../automation/
+COPY automation /automation
 
 # copy driver to local directory
 RUN cp -r /usr/bin/chromedriver /automation/automation/chromedriver
-WORKDIR /automation/automation
 
 # run tests
-WORKDIR /automation/automation/
-RUN mvn clean compile test -DsuiteXmlFile=suites/webSmokeTests.xml -Dweb.driver.manual.path=chromedriver
+WORKDIR /automation/automation
+RUN mvn clean compile test -DsuiteXmlFile=suites/serviceTests.xml -Dweb.driver.manual.path=chromedriver

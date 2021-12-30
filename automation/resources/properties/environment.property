@@ -14,7 +14,7 @@ environment.path = "/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 maven.home = ""
 
 # url to download maven if not found on the system. can find versions at: https://archive.apache.org/dist/maven/maven-3/
-# eg. "https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip"
+# eg. "https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip"
 maven.url = ""
 
 # proxy settings:

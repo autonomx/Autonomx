@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.epam.ta.reportportal.log4j.appender" status="WARN">
+
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout
+                 pattern="%msg%n%throwable"/>
+                    
+        </Console>
+        <ReportPortalLog4j2Appender name="ReportPortalAppender">
+            <PatternLayout
+                 pattern="%replace{%msg}{^.*?(?=\ - )}{}%n%throwable"/>  
+        </ReportPortalLog4j2Appender>
+        
+    </Appenders>
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="ReportPortalAppender"/>
+        </Root>
+        <Logger name="com.epam.reportportal.service" level="ERROR" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="ReportPortalAppender"/>
+        </Logger>
+       	<Logger name="com.epam.reportportal.service.ReportPortal" level="ERROR" additivity="false">
+     	   <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="ReportPortalAppender"/>
+        </Logger>
+        
+       
+        <Logger name="com.epam.reportportal.utils" level="ERROR" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="ReportPortalAppender"/>
+        </Logger>
+        
+           <Logger name="io.github.bonigarcia.wdm.BrowserManager" level="ERROR" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+        
+         <Logger name="org.openqa.selenium.remote.ProtocolHandshake" level="ERROR" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+        
+         <Logger name="org.apache.kafka" level="ERROR" additivity="false">
+           <AppenderRef ref="ConsoleAppender"/>
+         </Logger>
+       
+     	  <Logger name="com.microsoft.azure" level="off" additivity="false">
+     	 </Logger>
+     	 
+     	  	  <Logger name="marytts" level="off" additivity="false">
+     	 </Logger>
+     	 
+       	  <Logger name="javax.xml.parsers" level="off" additivity="false">
+     	 </Logger>
+   
+        
+        
+    </Loggers>
+    
+</Configuration>
+
+

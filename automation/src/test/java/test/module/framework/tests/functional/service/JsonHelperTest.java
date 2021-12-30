@@ -83,7 +83,7 @@ public class JsonHelperTest extends TestBase {
 	public void beforeClass()  {
 	}
 	
-	@Test()
+	@Test (groups = { "json", "service" })
 	public void isJSONValid_valid() {
 		
 		TestLog.When("I verify a valid json string");
@@ -185,6 +185,7 @@ public class JsonHelperTest extends TestBase {
 		JsonHelper.saveOutboundJsonParameters(response, "role.name:<$name>; provider:1:<$local>");
 		Helper.assertEquals("Authenticated", Config.getValue("name"));
 		Helper.assertEquals("local", Config.getValue("local"));
+
 	}
 	
 	
