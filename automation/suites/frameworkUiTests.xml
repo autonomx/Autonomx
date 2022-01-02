@@ -13,6 +13,7 @@
 			<class name="test.module.framework.tests.ui.ClickHelperTest" />			
 			<class name="test.module.framework.tests.ui.ElementFinderTest" />
 			<class name="test.module.framework.tests.ui.JavascriptTest" />
+			<class name="test.module.framework.tests.ui.LegacyDriverTest" />		
 			<class name="test.module.framework.tests.ui.ListHelperTest" />
 			<class name="test.module.framework.tests.ui.SingleSignInTest" />
 			<class name="test.module.framework.tests.ui.WebPropertiesTest" />

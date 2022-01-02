@@ -71,7 +71,15 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>		
+			</plugin>	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>	
 		</plugins>
 
 	</build>
@@ -81,7 +89,7 @@
 		<dependency>
 		  <groupId>io.autonomx</groupId>
 		  <artifactId>autonomx-core</artifactId>
-		  <version>1.1.12</version>
+		  <version>1.1.13</version>
 		<exclusions>
 				<exclusion>
 					<groupId>io.github.bonigarcia</groupId>
