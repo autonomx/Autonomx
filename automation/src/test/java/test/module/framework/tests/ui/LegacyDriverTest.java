@@ -36,6 +36,9 @@ public class LegacyDriverTest {
 	@FindBy(css="[type='submit']")
 	public WebElement submit;
 	
+	@FindBy(css=".projectName")
+	public WebElement logo;
+	
 	@FindBy(css="input")
 	List<WebElement> inputs;
 	
@@ -51,10 +54,10 @@ public class LegacyDriverTest {
         driver.navigate().to("http://demo.autonomx.io/admin/auth/login");
 
 		email.clear();
-		Helper.setDriver(driver);
+		Helper.setLegacyDriver(driver);
 	    Helper.setField(email, "autouser313@gmail.com");
 	    Helper.setField(password, "autoPass1");
-	    Helper.clickAndExpect(submit, submit);
+	    Helper.clickAndExpect(submit, logo);
 	    
 	    //Close the Browser.
 	     driver.close();
