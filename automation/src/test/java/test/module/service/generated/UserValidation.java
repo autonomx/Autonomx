@@ -1,9 +1,10 @@
 /** Auto generated code, do not modify. * */
 package test.module.service.generated;
 
+import org.testng.annotations.Test;
+
 import core.support.objects.ServiceObject;
 import serviceManager.ServiceRunner;
-import org.testng.annotations.Test;
 import test.module.service.TestBase;
 
 public class UserValidation extends TestBase {

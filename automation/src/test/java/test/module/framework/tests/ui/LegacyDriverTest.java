@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import core.helpers.legacy.DriverLegacy;
 import core.helpers.legacy.Helper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 /**
@@ -59,6 +60,17 @@ public class LegacyDriverTest {
 	    Helper.setField(password, "autoPass1");
 	    Helper.clickAndExpect(submit, logo);
 	    
+	    String val = "Proxy element for: DefaultElementLocator 'By.cssSelector: [ng-show*='deviceEntryForm'].error-messages:not(.ng-hide)'";
+	    
+	   String[] locators =  DriverLegacy.getLocatorThroughParsing(val);
+	   Helper.assertTrue("value should be cssSelector, was: " + locators[0],locators[0].equals("cssSelector"));
+	   Helper.assertTrue("size should be 2, was: " + locators.length,locators.length == 2);
+
+	   val = "[[ChromeDriver: chrome on MAC (3d75dd68e7b27687d2da9f4426d21863)] -> xpath: //span[contains(text(),'Current Offer')]/parent::div[1]/parent::div[1]/following-sibling::div[1]/div[1]/span[1]]";
+	   locators =  DriverLegacy.getLocatorThroughParsing(val);
+	   Helper.assertTrue("value should be cssSelector, was: " + locators[0],locators[0].equals("xpath"));
+	   Helper.assertTrue("size should be 2, was: " + locators.length,locators.length == 2);
+   
 	    //Close the Browser.
 	     driver.close();
 	}

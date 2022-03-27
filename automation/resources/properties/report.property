@@ -5,16 +5,15 @@ report.reporterType = html
 report.launchReportAfterTest = false
 report.enableDetailedReport = true
 
-# set report portal config values at report.property file
 # attributes set as: key:value; or value; separated by ";" eg. platform:services;service;  
 rp.endpoint = http://localhost:8080
 rp.proxy = ""
 rp.uuid = 53d7dd39-1fa4-4817-b3e5-96ef58d563cc
-rp.launch = Autonomx
-rp.attributes = 
-rp.project = superadmin_personal
+rp.launch = framework_functional
+rp.attributes = ""
+rp.project = autonomx
 rp.enable = false
-rp.description = Autonomx tests
+rp.description = framework functional tests
 rp.convertimage = true
 rp.batch.size.logs = 20
 

@@ -26,10 +26,12 @@ public class TestBase extends ModuleBase {
 	
 	@BeforeMethod(alwaysRun = true)
 	public void beforeMethod(Method method) {
+		
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void afterMethod(ITestContext context, ITestResult iTestResult) {
+		
 	}
 
 
