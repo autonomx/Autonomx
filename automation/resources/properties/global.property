@@ -3,6 +3,7 @@
 global.timeoutSeconds = 60
 global.timeout.implicit.Seconds = 5
 global.parallelTestCount = 1
+global.web.JsWait.enabled = false
 
 # parallel run strategy. Options: METHODS, CLASSES
 global.parallelTestType = METHODS

@@ -62,4 +62,11 @@ public class UtilityHelperTests extends TestBase {
 		isExist = Helper.isFileContainsString("@Data //", file);
 		Helper.assertTrue("", !isExist);
 	}
+	
+	@Test()
+	public void isServerOnlineTest() {
+		Helper.assertTrue("http://demo.autonomx.io is offline",Helper.isServerOnline("http://demo.autonomx.io"));
+		
+		Helper.assertTrue("http://demo.autonomx.ca is online",!Helper.isServerOnline("http://demo.autonomx.ca"));
+	}
 }
