@@ -2,7 +2,7 @@
 # extent report options
 # report types: html (single html page) or klov (server using mongodb)
 report.reporterType = html
-report.launchReportAfterTest = false
+report.launchReportAfterTest = true
 report.enableDetailedReport = true
 
 # attributes set as: key:value; or value; separated by ";" eg. platform:services;service;  

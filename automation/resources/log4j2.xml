@@ -53,7 +53,6 @@
      	 
        	  <Logger name="javax.xml.parsers" level="off" additivity="false">
      	 </Logger>
-   
         
         
     </Loggers>
