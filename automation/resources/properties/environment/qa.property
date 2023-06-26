@@ -4,7 +4,7 @@
 service.csv.separator = ","
 service.csv.dataprovider.count = 20
 
-api.uriPath = http://demo.autonomx.io
+api.uriPath = http://45.76.240.186
 adminUserName = "autouser313@gmail.com"
 adminUserPassword = "autoPass1"
 authentication.disabled = false 

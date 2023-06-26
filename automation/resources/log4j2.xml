@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration packages="com.epam.ta.reportportal.log4j.appender" status="WARN">
-
-    <Appenders>
-        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+<configuration packages="com.epam.ta.reportportal.log4j.appender">
+    <properties>
+        <property name="pattern">[%d{HH:mm:ss}] %-5p (%F:%L) - %m%n</property>
+    </properties>
+    <appenders>
+       <Console name="ConsoleAppender" target="SYSTEM_OUT">
             <PatternLayout
                  pattern="%msg%n%throwable"/>
                     
         </Console>
         <ReportPortalLog4j2Appender name="ReportPortalAppender">
-            <PatternLayout
-                 pattern="%replace{%msg}{^.*?(?=\ - )}{}%n%throwable"/>  
+            <PatternLayout pattern="${pattern}"/>
         </ReportPortalLog4j2Appender>
-        
-    </Appenders>
-    <Loggers>
-        <Root level="DEBUG">
+    </appenders>
+    <loggers>
+        <Root level="INFO">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="ReportPortalAppender"/>
         </Root>
-        <Logger name="com.epam.reportportal.service" level="ERROR" additivity="false">
+         <Logger name="com.epam.reportportal.service" level="ERROR" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="ReportPortalAppender"/>
         </Logger>
@@ -32,8 +32,7 @@
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="ReportPortalAppender"/>
         </Logger>
-        
-           <Logger name="io.github.bonigarcia.wdm.BrowserManager" level="ERROR" additivity="false">
+        <Logger name="io.github.bonigarcia.wdm.BrowserManager" level="ERROR" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
         </Logger>
         
@@ -51,12 +50,9 @@
      	  	  <Logger name="marytts" level="off" additivity="false">
      	 </Logger>
      	 
-       	  <Logger name="javax.xml.parsers" level="off" additivity="false">
-     	 </Logger>
-        
-        
-    </Loggers>
-    
-</Configuration>
-
-
+       	  <Logger name="javax.xml.parsers" level="off" additivity="false"></Logger>
+       	 
+       	  
+       	  
+    </loggers>
+</configuration>

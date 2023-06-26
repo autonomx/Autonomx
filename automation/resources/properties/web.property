@@ -1,13 +1,13 @@
 # Web
 #key value. key should match the web app test.module name. eg. test.module name = google, therefore: google="http://google.com"
-webApp="http://demo.autonomx.io/admin/"
-framework="http://demo.autonomx.io/admin/"
+webApp="http://45.76.240.186/admin"
+framework="http://45.76.240.186/admin"
 
 # Options: CHROME, FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, CHROME_HEADLESS, FIREFOX_HEADLESS, SAFARI
 web.browserType = CHROME
 
 # to add additional web capabilities, add capability after the prefix: "web.capabilities."
-web.capabilities.takesScreenshot = true
+#web.capabilities.takesScreenshot = false
 
 # to add additional chrome options, add options after the prefix: "chrome.options" separated by ";"
 # eg. chrome.options = [--headless] [--start-fullscreen] [user-agent=test-user-agent]

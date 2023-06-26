@@ -3,7 +3,7 @@ package test.module.framework.tests.functional;
 
 import java.io.File;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Test;
 
 import core.helpers.Helper;

@@ -52,7 +52,7 @@ public class LegacyDriverTest {
         PageFactory.initElements(driver, this);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-        driver.navigate().to("http://demo.autonomx.io/admin/auth/login");
+        driver.navigate().to("http://45.76.240.186/admin/auth/login");
 
 		email.clear();
 		Helper.setLegacyDriver(driver);

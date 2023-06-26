@@ -1,8 +1,6 @@
 package test.module.framework.tests.functional.service;
 
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,11 +17,12 @@ import test.module.framework.TestBase;
  * Test to verify running single test case
  */
 public class ServiceRunnerMultiRunTest extends TestBase {
-	
-	AtomicInteger testCount = new AtomicInteger(0);
+	public static ThreadLocal<Integer> testCount = new ThreadLocal<Integer>(); // key for testObject
 
 	@BeforeClass
 	public void beforeClass()  {
+		testCount.set(0);
+
 		ConfigVariable.apiParallelTestcasePath().setValue("../apiTestData/testCases/frameworkTests/multirun/");
 
 		ConfigVariable.apiTestCaseFile().setValue("TestCases_UserValidation_multirun.csv");
@@ -37,7 +36,7 @@ public class ServiceRunnerMultiRunTest extends TestBase {
 		TestLog.When("I verify api runner with specified csv file");
  
     	ServiceRunner.TestRunner(objects);
-    	testCount.incrementAndGet(); 	
+    	testCount.set(testCount.get() + 1); 	
 	}
 	
 	@AfterClass

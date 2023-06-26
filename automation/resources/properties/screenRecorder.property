@@ -2,7 +2,7 @@
 # mobile video format: mp4
 # screen recorder. Use VLC viewer for video files
 
-recorder.enableRecording = false
+recorder.enableRecording = true
 recorder.onFailedTestsOnly = true
  # max 600 seconds
 recorder.maxTimeInSeconds = 180
