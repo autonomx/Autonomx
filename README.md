@@ -3,7 +3,7 @@
 
 
 
-Documentation: https://app.gitbook.com/@autonomx/s/autonomx/
+Documentation: https://autonomx.gitbook.io/autonomx/
 
 Autonomx Core: https://github.com/autonomx/AutonomxCore
 
