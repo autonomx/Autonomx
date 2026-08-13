@@ -27,35 +27,56 @@ jobs:
           cache: maven
           cache-dependency-path: automation/pom.xml
 
-      - name: Configure legacy Maven repository
+      - name: Exclude obsolete transitive dependencies in CI
         shell: bash
         run: |
-          cat > "$RUNNER_TEMP/ci-maven-settings.xml" <<'EOF'
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <profiles>
-              <profile>
-                <id>autonomx-ci-legacy-repositories</id>
-                <repositories>
-                  <repository>
-                    <id>mulesoft-public</id>
-                    <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-                    <releases>
-                      <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                      <enabled>false</enabled>
-                    </snapshots>
-                  </repository>
-                </repositories>
-              </profile>
-            </profiles>
-            <activeProfiles>
-              <activeProfile>autonomx-ci-legacy-repositories</activeProfile>
-            </activeProfiles>
-          </settings>
-          EOF
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          pom = "automation/pom.xml"
+          ns = "http://maven.apache.org/POM/4.0.0"
+          def tag(name):
+              return "{%s}%s" % (ns, name)
+
+          ET.register_namespace("", ns)
+          tree = ET.parse(pom)
+          root = tree.getroot()
+          target = None
+
+          for dependency in root.findall(".//" + tag("dependency")):
+              group_id = dependency.find(tag("groupId"))
+              artifact_id = dependency.find(tag("artifactId"))
+              if (group_id is not None and artifact_id is not None and
+                      group_id.text == "io.autonomx" and artifact_id.text == "autonomx-core"):
+                  target = dependency
+                  break
+
+          if target is None:
+              raise SystemExit("Could not find io.autonomx:autonomx-core in automation/pom.xml")
+
+          exclusions = target.find(tag("exclusions"))
+          if exclusions is None:
+              exclusions = ET.SubElement(target, tag("exclusions"))
+
+          existing = set()
+          for exclusion in exclusions.findall(tag("exclusion")):
+              group_id = exclusion.find(tag("groupId"))
+              artifact_id = exclusion.find(tag("artifactId"))
+              if group_id is not None and artifact_id is not None:
+                  existing.add((group_id.text, artifact_id.text))
+
+          required_exclusions = [
+              ("javax.media.jai", "com.springsource.javax.media.jai.core"),
+              ("javax.media", "jmf"),
+          ]
+          for group_id, artifact_id in required_exclusions:
+              if (group_id, artifact_id) not in existing:
+                  exclusion = ET.SubElement(exclusions, tag("exclusion"))
+                  ET.SubElement(exclusion, tag("groupId")).text = group_id
+                  ET.SubElement(exclusion, tag("artifactId")).text = artifact_id
+
+          tree.write(pom, encoding="UTF-8", xml_declaration=True)
+          PY
 
       - name: Start local framework test webapp
         shell: bash
@@ -82,7 +103,7 @@ jobs:
 
       - name: Run framework functional tests
         working-directory: automation
-        run: mvn --settings "$RUNNER_TEMP/ci-maven-settings.xml" --batch-mode --no-transfer-progress clean compile test -DsuiteXmlFile=suites/frameworkFunctionalTests.xml
+        run: mvn --batch-mode --no-transfer-progress clean compile test -DsuiteXmlFile=suites/frameworkFunctionalTests.xml
 
       - name: Upload functional test reports
         if: always()
