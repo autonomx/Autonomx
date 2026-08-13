@@ -43,10 +43,10 @@ public class RestApiInterfaceTest extends TestBase {
 
 	@Test()
 	public void verifyJsonValidator() {
-		ServiceObject serviceObject = new ServiceObject().withExpectedResponse("{\n" + "	\"provider\": \"local\",\n"
-				+ "	\"role\": {\n" + "		\"id\": 1,\n" + "		\"name\": \"Authenticated\",\n"
-				+ "		\"description\": \"Default role given to authenticated user.\",\n"
-				+ "		\"type\": \"authenticated\"\n" + "	}\n" + "}");
+		ServiceObject serviceObject = new ServiceObject().withExpectedResponse("{\n" + "\t\"provider\": \"local\",\n"
+				+ "\t\"role\": {\n" + "\t\t\"id\": 1,\n" + "\t\t\"name\": \"Authenticated\",\n"
+				+ "\t\t\"description\": \"Default role given to authenticated user.\",\n"
+				+ "\t\t\"type\": \"authenticated\"\n" + "\t}\n" + "}");
 
 		CommonUser user = Data.common.commonuser().withAdminLogin();
 
@@ -65,10 +65,10 @@ public class RestApiInterfaceTest extends TestBase {
 	@Test()
 	public void verifyJsonValidator_invalid_requestValue() {
 		ServiceObject serviceObject = new ServiceObject()
-				.withExpectedResponse("{\n" + "	\"id\": 301,\n" + "	\"username\": \"zzz_autoUserv61w2;email\",\n"
-						+ "	\"role\": {\n" + "		\"id\": 3,\n" + "		\"name\": \"Authenticated2\",\n"
-						+ "		\"description\": \"Default role given to authenticated user.\",\n"
-						+ "		\"type\": \"authenticated\"\n" + "	}\n" + "}");
+				.withExpectedResponse("{\n" + "\t\"id\": 301,\n" + "\t\"username\": \"zzz_autoUserv61w2;email\",\n"
+						+ "\t\"role\": {\n" + "\t\t\"id\": 3,\n" + "\t\t\"name\": \"Authenticated2\",\n"
+						+ "\t\t\"description\": \"Default role given to authenticated user.\",\n"
+						+ "\t\t\"type\": \"authenticated\"\n" + "\t}\n" + "}");
 
 		CommonUser user = Data.common.commonuser().withAdminLogin();
 
@@ -562,7 +562,7 @@ public class RestApiInterfaceTest extends TestBase {
 		Config.putValue(TestObject.PROXY_PORT, "8080");
 		Config.putValue(TestObject.PROXY_ENABLED, "false");
 
-		String url = "http://45.76.240.186/admin";
+		String url = "http://127.0.0.1:18080/admin";
 		ServiceObject serviceObject = new ServiceObject().withUriPath(url).withMethod("GET").withRespCodeExp("200");
 
 		RestApiInterface.RestfullApiInterface(serviceObject);
@@ -578,7 +578,7 @@ public class RestApiInterfaceTest extends TestBase {
 		boolean isConnectValid = Helper.isUrlAbleToConnect(url, null);
 		Helper.assertEquals(false, isConnectValid);
 
-		url = new URL("http://45.76.240.186");
+		url = new URL("http://127.0.0.1:18080");
 		isConnectValid = Helper.isUrlAbleToConnect(url, null);
 		Helper.assertEquals(true, isConnectValid);
 
