@@ -1,0 +1,77 @@
+name: Framework Functional Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  framework-functional-tests:
+    name: frameworkFunctionalTests.xml
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+          cache-dependency-path: automation/pom.xml
+
+      - name: Start local framework test webapp
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_DIR="$RUNNER_TEMP/autonomx-framework-test-webapp"
+          mkdir -p "$BUILD_DIR"
+          javac -encoding UTF-8 -d "$BUILD_DIR" test-webapp/FrameworkTestWebApp.java
+          nohup java -cp "$BUILD_DIR" FrameworkTestWebApp 18080 > "$RUNNER_TEMP/framework-test-webapp.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/framework-test-webapp.pid"
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error http://127.0.0.1:18080/health; then
+              echo
+              echo "Framework test webapp is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Framework test webapp did not become ready."
+          cat "$RUNNER_TEMP/framework-test-webapp.log" || true
+          exit 1
+
+      - name: Run framework functional tests
+        working-directory: automation
+        run: mvn --batch-mode --no-transfer-progress clean compile test -DsuiteXmlFile=suites/frameworkFunctionalTests.xml
+
+      - name: Upload functional test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: framework-functional-test-reports
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            automation/target/surefire-reports/**
+            automation/test-output/**
+            automation/extentReport/**
+            automation/logs/**
+
+      - name: Upload local webapp log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: framework-test-webapp-log
+          if-no-files-found: warn
+          retention-days: 14
+          path: ${{ runner.temp }}/framework-test-webapp.log
