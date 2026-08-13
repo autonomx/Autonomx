@@ -1,7 +1,7 @@
 # Web
 #key value. key should match the web app test.module name. eg. test.module name = google, therefore: google="http://google.com"
-webApp="http://45.76.240.186/admin"
-framework="http://45.76.240.186/admin"
+webApp="http://127.0.0.1:18080/admin"
+framework="http://127.0.0.1:18080/admin"
 
 # Options: CHROME, FIREFOX, INTERNET_EXPLORER, MICROSOFT_EDGE, Opera, CHROME_HEADLESS, FIREFOX_HEADLESS, SAFARI
 web.browserType = CHROME
