@@ -26,7 +26,7 @@ start.bat
 
 ```bash
 cd test-webapp
-./start.sh
+bash start.sh
 ```
 
 Keep the server running, then execute the existing framework functional suite from another terminal:
