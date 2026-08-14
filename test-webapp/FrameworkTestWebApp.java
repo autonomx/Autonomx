@@ -80,6 +80,11 @@ public final class FrameworkTestWebApp {
                     return;
                 }
 
+                if ("/test/timeout".equals(path)) {
+                    handleTimeout(exchange);
+                    return;
+                }
+
                 if (USER_API.equals(path) || path.startsWith(USER_API + "/")) {
                     handleUserApi(exchange, method, path);
                     return;
@@ -152,16 +157,24 @@ public final class FrameworkTestWebApp {
                     + "\"registrationToken\":null,\"isActive\":true,\"blocked\":null,"
                     + "\"roles\":[{\"id\":1,\"name\":\"Super Admin\",\"code\":\"strapi-super-admin\","
                     + "\"description\":\"Super Admins can access and manage all features and settings.\"}]}";
-            // Preserve both response layouts used by the historical Autonomx tests.
-            // Older generated service definitions extract .token/.user directly, while
-            // some CSV expectations validate data.user from a newer Strapi response.
-            String json = "{\"token\":\"" + ADMIN_TOKEN + "\",\"user\":" + userJson
-                    + ",\"data\":{\"token\":\"" + ADMIN_TOKEN + "\",\"user\":" + userJson + "}}";
+            // Keep one canonical token/user copy. The historical JSONPath expressions
+            // use recursive lookups (for example .token and .user.roles..id), so a
+            // duplicate root + data payload turns extracted values into comma lists.
+            String json = "{\"data\":{\"token\":\"" + ADMIN_TOKEN + "\",\"user\":" + userJson + "}}";
             sendJson(exchange, 200, json);
         } else {
             sendJson(exchange, 400,
                     "{\"data\":null,\"error\":{\"status\":400,\"name\":\"ValidationError\",\"message\":\"Invalid credentials\"}}");
         }
+    }
+
+    private static void handleTimeout(HttpExchange exchange) throws IOException {
+        try {
+            Thread.sleep(5000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        sendJson(exchange, 200, "{\"status\":\"delayed\"}");
     }
 
     private static void handleUserApi(HttpExchange exchange, String method, String path) throws IOException {
