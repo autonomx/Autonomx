@@ -389,7 +389,7 @@ public class RestApiInterfaceTest extends TestBase {
 		long passedTimeInSeconds = 0;
 		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, "2");
 
-		ServiceObject userAPI = Service.create().withInterfaceType("RESTfulAPI").withUriPath("http://example.com:81")
+		ServiceObject userAPI = Service.create().withInterfaceType("RESTfulAPI").withUriPath("http://127.0.0.1:18080/test/timeout")
 				.withMethod("GET").withRespCodeExp("200");
 
 		try {
@@ -464,7 +464,7 @@ public class RestApiInterfaceTest extends TestBase {
 		RestApiInterface.RestfullApiInterface(serviceObject);
 	}
 
-	@Ignore // url cannot be resoled on azure
+	@Ignore // url cannot be resolved on azure
 	@Test(description = "invalid expected value, wait for response")
 	public void restapi_pagination_invalid_response_timeout() throws Exception {
 		Config.putValue(ServiceManager.SERVICE_RESPONSE_TIMEOUT_SECONDS, "2");
