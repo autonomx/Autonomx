@@ -65,7 +65,7 @@ public class UtilityHelperTests extends TestBase {
 	
 	@Test()
 	public void isServerOnlineTest() {
-		Helper.assertTrue("http://demo.autonomx.io is offline",Helper.isServerOnline("http://45.76.240.186"));
+		Helper.assertTrue("local Autonomx framework test webapp is offline",Helper.isServerOnline("http://127.0.0.1:18080"));
 		
 		Helper.assertTrue("http://demo.autonomx.ca is online",!Helper.isServerOnline("http://demo.autonomx.ca"));
 	}

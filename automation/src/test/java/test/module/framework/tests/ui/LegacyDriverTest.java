@@ -2,8 +2,8 @@ package test.module.framework.tests.ui;
 
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,9 +50,9 @@ public class LegacyDriverTest {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         PageFactory.initElements(driver, this);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
-        driver.navigate().to("http://45.76.240.186/admin/auth/login");
+        driver.navigate().to("http://127.0.0.1:18080/admin/auth/login");
 
 		email.clear();
 		Helper.setLegacyDriver(driver);
