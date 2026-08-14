@@ -4,7 +4,7 @@
 service.csv.separator = ","
 service.csv.dataprovider.count = 20
 
-api.uriPath = http://45.76.240.186
+api.uriPath = http://127.0.0.1:18080
 adminUserName = "autoAdmin1"
 adminUserPassword = "autoPass1"
 authentication.disabled = false 

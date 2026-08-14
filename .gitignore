@@ -21,3 +21,4 @@ runner/utils/script-server/
 *.war
 *.log
 *.iml
+test-webapp/.build/
