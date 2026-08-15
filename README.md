@@ -26,7 +26,7 @@ Autonomx provides a complete testing platform for UI (Web, iOS, Android, Win) an
 # Prerequisites:
 
 ### Web:
-* Java jdk-1.8 or higher
+* Java JDK 17 or higher
 * maven 3.3.x or higher (maven will automatically download by running setup.bat/sh script)
 * https://docs.autonomx.io/prerequisites
 
