@@ -88,8 +88,8 @@
 	<dependencies>
 		<dependency>
 		  <groupId>io.autonomx</groupId>
-		  <artifactId>autonomx-core</artifactId>
-		  <version>1.1.22</version>
+		  <artifactId>autonomxCore</artifactId>
+		  <version>1.1.29</version>
 		<exclusions>
 				<exclusion>
 					<groupId>io.github.bonigarcia</groupId>
@@ -98,6 +98,10 @@
 				<exclusion>
 					<groupId>io.appium</groupId>
 					<artifactId>java-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
