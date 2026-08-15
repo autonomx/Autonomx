@@ -2,7 +2,7 @@
     <property name="property.file.updated.path" value="target/generated-sources/updated-properties.properties/" />
     <property name="property.file.marker.path" value="target/generated-sources/marker.txt" />
     <property name="source.change.detector.marker.path" value="target/generated-sources/annotations/marker/marker.java" />
-    <property name="source.change.detector.class.path" value="target/generated-sources/annotations/marker/SourceChangeDetector.java" />
+    <property name="source.change.detector.class.path" value="target/classes/marker/SourceChangeDetector.class" />
 		
     <property name="maven.dir" location="./.maven" />
 	<property name="maven.url" value="https://github.com/autonomx/mavenRunner/releases/latest/download/maven.jar" />
@@ -140,9 +140,9 @@
     	<echo message="calling: maven clean" />
     	<antcall target="enable-console-log"></antcall>
     	
-    	<java jar="./maven/maven.jar" fork="true" failonerror="true">
-    		 	<arg value="clean generate-sources"/>
-    	</java>
+         <java jar="./.maven/maven.jar" fork="true" failonerror="true">
+                 <arg value="clean compile"/>
+         </java>
     	<echo>if your seeing this, compilation has potentially failed. Please see errors</echo>   	
     </target>
 	
@@ -151,9 +151,9 @@
     	<antcall target="enable-console-log"></antcall>
     	<touch file="target/generated-sources/target-file.txt" datetime="now" />
        
-    	<java jar="./.maven/maven.jar" fork="true" failonerror="true">
-        		<arg value="generate-sources"/>
-        </java>
+         <java jar="./.maven/maven.jar" fork="true" failonerror="true">
+                 <arg value="compile"/>
+         </java>
     	<echo>if your seeing this, compilation has potentially failed. Please see errors</echo>   	
     </target>
 	

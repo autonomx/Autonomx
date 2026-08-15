@@ -37,11 +37,33 @@
 								<include>**/module/ModuleBase.java</include>
 							</includes>
 							<compilerArgument>-proc:only</compilerArgument>
-							<outputDirectory>target/generated-sources/annotations</outputDirectory>
+							<generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
 						</configuration>
 						<goals>
 							<goal>compile</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Keep annotation-processor output on the main source path. This is
+			     required by both Maven and IDE builds before test execution. -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.6.1</version>
+				<executions>
+					<execution>
+						<id>add-generated-annotation-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/annotations</source>
+							</sources>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
